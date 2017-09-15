@@ -14,6 +14,8 @@ namespace WU16.BolindersBilAB.DAL.Models
         public virtual string CarBrandId { get; set; }
         public virtual CarBrand CarBrand { get; set; }
         public virtual Location Location { get; set; }
+        public string Model { get; set; }
+        public string Description { get; set; }
         public int ModelYear { get; set; }
         public bool IsLeaseable { get; set; }
         public int Milage { get; set; }
