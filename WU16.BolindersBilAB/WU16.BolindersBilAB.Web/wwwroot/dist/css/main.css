@@ -1,7 +1,7 @@
 ﻿#account-login-container {
-  margin-top: 100px; }
+  margin-top: 5rem; }
   #account-login-container .card {
-    padding: 25px; }
+    padding: 1.5rem; }
   #account-login-container .alert-danger {
     padding-bottom: 0; }
 
