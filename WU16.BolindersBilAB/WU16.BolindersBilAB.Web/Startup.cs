@@ -30,7 +30,7 @@ namespace WU16.BolindersBilAB.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -71,7 +71,7 @@ namespace WU16.BolindersBilAB.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager)
         {
             if (env.IsDevelopment())
             {
@@ -94,6 +94,19 @@ namespace WU16.BolindersBilAB.Web
             app.UseAuthentication();
 
             app.UseMvc(x => x.MapRoute("default", template: "{Controller=Home}/{Action=Index}/{Id?}"));
+
+            if (!userManager.Users.Any(x => x.UserName == "erceriksson@gmail.com"))
+            {
+                var user1 = new ApplicationUser { UserName = "jonkoping@bolindersbil.se", Email = "jonkoping@bolindersbil.se" };
+                var user2 = new ApplicationUser { UserName = "varnamo@bolindersbil.se", Email = "varnamo@bolindersbil.se" };
+                var user3 = new ApplicationUser { UserName = "goteborg@bolindersbil.se", Email = "goteborg@bolindersbil.se" };
+                var user4 = new ApplicationUser { UserName = "admin@bolindersbil.se", Email = "admin@bolindersbil.se" };
+
+                Task.WaitAll(userManager.CreateAsync(user1, "Admin1234"));
+                Task.WaitAll(userManager.CreateAsync(user2, "Admin1234"));
+                Task.WaitAll(userManager.CreateAsync(user3, "Admin1234"));
+                Task.WaitAll(userManager.CreateAsync(user4, "Admin1234"));
+            }
         }
     }
 }
