@@ -10,11 +10,11 @@ namespace WU16.BolindersBilAB.Web.Models
     public class LoginViewModel
     {
         [Required]
-        [DisplayName("Email adress")]
+        [DisplayName("E-post")]
         [DataType(DataType.EmailAddress)]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Lösenord saknas.")]
         [DisplayName("Lösenord")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
