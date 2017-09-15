@@ -95,18 +95,18 @@ namespace WU16.BolindersBilAB.Web
 
             app.UseMvc(x => x.MapRoute("default", template: "{Controller=Home}/{Action=Index}/{Id?}"));
 
-            if (!userManager.Users.Any())
-            {
-                var user1 = new ApplicationUser { UserName = "jonkoping@bolindersbil.se", Email = "jonkoping@bolindersbil.se" };
-                var user2 = new ApplicationUser { UserName = "varnamo@bolindersbil.se", Email = "varnamo@bolindersbil.se" };
-                var user3 = new ApplicationUser { UserName = "goteborg@bolindersbil.se", Email = "goteborg@bolindersbil.se" };
-                var user4 = new ApplicationUser { UserName = "admin@bolindersbil.se", Email = "admin@bolindersbil.se" };
+            //if (!userManager.Users.Any())
+            //{
+            //    var user1 = new ApplicationUser { UserName = "jonkoping@bolindersbil.se", Email = "jonkoping@bolindersbil.se" };
+            //    var user2 = new ApplicationUser { UserName = "varnamo@bolindersbil.se", Email = "varnamo@bolindersbil.se" };
+            //    var user3 = new ApplicationUser { UserName = "goteborg@bolindersbil.se", Email = "goteborg@bolindersbil.se" };
+            //    var user4 = new ApplicationUser { UserName = "admin@bolindersbil.se", Email = "admin@bolindersbil.se" };
 
-                Task.WaitAll(userManager.CreateAsync(user1, "Admin1234"));
-                Task.WaitAll(userManager.CreateAsync(user2, "Admin1234"));
-                Task.WaitAll(userManager.CreateAsync(user3, "Admin1234"));
-                Task.WaitAll(userManager.CreateAsync(user4, "Admin1234"));
-            }
+            //    Task.WaitAll(userManager.CreateAsync(user1, "Admin1234"));
+            //    Task.WaitAll(userManager.CreateAsync(user2, "Admin1234"));
+            //    Task.WaitAll(userManager.CreateAsync(user3, "Admin1234"));
+            //    Task.WaitAll(userManager.CreateAsync(user4, "Admin1234"));
+            //}
         }
     }
 }

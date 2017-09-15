@@ -7,5 +7,6 @@ namespace WU16.BolindersBilAB.DAL.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        public virtual Location Location { get; set; }
     }
 }

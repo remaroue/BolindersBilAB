@@ -14,5 +14,10 @@ namespace WU16.BolindersBilAB.DAL.DataAccess
         {
 
         }
+
+        public DbSet<Car> Cars { get; set; }
+        public DbSet<CarBrand> CarBrands { get; set; }
+        public DbSet<CarImage> CarImages { get; set; }
+        public DbSet<Location> Locations { get; set; }
     }
 }
