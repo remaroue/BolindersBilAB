@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace WU16.BolindersBilAB.DAL.Models
@@ -9,6 +10,8 @@ namespace WU16.BolindersBilAB.DAL.Models
     {
         [Key]
         public string LicenseNumber { get; set; }
+        [ForeignKey("CarBrand")]
+        public virtual string CarBrandId { get; set; }
         public virtual CarBrand CarBrand { get; set; }
         public virtual Location Location { get; set; }
         public int ModelYear { get; set; }

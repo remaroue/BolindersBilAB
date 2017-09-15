@@ -10,11 +10,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WU16.BolindersBilAB.DAL\WU16.BolindersBilAB.DAL.csproj" />
+    <Folder Include="wwwroot\dist\css\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\dist\css\" />
+    <ProjectReference Include="..\WU16.BolindersBilAB.DAL\WU16.BolindersBilAB.DAL.csproj" />
   </ItemGroup>
 
 </Project>

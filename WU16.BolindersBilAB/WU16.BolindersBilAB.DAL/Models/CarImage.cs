@@ -12,6 +12,8 @@ namespace WU16.BolindersBilAB.DAL.Models
         [Key]
         public Guid Id { get; set; }
         public int Priority { get; set; }
+        [ForeignKey("Car")]
+        public string CarId { get; set; }
         public virtual Car Car { get; set; }
     }
 }

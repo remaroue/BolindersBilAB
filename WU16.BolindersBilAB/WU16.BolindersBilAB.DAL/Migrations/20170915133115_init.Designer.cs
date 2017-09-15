@@ -3,15 +3,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 using WU16.BolindersBilAB.DAL.DataAccess;
+using WU16.BolindersBilAB.DAL.Models;
 
 namespace WU16.BolindersBilAB.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170915133115_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,7 +190,7 @@ namespace WU16.BolindersBilAB.DAL.Migrations
                     b.Property<string>("LicenseNumber")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CarBrandId");
+                    b.Property<string>("CarBrandBrandName");
 
                     b.Property<int>("CarType");
 
@@ -216,7 +220,7 @@ namespace WU16.BolindersBilAB.DAL.Migrations
 
                     b.HasKey("LicenseNumber");
 
-                    b.HasIndex("CarBrandId");
+                    b.HasIndex("CarBrandBrandName");
 
                     b.HasIndex("LocationId");
 
@@ -240,13 +244,13 @@ namespace WU16.BolindersBilAB.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CarId");
+                    b.Property<string>("CarLicenseNumber");
 
                     b.Property<int>("Priority");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId");
+                    b.HasIndex("CarLicenseNumber");
 
                     b.ToTable("CarImages");
                 });
@@ -260,7 +264,7 @@ namespace WU16.BolindersBilAB.DAL.Migrations
 
                     b.Property<string>("City");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("LocationName");
 
                     b.Property<string>("PhoneNumber");
 
@@ -327,7 +331,7 @@ namespace WU16.BolindersBilAB.DAL.Migrations
                 {
                     b.HasOne("WU16.BolindersBilAB.DAL.Models.CarBrand", "CarBrand")
                         .WithMany("Cars")
-                        .HasForeignKey("CarBrandId");
+                        .HasForeignKey("CarBrandBrandName");
 
                     b.HasOne("WU16.BolindersBilAB.DAL.Models.Location", "Location")
                         .WithMany("Cars")
@@ -338,7 +342,7 @@ namespace WU16.BolindersBilAB.DAL.Migrations
                 {
                     b.HasOne("WU16.BolindersBilAB.DAL.Models.Car", "Car")
                         .WithMany("CarImages")
-                        .HasForeignKey("CarId");
+                        .HasForeignKey("CarLicenseNumber");
                 });
 #pragma warning restore 612, 618
         }
