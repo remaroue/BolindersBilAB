@@ -47,7 +47,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Fel E-post eller Lösenord.");
                     return View(model);
                 }
             }
