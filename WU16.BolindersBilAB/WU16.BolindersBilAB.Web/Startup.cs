@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity;
 using WU16.BolindersBilAB.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
+using WU16.BolindersBilAB.DAL.Repository;
+using WU16.BolindersBilAB.DAL.Services;
 
 namespace WU16.BolindersBilAB.Web
 {
@@ -68,6 +70,9 @@ namespace WU16.BolindersBilAB.Web
             });
 
             services.AddMvc();
+
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<CarListService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
