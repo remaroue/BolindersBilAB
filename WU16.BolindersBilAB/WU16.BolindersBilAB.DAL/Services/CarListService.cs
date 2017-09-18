@@ -16,7 +16,7 @@ namespace WU16.BolindersBilAB.DAL.Services
         }
 
         public IEnumerable<Car> GetCars()
-        {
+        {        
             return _repo.Get();
         }
 

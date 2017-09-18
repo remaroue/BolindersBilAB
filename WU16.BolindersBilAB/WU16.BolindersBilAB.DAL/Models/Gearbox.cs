@@ -6,7 +6,7 @@ namespace WU16.BolindersBilAB.DAL.Models
 {
     public enum Gearbox
     {
-        Automatic,
-        Manual
+        Automat,
+        Manuell
     }
 }

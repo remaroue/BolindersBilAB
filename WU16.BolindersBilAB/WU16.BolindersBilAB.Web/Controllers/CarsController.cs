@@ -42,13 +42,25 @@ namespace WU16.BolindersBilAB.Web.Controllers
             return View(carListVm);
         }
         [HttpPost]
-        [Route("/bilar")]
-        public IActionResult Cars(CarListQuery query)
+        [Route("/bilar/{parameter?}")]
+        public IActionResult Cars(CarListQuery query, string parameter)
         {
-            var cars = _service.GetCars();
+            var carListVm = new CarListViewModel
+            {
+                Cars = _service.GetCars()
+            };
 
+            if (parameter != null)
+            {
+                if (parameter == "nya" || parameter == "begagnade")
+                {
+                    carListVm.Cars = CarListHelper.Filter(parameter, carListVm.Cars);
+                }
+            }
 
-            return View();
+            carListVm.Cars = CarListHelper.FilterByQuery(query, carListVm.Cars);
+
+            return View(carListVm);
         }
     }
 }

@@ -26,6 +26,28 @@ namespace WU16.BolindersBilAB.DAL.Helpers
 
             return cars.Where(x => x.Used == isUsed).AsEnumerable();
         }
+        public static IEnumerable<Car> FilterByQuery(CarListQuery query,IEnumerable<Car> cars)
+        {
+            if (query.CarType.Count > 0)
+                cars = cars.Where(x => query.CarType.Contains(x.CarType));
+            if (query.MilageFrom > 0)
+                cars = cars.Where(x => x.Milage >= query.MilageFrom);
+            if (query.MilageTo > 0)
+                cars = cars.Where(x => x.Milage <= query.MilageTo);
+            if (query.Gearbox.Count > 0)
+                cars = cars.Where(x => query.Gearbox.Contains(x.Gearbox));
+            if (query.FuelType.Count > 0)
+                cars = cars.Where(x => query.FuelType.Contains(x.FuelType));
+            if (query.PriceFrom > 0)
+                cars = cars.Where(x => x.Price >= query.PriceFrom);
+            if (query.PriceTo > 0)
+                cars = cars.Where(x => x.Price <= query.PriceTo);
+            if (query.YearFrom > 0)
+                cars = cars.Where(x => x.ModelYear >= query.YearFrom);
+            if (query.YearTo > 0)
+                cars = cars.Where(x => x.ModelYear <= query.YearTo);
 
+            return cars;
+        }
     }
 }
