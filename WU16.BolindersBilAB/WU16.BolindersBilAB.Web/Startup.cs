@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using WU16.BolindersBilAB.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
+using WU16.BolindersBilAB.DAL.Services;
 
 namespace WU16.BolindersBilAB.Web
 {
@@ -35,6 +36,8 @@ namespace WU16.BolindersBilAB.Web
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddScoped<EmailService>();
 
             services.Configure<IdentityOptions>(options =>
             {

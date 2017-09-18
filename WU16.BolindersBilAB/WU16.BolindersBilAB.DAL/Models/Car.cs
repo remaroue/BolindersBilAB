@@ -29,6 +29,6 @@ namespace WU16.BolindersBilAB.DAL.Models
         public CarType CarType { get; set; }
         public FuelType FuelType { get; set; }
         public Gearbox Gearbox { get; set; }
-
+        public string Equipment { get; set; }
     }
 }

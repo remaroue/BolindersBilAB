@@ -3,10 +3,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<div class="container">
+    <h2>Index</h2>
 
-@if(User.Identity.IsAuthenticated)
-{
-    <text>Du är inloggad</text>
-}
-
+    @if (User.Identity.IsAuthenticated)
+    {
+        <text>Du är inloggad</text>
+    }
+</div>
