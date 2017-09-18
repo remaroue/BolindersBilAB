@@ -38,6 +38,8 @@ namespace WU16.BolindersBilAB.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddScoped<EmailService>();
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
