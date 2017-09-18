@@ -3,11 +3,80 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="container">
-    <h2>Index</h2>
+<div id="home-index-container" class="container-fluid">
+    <div class="search-wrapper row">
+        <form asp-action="Search" class="search-form col-md-6 container">
+            <h1 class="container text-center">Bolinders Bil AB</h1>
+            <div class="input-group">
+                <input type="text" class="form-control col-md-12" placeholder="Sök på..." aria-label="Search for...">
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button">Sök!</button>
+                </span>
+            </div>
 
-    @if (User.Identity.IsAuthenticated)
-    {
-        <text>Du är inloggad</text>
-    }
-</div>
+            <span class="slogan container">Din lokala bilåterförsäljare...</span>
+
+            <nav class="main-nav">
+                <ul class="nav justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Kontakt</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Om oss</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Bilar</a>
+                    </li>
+                </ul>
+            </nav>
+        </form>
+    </div>
+
+    <div class="available-logo col-md-10 container">
+        <div class="row">
+            <div class="col-md-2">
+                <img src="Images/logotypes/saab-logo.png" class="img-fluid" alt="Responsive image">
+                <div class="center-badge">
+                    <span class="badge badge-pill badge-primary align-bottom">13</span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <img src="Images/logotypes/volvo-logo.png" class="img-fluid" alt="Responsive image">
+                <div class="center-badge">
+                    <span class="badge badge-pill badge-primary align-bottom">21</span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <img src="Images/logotypes/porsche-logo.png" class="img-fluid"  alt="Responsive image">
+                <div class="center-badge">
+                    <span class="badge badge-pill badge-primary align-bottom">9</span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <img src="Images/logotypes/ferrari-logo.png" class="img-fluid"  alt="Responsive image">
+                <div class="center-badge">
+                    <span class="badge badge-pill badge-primary align-bottom">4</span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <img src="Images/logotypes/bmw-logo.png" class="img-fluid"  alt="Responsive image">
+                <div class="center-badge">
+                    <span class="badge badge-pill badge-primary align-bottom">7</span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <img src="Images/logotypes/koenigsegg-logo.png" class="img-fluid"  alt="Responsive image">
+                <div class="center-badge">
+                    <span class="badge badge-pill badge-primary align-bottom">3</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+@if(User.Identity.IsAuthenticated)
+{
+    <text>Du är inloggad</text>
+}
+
