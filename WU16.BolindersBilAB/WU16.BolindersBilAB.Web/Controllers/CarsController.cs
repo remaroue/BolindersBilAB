@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WU16.BolindersBilAB.DAL.Models;
 using WU16.BolindersBilAB.DAL.Services;
-
+using WU16.BolindersBilAB.Web.Models;
+using WU16.BolindersBilAB.DAL.Helpers;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -62,6 +63,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             {
                 return false;
             }
+        }
 
        [Route("/bilar/{parameter?}")]
        public IActionResult Cars(string parameter)
