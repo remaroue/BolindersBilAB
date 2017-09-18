@@ -12,5 +12,13 @@ namespace WU16.BolindersBilAB.Web.Controllers
         {
             return View();
         }
+
+        /*[HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(string query, string returnUrl)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View(Cars);
+        }*/
     }
 }
