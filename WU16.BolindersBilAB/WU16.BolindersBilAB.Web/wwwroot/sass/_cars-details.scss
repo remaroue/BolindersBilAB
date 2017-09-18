@@ -75,6 +75,7 @@
             cursor: pointer;
         }
 
+
         .image-preview img:last-child {
             margin-right: 0;
         }
@@ -127,8 +128,6 @@
         }
     }
 
-
-
     .information-table {
         text-align: center;
         padding: 0;
@@ -160,6 +159,7 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0,0,0,.4);
+    z-index: 1000;
 }
 
 .cars-details-container-modal {
@@ -168,6 +168,7 @@
     top: 5%;
     transform: translateX(-50%);
     padding: 25px;
+    z-index: 1001;
 
     img {
         width: 100%;
