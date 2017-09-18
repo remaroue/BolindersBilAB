@@ -13,6 +13,8 @@ namespace WU16.BolindersBilAB.DAL.Models
         [ForeignKey("CarBrand")]
         public virtual string CarBrandId { get; set; }
         public virtual CarBrand CarBrand { get; set; }
+        [ForeignKey("Location")]
+        public string LocationId { get; set; }
         public virtual Location Location { get; set; }
         public string Model { get; set; }
         public string Description { get; set; }
@@ -29,6 +31,6 @@ namespace WU16.BolindersBilAB.DAL.Models
         public CarType CarType { get; set; }
         public FuelType FuelType { get; set; }
         public Gearbox Gearbox { get; set; }
-
+        public string Equipment { get; set; }
     }
 }

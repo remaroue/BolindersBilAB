@@ -12,9 +12,10 @@ using WU16.BolindersBilAB.DAL.Models;
 namespace WU16.BolindersBilAB.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170918073218_Added_Equipment_To_CarModel")]
+    partial class Added_Equipment_To_CarModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,11 +200,8 @@ namespace WU16.BolindersBilAB.DAL.Migrations
 
                     b.Property<string>("Description");
 
-<<<<<<< HEAD
                     b.Property<string>("Equipment");
 
-=======
->>>>>>> refs/remotes/origin/Jacob-dev
                     b.Property<int>("FuelType");
 
                     b.Property<int>("Gearbox");
@@ -271,8 +269,6 @@ namespace WU16.BolindersBilAB.DAL.Migrations
                     b.Property<string>("Address");
 
                     b.Property<string>("City");
-
-                    b.Property<string>("Email");
 
                     b.Property<string>("Name");
 
