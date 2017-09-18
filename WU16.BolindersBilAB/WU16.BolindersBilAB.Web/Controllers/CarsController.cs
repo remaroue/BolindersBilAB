@@ -9,6 +9,8 @@ using WU16.BolindersBilAB.Web.Models;
 using WU16.BolindersBilAB.DAL.Helpers;
 using WU16.BolindersBilAB.DAL.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text.Encodings.Web;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -23,6 +25,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             _carlistService = carListService;
         }
 
+        [HttpGet]
         [Route("/bil/{licenseNumber}")]
         public IActionResult Details(string licenseNumber)
         {
@@ -32,14 +35,25 @@ namespace WU16.BolindersBilAB.Web.Controllers
             return View(car);
         }
 
-        [Route("/api/bil/dela")]
         [HttpPost]
-        public bool Share(string email, string licenseNumber)
+        [Route("/bil/dela")]
+        public bool Share([FromBody]ShareViewModel model)
         {
             try
             {
                 var subject = "Någon Har delat en bil med dig.";
-                _emailService.SendTo(email, subject, "localhost:24314/bil/" + licenseNumber);
+                TagBuilder tagBuilder = new TagBuilder("a");
+
+                var url = $"localhost:63037/bil/{model.LicenseNumber}";
+
+                tagBuilder.Attributes["href"] = url;
+                tagBuilder.InnerHtml.Append(url);
+
+                var writer = new System.IO.StringWriter();
+                tagBuilder.WriteTo(writer, HtmlEncoder.Default);
+                var html = writer.ToString();
+
+                _emailService.SendTo(model.Email, subject, html);
                 return true;
             }
             catch (Exception e)
@@ -50,7 +64,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
        [Route("/bilar/{parameter?}")]
        public IActionResult Cars(string parameter)
-        {
+       {
             var carListVm = new CarListViewModel
             {
                 Cars = _carlistService.GetCars()
