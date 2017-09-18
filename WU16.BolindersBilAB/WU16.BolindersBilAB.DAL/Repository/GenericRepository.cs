@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace WU16.BolindersBilAB.DAL.Repository
 {
-    class GenericRepository<T> : IRepository<T> where T : class
+    public class GenericRepository<T> : IRepository<T> where T : class
     {
         private ApplicationDbContext _ctx;
 

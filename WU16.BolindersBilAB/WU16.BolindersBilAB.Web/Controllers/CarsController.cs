@@ -6,15 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using WU16.BolindersBilAB.DAL.Models;
 using WU16.BolindersBilAB.DAL.Services;
 
+
 namespace WU16.BolindersBilAB.Web.Controllers
 {
     public class CarsController : Controller
     {
         private EmailService _emailService;
+        private CarListService _carlistService;
 
-        public CarsController(EmailService emailService)
+        public CarsController(EmailService emailService, CarListService carListService)
         {
             _emailService = emailService;
+            _carlistService = carListService;
         }
 
         [Route("/bil/{registrationNumer}")]
@@ -59,6 +62,48 @@ namespace WU16.BolindersBilAB.Web.Controllers
             {
                 return false;
             }
+
+       [Route("/bilar/{parameter?}")]
+       public IActionResult Cars(string parameter)
+        {
+            var carListVm = new CarListViewModel
+            {
+                Cars = _carlistService.GetCars()
+            };
+
+            if(parameter != null)
+            {
+                if (parameter != "nya" && parameter != "begagnade")
+                {
+                    return Redirect("/bilar");
+                }
+                else
+                {
+                    carListVm.Cars = CarListHelper.Filter(parameter, carListVm.Cars);
+                }
+            }      
+            return View(carListVm);
+        }
+        [HttpPost]
+        [Route("/bilar/{parameter?}")]
+        public IActionResult Cars(CarListQuery query, string parameter)
+        {
+            var carListVm = new CarListViewModel
+            {
+                Cars = _carlistService.GetCars()
+            };
+
+            if (parameter != null)
+            {
+                if (parameter == "nya" || parameter == "begagnade")
+                {
+                    carListVm.Cars = CarListHelper.Filter(parameter, carListVm.Cars);
+                }
+            }
+
+            carListVm.Cars = CarListHelper.FilterByQuery(query, carListVm.Cars);
+
+            return View(carListVm);
         }
     }
 }
