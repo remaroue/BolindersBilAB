@@ -12,17 +12,24 @@ namespace WU16.BolindersBilAB.Web.Controllers
     {
         private CarService _service;
         private CarBrandService _brandService;
+        private LocationService _locationService;
+        
 
-        public CarsController(CarService Service, CarBrandService BrandService)
+        public CarsController(CarService Service, CarBrandService carBrandService, LocationService locationService)
         {
+            
             _service = Service;
-            _brandService = BrandService;
+            _brandService = carBrandService;
+            _locationService = locationService;
+
+
         }
 
         [Route("/bilar/ny")]
         public IActionResult AddCar()
         {
             ViewBag.CarBrands = _brandService.Get();
+            ViewBag.Locations = _locationService.Get();
             return View();
         }
 
@@ -32,11 +39,12 @@ namespace WU16.BolindersBilAB.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-
-
+                //Check if location is null.
+               if(car.Location == null)
+                {
+                    return View();
+                }
                 
-               
-                //Default 7days.
                 car.CreationDate = DateTime.Now.AddDays(7);
                 _service.SaveCar(car);
                 return View(); //TODO Return to start.

@@ -74,11 +74,12 @@ namespace WU16.BolindersBilAB.Web
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddScoped<CarService>();
             services.AddScoped<CarBrandService>();
+            services.AddScoped<LocationService>();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext _ctx)
         {
             if (env.IsDevelopment())
             {
@@ -113,6 +114,35 @@ namespace WU16.BolindersBilAB.Web
                 Task.WaitAll(userManager.CreateAsync(user2, "Admin1234"));
                 Task.WaitAll(userManager.CreateAsync(user3, "Admin1234"));
                 Task.WaitAll(userManager.CreateAsync(user4, "Admin1234"));
+            }
+
+            if (!_ctx.Locations.Any())
+            {
+                var locations = new List<Location>
+               {
+                   new Location{Name="Bolinders Bil Jönköping", Address="Lovsjövägen 33", City="Jönköping", Zip="55626", PhoneNumber="036-123456", Id="BB1"},
+                   new Location{Name="Bolinders Bil Värnamo", Address="Bultgatan 2", City="Värnamo", Zip="54452", PhoneNumber="0370-123456", Id="BB2"},
+                   new Location{Name="Bolinders Bil Göteborg", Address="Industrivägen 1", City="Göteborg", Zip="55336", PhoneNumber="031-123456", Id="BB3"}
+               };
+
+                _ctx.AddRange(locations);
+                _ctx.SaveChanges();
+            }
+
+            if (!_ctx.CarBrands.Any())
+            {
+                var carBrands = new List<CarBrand>
+               {
+                   new CarBrand{BrandName="Volvo", ImageUrl="/images/carbrands/bmw-logo.png"},
+                   new CarBrand{BrandName="BMW", ImageUrl="/images/carbrands/ferrari-logo.png"},
+                   new CarBrand{BrandName="Audi", ImageUrl="/images/carbrands/koenigsegg-logo.png"},
+                   new CarBrand{BrandName="Ford", ImageUrl="/images/carbrands/saab-logo.png"},
+                   new CarBrand{BrandName="Mercedes-benz", ImageUrl="/images/carbrands/saab-logo.png"},
+                   new CarBrand{BrandName="Volkswagen", ImageUrl="/images/carbrands/volvo-logo.png"},
+               };
+
+                _ctx.AddRange(carBrands);
+                _ctx.SaveChanges();
             }
         }
     }
