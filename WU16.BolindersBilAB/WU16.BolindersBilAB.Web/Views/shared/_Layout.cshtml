@@ -6,11 +6,13 @@
     <title>@ViewBag.Title</title>
 
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" rel="stylesheet" />
-    <link href="~/dist/css/main.min.css" rel="stylesheet" asp-append-version="true"/>
+    <link href="~/dist/css/main.min.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
-    <div class="container">
-        @RenderBody()
-    </div>
+    @RenderBody()
+
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", false)
+    <script src="~/js/_home-index.js"></script>
 </body>
 </html>
