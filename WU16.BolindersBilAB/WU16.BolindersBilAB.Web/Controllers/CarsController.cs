@@ -105,6 +105,8 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             carListVm.Cars = CarListHelper.FilterByQuery(query, carListVm.Cars);
 
+            carListVm.Cars = CarListHelper.PaginateCars(carListVm.Cars, 1);
+
             return View(carListVm);
         }
     }

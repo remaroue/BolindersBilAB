@@ -28,7 +28,7 @@ namespace WU16.BolindersBilAB.DAL.Repository
 
         public IEnumerable<T> Get()
         {
-           return _ctx.Set<T>().AsEnumerable();
+            return _ctx.Set<T>().AsEnumerable();
         }
 
         public T Insert(T entity)

@@ -49,5 +49,11 @@ namespace WU16.BolindersBilAB.DAL.Helpers
 
             return cars;
         }
+
+        public static IEnumerable<Car> PaginateCars(IEnumerable<Car> cars, int page=1)
+        {
+            var carsToSkip = (page - 1) * 8;
+            return cars.Skip(carsToSkip).Take(8);
+        }
     }
 }
