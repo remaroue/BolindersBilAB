@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -17,14 +18,27 @@ namespace WU16.BolindersBilAB.DAL.Services
             _repo = Repo;
         }
 
-        public IEnumerable<Car> GetCars(Expression<Func<Car, bool>> expression = null)
-        {        
-            return _repo.Get(expression);
+        public IEnumerable<Car> GetCars(Expression<Func<Car, bool>> filter = null)
+        {
+            if(filter != null)
+            {
+                return _repo.Get()
+                    .Include(x => x.CarBrand)
+                    .Include(x => x.Location)
+                    .Where(filter);
+            }
+
+            return _repo.Get()
+                .Include(x => x.CarBrand)
+                .Include(x => x.Location);
         }
 
         public Car GetCar(string licenseNumber)
         {
-            return _repo.Get(x => x.LicenseNumber == licenseNumber).First();
+            return _repo.Get()
+                .Include(x => x.CarBrand)
+                .Include(x => x.Location)
+                .FirstOrDefault(x => x.LicenseNumber == licenseNumber);
         }
     }
 }

@@ -16,11 +16,9 @@ namespace WU16.BolindersBilAB.Web.Controllers
     {
         private EmailService _emailService;
         private CarListService _carlistService;
-        private ApplicationDbContext _ctx;
 
-        public CarsController(EmailService emailService, CarListService carListService, ApplicationDbContext context)
+        public CarsController(EmailService emailService, CarListService carListService)
         {
-            _ctx = context;
             _emailService = emailService;
             _carlistService = carListService;
         }
@@ -28,11 +26,9 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Route("/bil/{licenseNumber}")]
         public IActionResult Details(string licenseNumber)
         {
-            var car = _ctx.Cars
-                .Include(x => x.CarBrand)
-                .Include(x => x.Location)
-                .FirstOrDefault(x => x.LicenseNumber == licenseNumber);
+            var car = _carlistService.GetCar(licenseNumber);
 
+            if (car == null) return BadRequest();
             return View(car);
         }
 
