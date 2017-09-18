@@ -12,12 +12,12 @@ namespace WU16.BolindersBilAB.Web.Controllers
 {
     public class CarsController : Controller
     {
-        private EmailService _emailService;
+        //private EmailService _emailService;
         private CarListService _carlistService;
 
-        public CarsController(EmailService emailService, CarListService carListService)
+        public CarsController(/*EmailService emailService,*/ CarListService carListService)
         {
-            _emailService = emailService;
+            //_emailService = emailService;
             _carlistService = carListService;
         }
 
@@ -56,7 +56,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             try
             {
                 var subject = "Någon Har delat en bil med dig.";
-                _emailService.SendTo(email, subject, "localhost:24314/bil/" + licenseNumber);
+                //_emailService.SendTo(email, subject, "localhost:24314/bil/" + licenseNumber);
                 return true;
             }
             catch (Exception e)
