@@ -1,7 +1,113 @@
 ﻿#account-login-container {
-  margin-top: 100px; }
+  margin-top: 5rem; }
   #account-login-container .card {
-    padding: 25px; }
+    padding: 1.5rem; }
   #account-login-container .alert-danger {
     padding-bottom: 0; }
+
+#cars-details-container {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  /* Mobile */ }
+  #cars-details-container .current-image {
+    padding: 0;
+    margin: 0; }
+    #cars-details-container .current-image img {
+      max-width: 100%;
+      margin: 0;
+      cursor: pointer; }
+  @media screen and (min-width: 762px) {
+    #cars-details-container .image-preview {
+      overflow-y: scroll;
+      height: 100%;
+      float: right;
+      padding: 0;
+      padding-left: 5px; }
+      #cars-details-container .image-preview img {
+        max-width: 100%;
+        margin: 0;
+        cursor: pointer; } }
+  @media screen and (max-width: 762px) {
+    #cars-details-container {
+      margin-top: 0;
+      margin-bottom: 0px; }
+      #cars-details-container .image-container {
+        height: auto; }
+      #cars-details-container .image-preview {
+        width: 100%;
+        white-space: nowrap;
+        overflow-x: scroll;
+        height: 100px;
+        margin: 10px 0 0;
+        text-align: center; }
+      #cars-details-container .current-image {
+        width: 100%; }
+      #cars-details-container .image-preview img {
+        display: inline-block;
+        height: 100%;
+        margin: 0;
+        cursor: pointer; }
+      #cars-details-container .image-preview img:last-child {
+        margin-right: 0; } }
+  #cars-details-container h4 {
+    text-align: center;
+    padding: 25px; }
+  #cars-details-container header {
+    margin: 0;
+    padding: 25px; }
+    #cars-details-container header > p {
+      margin-top: 20px;
+      font-size: 1em; }
+    #cars-details-container header > h1 {
+      font-size: 2.5em; }
+  #cars-details-container .calculator {
+    background-color: #f1f1f1;
+    padding: 0; }
+    #cars-details-container .calculator form {
+      margin: 25px; }
+    #cars-details-container .calculator h4 {
+      display: block;
+      text-align: center;
+      font-size: 1.6em;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%); }
+    #cars-details-container .calculator .price-result {
+      padding: 25px; }
+      #cars-details-container .calculator .price-result p {
+        display: block;
+        font-size: 1.2em;
+        text-align: center; }
+  #cars-details-container .information-table {
+    text-align: center;
+    padding: 0;
+    margin: 0; }
+    #cars-details-container .information-table td {
+      width: 50%;
+      vertical-align: middle; }
+    #cars-details-container .information-table th {
+      font-size: 1.4em;
+      text-align: center;
+      font-weight: 600; }
+  #cars-details-container .badge {
+    padding: 5px;
+    font-size: 1em; }
+
+.cars-details-container-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4); }
+
+.cars-details-container-modal {
+  position: absolute;
+  left: 50%;
+  top: 5%;
+  transform: translateX(-50%);
+  padding: 25px; }
+
+.cars-details-container-modal img {
+  width: 100%; }
 
