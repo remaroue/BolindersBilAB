@@ -4,10 +4,11 @@ using System.Text;
 using WU16.BolindersBilAB.DAL.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace WU16.BolindersBilAB.DAL.Repository
 {
-    class GenericRepository<T> : IRepository<T> where T : class
+    public class GenericRepository<T> : IRepository<T> where T : class
     {
         private ApplicationDbContext _ctx;
 
@@ -26,9 +27,11 @@ namespace WU16.BolindersBilAB.DAL.Repository
             _ctx.Entry(entity).State = EntityState.Modified;
         }
 
-        public IEnumerable<T> Get()
+        public IEnumerable<T> Get(Expression<Func<T, bool>> expression = null)
         {
-           return _ctx.Set<T>().AsEnumerable();
+            if(expression == null) return _ctx.Set<T>().AsEnumerable();
+
+            return _ctx.Set<T>().Where(expression);
         }
 
         public T Insert(T entity)

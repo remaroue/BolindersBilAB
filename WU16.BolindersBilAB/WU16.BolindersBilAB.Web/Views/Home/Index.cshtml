@@ -1,16 +1,15 @@
-﻿
+﻿@model WU16.BolindersBilAB.Web.Models.HomeViewModel
 @{
     ViewData["Title"] = "Index";
 }
-
 <div id="home-index-container" class="container-fluid">
     <div class="search-wrapper row">
-        <form asp-action="Search" class="search-form col-md-6 container">
+        <form asp-action="Index" class="search-form col-md-6 container">
             <h1 class="container text-center">Bolinders Bil AB</h1>
             <div class="input-group">
-                <input type="text" class="form-control col-md-12" placeholder="Sök på..." aria-label="Search for...">
+                <input asp-for="SearchQuery" type="text" class="form-control col-md-12" placeholder="Sök på..." aria-label="Search for...">
                 <span class="input-group-btn">
-                    <button class="btn btn-secondary" type="button">Sök!</button>
+                    <button type="submit" class="btn btn-secondary" type="button">Sök!</button>
                 </span>
             </div>
 
@@ -48,25 +47,25 @@
                 </div>
             </div>
             <div class="col-md-2">
-                <img src="Images/logotypes/porsche-logo.png" class="img-fluid"  alt="Responsive image">
+                <img src="Images/logotypes/porsche-logo.png" class="img-fluid" alt="Responsive image">
                 <div class="center-badge">
                     <span class="badge badge-pill badge-primary align-bottom">9</span>
                 </div>
             </div>
             <div class="col-md-2">
-                <img src="Images/logotypes/ferrari-logo.png" class="img-fluid"  alt="Responsive image">
+                <img src="Images/logotypes/ferrari-logo.png" class="img-fluid" alt="Responsive image">
                 <div class="center-badge">
                     <span class="badge badge-pill badge-primary align-bottom">4</span>
                 </div>
             </div>
             <div class="col-md-2">
-                <img src="Images/logotypes/bmw-logo.png" class="img-fluid"  alt="Responsive image">
+                <img src="Images/logotypes/bmw-logo.png" class="img-fluid" alt="Responsive image">
                 <div class="center-badge">
                     <span class="badge badge-pill badge-primary align-bottom">7</span>
                 </div>
             </div>
             <div class="col-md-2">
-                <img src="Images/logotypes/koenigsegg-logo.png" class="img-fluid"  alt="Responsive image">
+                <img src="Images/logotypes/koenigsegg-logo.png" class="img-fluid" alt="Responsive image">
                 <div class="center-badge">
                     <span class="badge badge-pill badge-primary align-bottom">3</span>
                 </div>
@@ -75,9 +74,10 @@
         </div>
     </div>
 
-    <div class="news-feed col-md-8 container">
+    <div class="news-feed col-md-10 container">
         <div class="row">
-
+            
         </div>
     </div>
-</div>
+
+        </div>

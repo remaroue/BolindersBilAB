@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WU16.BolindersBilAB.Web.Models;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -13,12 +14,14 @@ namespace WU16.BolindersBilAB.Web.Controllers
             return View();
         }
 
-        /*[HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string query, string returnUrl)
+        [HttpPost]
+        public IActionResult Index(HomeViewModel query, string returnUrl)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            return View(Cars);
-        }*/
+            //query.SearchQuery; //Holds the searchquery
+
+            //Redirect to a search result view
+            return View();
+        }
     }
 }
