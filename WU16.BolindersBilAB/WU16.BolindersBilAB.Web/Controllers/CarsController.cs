@@ -31,23 +31,10 @@ namespace WU16.BolindersBilAB.Web.Controllers
         public IActionResult Details(string licenseNumber)
         {
             var car = _carlistService.GetCar(licenseNumber);
-
-            var query = new CarListQuery()
-            {
-                CarType = new List<CarType>(){ car.CarType },
-                Gearbox = new List<Gearbox>() { car.Gearbox },
-                FuelType = new List<FuelType>() { car.FuelType },
-                MilageFrom = (int)(car.Milage * 0.8),
-                MilageTo = (int)(car.Milage * 1.2),
-                PriceFrom = car.Price * 0.8m,
-                PriceTo = car.Price * 1.2m,
-                YearFrom = car.ModelYear - 5,
-                YearTo = car.ModelYear + 5
-            };
-
-            var similarCars = CarListHelper.FilterByQuery(query, _carlistService.GetCars(x => x.LicenseNumber != licenseNumber)).Take(4);
-
             if (car == null) return BadRequest();
+
+            var similarCars = _carlistService.GetCars(car.GetSimilarCarsQuery()).ToArray();
+            
             return View(new CarDetailsViewModel()
             {
                 Car = car,
@@ -75,10 +62,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Route("/bilar/{parameter?}")]
         public IActionResult Cars(string parameter)
         {
-            var carListVm = new CarListViewModel
-            {
-                Cars = _carlistService.GetCars()
-            };
+            var cars = _carlistService.GetCars();
 
             if (parameter != null)
             {
@@ -88,32 +72,34 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 }
                 else
                 {
-                    carListVm.Cars = CarListHelper.Filter(parameter, carListVm.Cars);
+                    cars = cars.FilterByParameter(parameter);
                 }
             }
-            return View(carListVm);
+
+            return View(new CarListViewModel
+            {
+                Cars = cars.ToArray()
+            });
         }
 
         [HttpPost]
         [Route("/bilar/{parameter?}")]
         public IActionResult Cars(CarListQuery query, string parameter)
         {
-            var carListVm = new CarListViewModel
-            {
-                Cars = _carlistService.GetCars()
-            };
+            var cars = _carlistService.GetCars(query);
 
             if (parameter != null)
             {
                 if (parameter == "nya" || parameter == "begagnade")
                 {
-                    carListVm.Cars = CarListHelper.Filter(parameter, carListVm.Cars);
+                    cars = cars.FilterByParameter(parameter);
                 }
             }
 
-            carListVm.Cars = CarListHelper.FilterByQuery(query, carListVm.Cars);
-
-            return View(carListVm);
+            return View(new CarListViewModel()
+            {
+                Cars = cars.ToArray()
+            });
         }
     }
 }

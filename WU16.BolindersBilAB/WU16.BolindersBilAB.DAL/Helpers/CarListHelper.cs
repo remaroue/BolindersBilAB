@@ -9,13 +9,13 @@ namespace WU16.BolindersBilAB.DAL.Helpers
 {
     public static class CarListHelper
     {
-        //private static Regex _pattern = new Regex("[^a-z,0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-        //public static string LicenseNumberNormalizer(string input)
-        //{
-        //    return _pattern.Replace(input.ToUpper(), string.Empty);
-        //}
+        private static Regex _pattern = new Regex("[^a-z,0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        public static string NormalizeLicenseNumber(string input)
+        {
+            return _pattern.Replace(input.ToUpper(), string.Empty);
+        }
 
-        public static IEnumerable<Car> Filter(string parameter, IEnumerable<Car> cars)
+        public static IQueryable<Car> FilterByParameter(this IQueryable<Car> cars, string parameter)
         {
             bool isUsed = true;
 
@@ -31,12 +31,17 @@ namespace WU16.BolindersBilAB.DAL.Helpers
                     return cars;
             }
 
-            return cars.Where(x => x.Used == isUsed).AsEnumerable();
+            return cars.Where(x => x.Used == isUsed);
         }
-        public static IEnumerable<Car> FilterByQuery(CarListQuery query,IEnumerable<Car> cars)
+
+        public static IQueryable<Car> FilterByQuery(this IQueryable<Car> cars, CarListQuery query)
         {
+            if (query == null) return cars;
+
             if (query.CarType.Count > 0)
                 cars = cars.Where(x => query.CarType.Contains(x.CarType));
+            if (query.CarBrand.Count > 0)
+                cars = cars.Where(x => query.CarBrand.Contains(x.CarBrand));
             if (query.MilageFrom > 0)
                 cars = cars.Where(x => x.Milage >= query.MilageFrom);
             if (query.MilageTo > 0)
@@ -53,8 +58,30 @@ namespace WU16.BolindersBilAB.DAL.Helpers
                 cars = cars.Where(x => x.ModelYear >= query.YearFrom);
             if (query.YearTo > 0)
                 cars = cars.Where(x => x.ModelYear <= query.YearTo);
+            if (query.Skip != null)
+                cars = cars.Skip((int)query.Skip);
+            if (query.Take != null)
+                cars = cars.Skip((int)query.Take);
 
             return cars;
+        }
+
+        public static CarListQuery GetSimilarCarsQuery(this Car car)
+        {
+            return new CarListQuery()
+            {
+                CarType = new List<CarType>() { car.CarType },
+                Gearbox = new List<Gearbox>() { car.Gearbox },
+                FuelType = new List<FuelType>() { car.FuelType },
+                MilageFrom = (int)(car.Milage * 0.8),
+                MilageTo = (int)(car.Milage * 1.2),
+                PriceFrom = car.Price,
+                PriceTo = car.Price * 1.4m,
+                YearFrom = car.ModelYear - 5,
+                YearTo = car.ModelYear + 5,
+                CarBrand = new List<CarBrand>() { car.CarBrand },
+                Take = 4
+            };
         }
     }
 }
