@@ -32,8 +32,27 @@ namespace WU16.BolindersBilAB.Web.Controllers
         {
             var car = _carlistService.GetCar(licenseNumber);
 
+            var query = new CarListQuery()
+            {
+                CarType = new List<CarType>(){ car.CarType },
+                Gearbox = new List<Gearbox>() { car.Gearbox },
+                FuelType = new List<FuelType>() { car.FuelType },
+                MilageFrom = (int)(car.Milage * 0.8),
+                MilageTo = (int)(car.Milage * 1.2),
+                PriceFrom = car.Price * 0.8m,
+                PriceTo = car.Price * 1.2m,
+                YearFrom = car.ModelYear - 5,
+                YearTo = car.ModelYear + 5
+            };
+
+            var similarCars = CarListHelper.FilterByQuery(query, _carlistService.GetCars(x => x.LicenseNumber != licenseNumber));
+
             if (car == null) return BadRequest();
-            return View(car);
+            return View(new CarDetailsViewModel()
+            {
+                Car = car,
+                SimilarCars = similarCars
+            });
         }
 
         [HttpPost]

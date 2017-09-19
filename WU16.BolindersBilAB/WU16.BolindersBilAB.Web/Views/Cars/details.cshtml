@@ -1,18 +1,20 @@
-﻿@model WU16.BolindersBilAB.DAL.Models.Car
+﻿@model WU16.BolindersBilAB.Web.Models.CarDetailsViewModel
 @{
-    ViewData["Title"] = $"{Model.CarBrand.BrandName} {Model.Model} {Model.ModelYear}";
+    var car = Model.Car;
 
-    var taxedPrice = Math.Round(Model.Price * 1.25m, 2);
+    ViewData["Title"] = $"{car.CarBrand.BrandName} {car.Model} {car.ModelYear}";
+
+    var taxedPrice = Math.Round(car.Price * 1.25m, 2);
     var cashPayment = Math.Round(taxedPrice * 0.2m, 2).ToString(new System.Globalization.CultureInfo("en-US"));
 
-    var anyImages = Model.CarImages != null ? Model.CarImages.Any() : false;
+    var anyImages = car.CarImages != null ? car.CarImages.Any() : false;
     string[] imageUrls = null;
     if (anyImages)
     {
-        imageUrls = Model.CarImages.Select(x => $"/images/{x.Id}.jpg").ToArray();
+        imageUrls = car.CarImages.Select(x => $"/images/{x.Id}.jpg").ToArray();
     }
 
-    var condition = Model.Used ? "Begagnad" : "Ny";
+    var condition = car.Used ? "Begagnad" : "Ny";
 }
 
 <div class="container" id="cars-details-container">
@@ -42,7 +44,7 @@
     </div>
     @* /Image display *@
 
-    
+
     <div class="row">
         @* Main Content *@
         <main class="col-xl-8 col-lg-8 col-md-8 ">
@@ -55,11 +57,11 @@
             </h1>
 
             <p>
-                @Model.Description
+                @car.Description
             </p>
 
             <div>
-                @foreach (var e in Model.Equipment.Split("|"))
+                @foreach (var e in car.Equipment.Split("|"))
                 {
                     <span class="badge badge-success">@e</span>
                 }
@@ -80,43 +82,43 @@
                 <tbody>
                     <tr>
                         <td>Registrerings Nummer</td>
-                        <td>@Model.LicenseNumber</td>
+                        <td>@car.LicenseNumber</td>
                     </tr>
                     <tr>
                         <td>Märke</td>
-                        <td>@Model.CarBrand.BrandName</td>
+                        <td>@car.CarBrand.BrandName</td>
                     </tr>
                     <tr>
-                        <td>Model</td>
-                        <td>@Model.Model</td>
+                        <td>car</td>
+                        <td>@car.Model</td>
                     </tr>
                     <tr>
-                        <td>Årsmodell</td>
-                        <td>@Model.ModelYear</td>
+                        <td>Årscarl</td>
+                        <td>@car.ModelYear</td>
                     </tr>
                     <tr>
                         <td>Färg</td>
-                        <td>@Model.Color</td>
+                        <td>@car.Color</td>
                     </tr>
                     <tr>
                         <td>Växellåda</td>
-                        <td>@Model.Gearbox.ToString()</td>
+                        <td>@car.Gearbox.ToString()</td>
                     </tr>
                     <tr>
                         <td>Hästkrafter</td>
-                        <td>@Model.HorsePower hk</td>
+                        <td>@car.HorsePower hk</td>
                     </tr>
                     <tr>
                         <td>Biltyp</td>
-                        <td>@Model.CarType.ToString()</td>
+                        <td>@car.CarType.ToString()</td>
                     </tr>
                     <tr>
                         <td>Miltal</td>
-                        <td>@Model.Milage</td>
+                        <td>@car.Milage</td>
                     </tr>
                     <tr>
                         <td>Bränsletyp</td>
-                        <td>@Model.FuelType.ToString()</td>
+                        <td>@car.FuelType.ToString()</td>
                     </tr>
                     <tr>
                         <td>Ny/Begagnad</td>
@@ -126,11 +128,11 @@
                         <td>Pris</td>
                         <td>@taxedPrice kr</td>
                     </tr>
-                    @if (Model.IsLeaseable)
+                    @if (car.IsLeaseable)
                     {
                         <tr>
                             <td>Leasing Pris</td>
-                            <td>@Model.Price kr</td>
+                            <td>@car.Price kr</td>
                         </tr>
                     }
                 </tbody>
@@ -176,10 +178,28 @@
         <div class="col-md-4 col-sm-12 price-result justify-content-sm-start">
             <p class="month"></p>
             <p class="total"></p>
-            <p>Kontakta säljare: <a href="tel:@Model.Location.PhoneNumber">@Model.Location.PhoneNumber</a></p>
+            <p>Kontakta säljare: <a href="tel:@car.Location.PhoneNumber">@car.Location.PhoneNumber</a></p>
         </div>
     </div>
     @* /Price Calculator *@
+
+    @* Similar Cars *@
+    @if (Model.SimilarCars != null)
+    {
+        if (Model.SimilarCars.Any())
+        {
+            <div class="row">
+                @foreach (var sc in Model.SimilarCars)
+                {
+                    @sc.LicenseNumber;
+                }
+            </div>
+        }
+    }
+
+    @* /Similar Cars *@
+
+
 </div>
 
 @section Scripts {

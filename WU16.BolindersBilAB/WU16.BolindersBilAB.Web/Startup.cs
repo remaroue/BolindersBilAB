@@ -163,6 +163,11 @@ namespace WU16.BolindersBilAB.Web
             //    _ctx.AddRange(cars);
             //    _ctx.SaveChanges();
             //}
+
+            var vw = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "Volkswagen");
+            var location = _ctx.Locations.FirstOrDefault(x => x.City == "Jönköping");
+            _ctx.Cars.Add(new Car { Location = location, LicenseNumber = "L0L404", CarBrand = vw, CarType = CarType.Småbil, Color = "Red", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description = "<insert description here>", HorsePower = 354, Gearbox = Gearbox.Automat, FuelType = FuelType.Bensin, IsLeaseable = false, ModelYear = 2014, Used = true, Milage = 5000, Model = "Golf GTI", Price = 95000 });
+            _ctx.SaveChanges();
         }
     }
 }

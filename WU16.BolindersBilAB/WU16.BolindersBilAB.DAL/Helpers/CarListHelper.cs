@@ -2,12 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using WU16.BolindersBilAB.DAL.Models;
 
 namespace WU16.BolindersBilAB.DAL.Helpers
 {
     public static class CarListHelper
     {
+        //private static Regex _pattern = new Regex("[^a-z,0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        //public static string LicenseNumberNormalizer(string input)
+        //{
+        //    return _pattern.Replace(input.ToUpper(), string.Empty);
+        //}
+
         public static IEnumerable<Car> Filter(string parameter, IEnumerable<Car> cars)
         {
             bool isUsed = true;
