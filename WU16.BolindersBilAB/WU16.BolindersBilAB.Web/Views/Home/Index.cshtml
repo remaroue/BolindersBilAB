@@ -1,16 +1,15 @@
-﻿
+﻿@model WU16.BolindersBilAB.Web.Models.HomeViewModel
 @{
     ViewData["Title"] = "Index";
 }
-
 <div id="home-index-container" class="container-fluid">
     <div class="search-wrapper row">
-        <form asp-action="Search" class="search-form col-md-6 container">
+        <form asp-action="Index" class="search-form col-md-6 container">
             <h1 class="container text-center">Bolinders Bil AB</h1>
             <div class="input-group">
-                <input type="text" class="form-control col-md-12" placeholder="Sök på..." aria-label="Search for...">
+                <input asp-for="SearchQuery" type="text" class="form-control col-md-12" placeholder="Sök på..." aria-label="Search for...">
                 <span class="input-group-btn">
-                    <button class="btn btn-secondary" type="button">Sök!</button>
+                    <button type="submit" class="btn btn-secondary" type="button">Sök!</button>
                 </span>
             </div>
 
