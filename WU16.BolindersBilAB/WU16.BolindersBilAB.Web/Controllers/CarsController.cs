@@ -45,7 +45,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 YearTo = car.ModelYear + 5
             };
 
-            var similarCars = CarListHelper.FilterByQuery(query, _carlistService.GetCars(x => x.LicenseNumber != licenseNumber));
+            var similarCars = CarListHelper.FilterByQuery(query, _carlistService.GetCars(x => x.LicenseNumber != licenseNumber)).Take(4);
 
             if (car == null) return BadRequest();
             return View(new CarDetailsViewModel()
