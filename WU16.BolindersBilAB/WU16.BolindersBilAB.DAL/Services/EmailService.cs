@@ -33,22 +33,19 @@ namespace WU16.BolindersBilAB.DAL.Services
             _enableSsl = bool.Parse(section["EnableSsl"]);
         }
 
-
         public void SendTo(string recipient, string subject, string message, string sender = "", bool isBodyHtml = false)
         {
             if (string.IsNullOrEmpty(sender)) sender = _senderEmail;
 
             var credentials = new NetworkCredential(_smtpUserName, _smtpPassword);
-            SmtpClient client = new SmtpClient(_host)
+
+            using (var client = new SmtpClient(_host, _port)
             {
-                Port = _port,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
                 EnableSsl = true,
                 Credentials = credentials
-            };
-            
-            try
+            })
             {
                 var mail = new MailMessage(new MailAddress(sender.Trim()), new MailAddress(recipient.Trim()))
                 {
@@ -57,11 +54,7 @@ namespace WU16.BolindersBilAB.DAL.Services
                     IsBodyHtml = isBodyHtml
                 };
 
-                client.Send(mail);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                client.SendMailAsync(mail);
             }
         }
     }

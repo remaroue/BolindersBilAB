@@ -38,27 +38,19 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         [HttpPost]
         [Route("/bil/dela")]
-        public bool Share([FromBody]ShareViewModel model)
+        public void Share([FromBody]ShareViewModel model)
         {
-            try
-            {
-                var subject = "Någon Har delat en bil med dig.";
+            var subject = "Någon Har delat en bil med dig.";
 
-                TagBuilder tagBuilder = new TagBuilder("a");
-                var url = $"http://localhost:63037/bil/{model.LicenseNumber}";
-                tagBuilder.Attributes["href"] = url;
-                tagBuilder.InnerHtml.AppendHtml(url);
+            TagBuilder tagBuilder = new TagBuilder("a");
+            var url = $"http://localhost:63037/bil/{model.LicenseNumber}";
+            tagBuilder.Attributes["href"] = url;
+            tagBuilder.InnerHtml.AppendHtml(url);
 
-                var writer = new System.IO.StringWriter();
-                tagBuilder.WriteTo(writer, HtmlEncoder.Default);
-                
-                _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            var writer = new System.IO.StringWriter();
+            tagBuilder.WriteTo(writer, HtmlEncoder.Default);
+
+            _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
 
         [Route("/bilar/{parameter?}")]
