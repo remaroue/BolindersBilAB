@@ -38,30 +38,35 @@ namespace WU16.BolindersBilAB.DAL.Helpers
         {
             if (query == null) return cars;
 
-            if (query.CarType.Count > 0)
+            if (query.CarType?.Count > 0)
                 cars = cars.Where(x => query.CarType.Contains(x.CarType));
-            if (query.CarBrand.Count > 0)
+            if (query.CarBrand?.Count > 0)
                 cars = cars.Where(x => query.CarBrand.Contains(x.CarBrand));
+            if (query.Gearbox?.Count > 0)
+                cars = cars.Where(x => query.Gearbox.Contains(x.Gearbox));
+            if (query.FuelType?.Count > 0)
+                cars = cars.Where(x => query.FuelType.Contains(x.FuelType));
+
+
             if (query.MilageFrom > 0)
                 cars = cars.Where(x => x.Milage >= query.MilageFrom);
             if (query.MilageTo > 0)
                 cars = cars.Where(x => x.Milage <= query.MilageTo);
-            if (query.Gearbox.Count > 0)
-                cars = cars.Where(x => query.Gearbox.Contains(x.Gearbox));
-            if (query.FuelType.Count > 0)
-                cars = cars.Where(x => query.FuelType.Contains(x.FuelType));
+
             if (query.PriceFrom > 0)
                 cars = cars.Where(x => x.Price >= query.PriceFrom);
             if (query.PriceTo > 0)
                 cars = cars.Where(x => x.Price <= query.PriceTo);
+
             if (query.YearFrom > 0)
                 cars = cars.Where(x => x.ModelYear >= query.YearFrom);
             if (query.YearTo > 0)
                 cars = cars.Where(x => x.ModelYear <= query.YearTo);
-            if (query.Skip != null)
-                cars = cars.Skip((int)query.Skip);
-            if (query.Take != null)
-                cars = cars.Skip((int)query.Take);
+
+            if (query.Skip > 0)
+                cars = cars.Skip(query.Skip);
+            if (query.Take > 0)
+                cars = cars.Skip(query.Take);
 
             return cars;
         }
