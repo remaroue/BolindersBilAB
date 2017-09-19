@@ -38,7 +38,7 @@
 
 $(document).ready(function () {
 
-    if ($(".no-images").length == 0) {
+    if ($(".no-images").length === 0) {
         const currentImg = "#cars-details-container .current-image img";
 
         $("#cars-details-container .image-preview img").on("click", function (e) {

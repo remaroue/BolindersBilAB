@@ -38,7 +38,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         [HttpPost]
         [Route("/bil/dela")]
-        public void Share([FromBody]ShareViewModel model)
+        public bool Share([FromBody]ShareViewModel model)
         {
             var subject = "Någon Har delat en bil med dig.";
 
@@ -50,7 +50,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             var writer = new System.IO.StringWriter();
             tagBuilder.WriteTo(writer, HtmlEncoder.Default);
 
-            _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
+            return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
 
         [Route("/bilar/{parameter?}")]
