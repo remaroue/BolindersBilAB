@@ -2,15 +2,17 @@
 (function () {
     const overlayTemplate = "<div class='card-modal-overlay'></div>";
     const modalTemplate = "<div class='card card-modal'></div>";
-    const $modalClass = ".cars-details-container-modal"
-    const $overlayClass = ".cars-details-container-overlay";
+    const $modalClass = ".card-modal";
+    const $overlayClass = ".card-modal-overlay";
 
     function open(content, customClasses) {
         $("body").append(overlayTemplate);
         $("body").append(modalTemplate);
 
+        console.log($($modalClass)
+            .addClass(customClasses));
+
         $($modalClass)
-            .addClass(customClasses)
             .append(content);
 
         $($overlayClass).on("click", close);
@@ -75,8 +77,8 @@ $(document).ready(function () {
         const cashPayment = parseFloat($("#cars-details-container input[type=number]").val());
         const paymentLength = parseInt($("#cars-details-container select").val());
 
-        const montlyPayment = Math.round((((carCost / paymentLength) * 12) * 1.045) / 12);
-        const totalCost = montlyPayment * paymentLength
+        const montlyPayment = Math.round(carCost / paymentLength * 12 * 1.045 / 12);
+        const totalCost = montlyPayment * paymentLength;
 
         $("#cars-details-container .price-result > p.month").text(montlyPayment + "Kr per månad");
         $("#cars-details-container .price-result > p.total").text("Total pris: " + totalCost + "Kr");

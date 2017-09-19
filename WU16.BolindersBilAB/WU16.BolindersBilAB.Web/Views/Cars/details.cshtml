@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = $"{Model.CarBrand.BrandName} {Model.Model} {Model.ModelYear}";
 
-
     var taxedPrice = Math.Round(Model.Price * 1.25m, 2);
     var cashPayment = Math.Round(taxedPrice * 0.2m, 2).ToString(new System.Globalization.CultureInfo("en-US"));
 
@@ -43,8 +42,9 @@
     </div>
     @* /Image display *@
 
-    @* Main Content *@
+    
     <div class="row">
+        @* Main Content *@
         <main class="col-xl-8 col-lg-8 col-md-8 ">
             <h1>
                 @ViewData["Title"]
@@ -99,8 +99,24 @@
                         <td>@Model.Color</td>
                     </tr>
                     <tr>
+                        <td>Växellåda</td>
+                        <td>@Model.Gearbox.ToString()</td>
+                    </tr>
+                    <tr>
+                        <td>Hästkrafter</td>
+                        <td>@Model.HorsePower hk</td>
+                    </tr>
+                    <tr>
+                        <td>Biltyp</td>
+                        <td>@Model.CarType.ToString()</td>
+                    </tr>
+                    <tr>
                         <td>Miltal</td>
                         <td>@Model.Milage</td>
+                    </tr>
+                    <tr>
+                        <td>Bränsletyp</td>
+                        <td>@Model.FuelType.ToString()</td>
                     </tr>
                     <tr>
                         <td>Ny/Begagnad</td>
@@ -167,5 +183,5 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/_home-index.js" asp-append-version="true"></script>
+    <script src="~/js/_cars-details.js" asp-append-version="true"></script>
 }

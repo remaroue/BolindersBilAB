@@ -34,7 +34,7 @@ namespace WU16.BolindersBilAB.DAL.Services
         }
 
 
-        public void SendTo(string recipient, string subject, string message, string sender = "")
+        public void SendTo(string recipient, string subject, string message, string sender = "", bool isBodyHtml = false)
         {
             if (string.IsNullOrEmpty(sender)) sender = _senderEmail;
 
@@ -53,7 +53,8 @@ namespace WU16.BolindersBilAB.DAL.Services
                 var mail = new MailMessage(new MailAddress(sender.Trim()), new MailAddress(recipient.Trim()))
                 {
                     Subject = subject,
-                    Body = message
+                    Body = message,
+                    IsBodyHtml = isBodyHtml
                 };
 
                 client.Send(mail);

@@ -11,6 +11,7 @@ using WU16.BolindersBilAB.DAL.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Encodings.Web;
+using System.IO;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -42,35 +43,33 @@ namespace WU16.BolindersBilAB.Web.Controllers
             try
             {
                 var subject = "Någon Har delat en bil med dig.";
+
                 TagBuilder tagBuilder = new TagBuilder("a");
-
-                var url = $"localhost:63037/bil/{model.LicenseNumber}";
-
+                var url = $"http://localhost:63037/bil/{model.LicenseNumber}";
                 tagBuilder.Attributes["href"] = url;
-                tagBuilder.InnerHtml.Append(url);
+                tagBuilder.InnerHtml.AppendHtml(url);
 
                 var writer = new System.IO.StringWriter();
                 tagBuilder.WriteTo(writer, HtmlEncoder.Default);
-                var html = writer.ToString();
-
-                _emailService.SendTo(model.Email, subject, html);
+                
+                _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
         }
 
-       [Route("/bilar/{parameter?}")]
-       public IActionResult Cars(string parameter)
-       {
+        [Route("/bilar/{parameter?}")]
+        public IActionResult Cars(string parameter)
+        {
             var carListVm = new CarListViewModel
             {
                 Cars = _carlistService.GetCars()
             };
 
-            if(parameter != null)
+            if (parameter != null)
             {
                 if (parameter != "nya" && parameter != "begagnade")
                 {
@@ -80,9 +79,10 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 {
                     carListVm.Cars = CarListHelper.Filter(parameter, carListVm.Cars);
                 }
-            }      
+            }
             return View(carListVm);
         }
+
         [HttpPost]
         [Route("/bilar/{parameter?}")]
         public IActionResult Cars(CarListQuery query, string parameter)
