@@ -82,7 +82,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             });
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("/bilar/{parameter?}")]
         public IActionResult Cars(CarListQuery query, string parameter)
         {

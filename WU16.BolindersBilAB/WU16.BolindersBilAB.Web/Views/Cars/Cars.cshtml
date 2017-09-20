@@ -5,75 +5,91 @@
 
 <h2>Cars</h2>
 
-<div class="row">
-    <div class="col-lg-12">
-        <form asp-action="Cars" method="post">
-            <div class="form-row">
-                <div class="form-group col-lg-2">
-                    <label for="inputEmail4" class="col-form-label">Årsmodell från</label>
-                    <select asp-for="Query.YearFrom" class="form-control">
-                        <option>Årsmodell från</option>
-                    </select>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <form asp-action="Cars" method="get">
+                <div class="form-row">
+                    <div class="form-group col-lg-2">
+                        <label class="col-form-label">Årsmodell från</label>
+                        <select name="year-min" asp-for="Query.YearFrom" class="form-control">
+                            <option>Årsmodell från</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label for="inputEmail4" class="col-form-label">Årsmodell till</label>
+                        <select asp-for="Query.YearTo" class="form-control">
+                            <option>Årsmodell till</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label for="inputEmail4" class="col-form-label">Pris från</label>
+                        <select asp-for="Query.PriceFrom" class="form-control"></select>
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label for="inputEmail4" class="col-form-label">Pris till</label>
+                        <select asp-for="Query.PriceTo" class="form-control"></select>
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label for="inputEmail4" class="col-form-label">Mil från</label>
+                        <select asp-for="Query.MilageFrom" class="form-control"></select>
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label for="inputEmail4" class="col-form-label">Mil till</label>
+                        <select asp-for="Query.MilageTo" class="form-control"></select>
+                    </div>
                 </div>
-                <div class="form-group col-lg-2">
-                    <label for="inputEmail4" class="col-form-label">Årsmodell till</label>
-                    <select asp-for="Query.YearTo" class="form-control">
-                        <option>Årsmodell till</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label>Karosstyp</label>
+                        <select name="cartype" asp-for="Query.CarType" class="form-control" multiple="multiple">
+                            @foreach (var type in Enum.GetNames(typeof(CarType)))
+                            {
+                                <option>@type</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Drivmedel</label>
+                        <select asp-for="Query.FuelType" class="form-control" multiple="multiple">
+                            @foreach (var type in Enum.GetNames(typeof(FuelType)))
+                            {
+                                <option>@type</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Växellåda</label>
+                        <select asp-for="Query.Gearbox" class="form-control" multiple="multiple">
+                            @foreach (var type in Enum.GetNames(typeof(Gearbox)))
+                            {
+                                <option>@type</option>
+                            }
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group col-lg-2">
-                    <label for="inputEmail4" class="col-form-label">Pris från</label>
-                    <select asp-for="Query.PriceFrom" class="form-control">                   
 
-                    </select>                
-                </div>
-                <div class="form-group col-lg-2">
-                    <label for="inputEmail4" class="col-form-label">Pris till</label>
-                    <select asp-for="Query.PriceTo" class="form-control">
-                       
-                    </select>
-                </div>
-                <div class="form-group col-lg-2">
-                    <label for="inputEmail4" class="col-form-label">Mil från</label>
-                    <select asp-for="Query.MilageFrom" class="form-control"></select>
-                </div>
-                <div class="form-group col-lg-2">
-                    <label for="inputEmail4" class="col-form-label">Mil till</label>
-                    <select asp-for="Query.MilageTo" class="form-control"></select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-lg-4">
-                    <label>Karosstyp</label>
-                    <select asp-for="Query.CarType" class="form-control" multiple="multiple">
-                        @foreach (var type in Enum.GetNames(typeof(CarType)))
-                        {
-                            <option>@type</option>
-                        }
-                    </select>
-                </div>
-                <div class="form-group col-lg-4">
-                    <label>Drivmedel</label>
-                    <select asp-for="Query.FuelType" class="form-control" multiple="multiple">
-                        @foreach (var type in Enum.GetNames(typeof(FuelType)))
-                        {
-                            <option>@type</option>
-                        }
-                    </select>
-                </div>
-                <div class="form-group col-lg-4">
-                    <label>Växellåda</label>
-                    <select asp-for="Query.Gearbox" class="form-control" multiple="multiple">
-                        @foreach (var type in Enum.GetNames(typeof(Gearbox)))
-                        {
-                            <option>@type</option>
-                        }
-                    </select>
-                </div>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Sök</button>
-        </form>
+                <button type="submit" class="btn btn-primary">Sök</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            @if(Model.Cars != null)
+            {
+                @foreach(var car in Model.Cars)
+                { 
+                    <div class="card">
+                        <div class="card-header">
+                            @car.CarBrand.BrandName - @car.Model - @car.ModelYear
+                        </div>
+                        <div class="card-body">
+                            <a href="/bil/@car.LicenseNumber">Till bilen</a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
     </div>
 </div>
 

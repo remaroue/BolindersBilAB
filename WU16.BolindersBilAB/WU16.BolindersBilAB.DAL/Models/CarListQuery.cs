@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace WU16.BolindersBilAB.DAL.Models
 {
     public class CarListQuery
     {
+        
         public int YearFrom { get; set; }
         public int YearTo { get; set; }
         public decimal PriceFrom { get; set; }
