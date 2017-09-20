@@ -26,7 +26,7 @@ namespace WU16.BolindersBilAB.DAL.Services
         const int _size = 800;
         const int _quality = 75;
 
-        public void OptimizeAndSaveImage(Stream imgStream, string fileName)
+        private void OptimizeAndSaveImage(Stream imgStream, string fileName)
         {
             try
             {
