@@ -11,7 +11,7 @@ namespace WU16.BolindersBilAB.DAL.Models
         [Key]
         public string LicenseNumber { get; set; }
         [ForeignKey("CarBrand")]
-        public virtual string CarBrandId { get; set; }
+        public string CarBrandId { get; set; }
         public virtual CarBrand CarBrand { get; set; }
         [ForeignKey("Location")]
         public string LocationId { get; set; }
