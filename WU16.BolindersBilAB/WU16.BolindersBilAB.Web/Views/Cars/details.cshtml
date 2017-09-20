@@ -61,9 +61,12 @@
             </p>
 
             <div>
-                @foreach (var e in car.Equipment.Split("|"))
+                @if (!string.IsNullOrEmpty(car.Equipment))
                 {
-                    <span class="badge badge-success">@e</span>
+                    foreach (var e in car.Equipment.Split("|"))
+                    {
+                        <span class="badge badge-success">@e</span>
+                    }
                 }
             </div>
         </main>
