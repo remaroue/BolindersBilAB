@@ -9,7 +9,7 @@ namespace WU16.BolindersBilAB.DAL.Helpers
 {
     public static class CarListHelper
     {
-        private static Regex _pattern = new Regex("[^a-z,0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private static readonly Regex _pattern = new Regex("[^a-z,å,ä,ö,0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         public static string NormalizeLicenseNumber(string input)
         {
             return _pattern.Replace(input.ToUpper(), string.Empty);
@@ -41,7 +41,7 @@ namespace WU16.BolindersBilAB.DAL.Helpers
             if (query.CarType?.Count > 0)
                 cars = cars.Where(x => query.CarType.Contains(x.CarType));
             if (query.CarBrand?.Count > 0)
-                cars = cars.Where(x => query.CarBrand.Contains(x.CarBrand));
+                cars = cars.Where(x => query.CarBrand.Select(y => x.CarBrandId).Contains(x.CarBrand.BrandName));
             if (query.Gearbox?.Count > 0)
                 cars = cars.Where(x => query.Gearbox.Contains(x.Gearbox));
             if (query.FuelType?.Count > 0)

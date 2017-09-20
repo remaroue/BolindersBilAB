@@ -24,6 +24,8 @@ namespace WU16.BolindersBilAB.DAL.Services
             var cars = _repo.Get()
                 .Include(x => x.CarBrand)
                 .Include(x => x.Location)
+                .Include(x => x.CarImages)
+                .OrderBy(x => x.LastUpdated != null ? x.LastUpdated : x.CreationDate)
                 .AsQueryable()
                 .FilterByQuery(query);
 
