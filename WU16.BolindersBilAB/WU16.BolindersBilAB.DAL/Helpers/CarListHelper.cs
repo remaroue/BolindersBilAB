@@ -68,6 +68,8 @@ namespace WU16.BolindersBilAB.DAL.Helpers
             if (query.Take > 0)
                 cars = cars.Skip(query.Take);
 
+            // TODO: Free Search match
+
             return cars;
         }
 

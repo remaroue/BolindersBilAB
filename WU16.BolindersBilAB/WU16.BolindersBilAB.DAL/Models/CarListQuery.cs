@@ -18,5 +18,6 @@ namespace WU16.BolindersBilAB.DAL.Models
         public List<CarType> CarType { get; set; }
         public int Skip { get; set; }
         public int Take { get; set; }
+        public string FreeSearch { get; set; }
     }
 }
