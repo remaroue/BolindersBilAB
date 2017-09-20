@@ -9,6 +9,9 @@ using WU16.BolindersBilAB.Web.Models;
 using WU16.BolindersBilAB.DAL.Helpers;
 using WU16.BolindersBilAB.DAL.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text.Encodings.Web;
+using System.IO;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -16,51 +19,52 @@ namespace WU16.BolindersBilAB.Web.Controllers
     {
         private EmailService _emailService;
         private CarListService _carlistService;
-        private ApplicationDbContext _ctx;
 
-        public CarsController(EmailService emailService, CarListService carListService, ApplicationDbContext context)
+        public CarsController(EmailService emailService, CarListService carListService)
         {
-            _ctx = context;
             _emailService = emailService;
             _carlistService = carListService;
         }
 
+        [HttpGet]
         [Route("/bil/{licenseNumber}")]
         public IActionResult Details(string licenseNumber)
         {
-            var car = _ctx.Cars
-                .Include(x => x.CarBrand)
-                .Include(x => x.Location)
-                .FirstOrDefault(x => x.LicenseNumber == licenseNumber);
+            var car = _carlistService.GetCar(licenseNumber);
+            if (car == null) return BadRequest();
 
-            return View(car);
+            var similarCars = _carlistService.GetCars(car.GetSimilarCarsQuery()).ToArray();
+            
+            return View(new CarDetailsViewModel()
+            {
+                Car = car,
+                SimilarCars = similarCars
+            });
         }
 
-        [Route("/api/bil/dela")]
         [HttpPost]
-        public bool Share(string email, string licenseNumber)
+        [Route("/bil/dela")]
+        public bool Share([FromBody]ShareViewModel model)
         {
-            try
-            {
-                var subject = "Någon Har delat en bil med dig.";
-                _emailService.SendTo(email, subject, "localhost:24314/bil/" + licenseNumber);
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
+            var subject = "Någon Har delat en bil med dig.";
+
+            TagBuilder tagBuilder = new TagBuilder("a");
+            var url = $"http://localhost:63037/bil/{model.LicenseNumber}";
+            tagBuilder.Attributes["href"] = url;
+            tagBuilder.InnerHtml.AppendHtml(url);
+
+            var writer = new System.IO.StringWriter();
+            tagBuilder.WriteTo(writer, HtmlEncoder.Default);
+
+            return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
 
-       [Route("/bilar/{parameter?}")]
-       public IActionResult Cars(string parameter)
+        [Route("/bilar/{parameter?}")]
+        public IActionResult Cars(string parameter)
         {
-            var carListVm = new CarListViewModel
-            {
-                Cars = _carlistService.GetCars()
-            };
+            var cars = _carlistService.GetCars();
 
-            if(parameter != null)
+            if (parameter != null)
             {
                 if (parameter != "nya" && parameter != "begagnade")
                 {
@@ -68,31 +72,34 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 }
                 else
                 {
-                    carListVm.Cars = CarListHelper.Filter(parameter, carListVm.Cars);
+                    cars = cars.FilterByParameter(parameter);
                 }
-            }      
-            return View(carListVm);
+            }
+
+            return View(new CarListViewModel
+            {
+                Cars = cars.ToArray()
+            });
         }
+
         [HttpPost]
         [Route("/bilar/{parameter?}")]
         public IActionResult Cars(CarListQuery query, string parameter)
         {
-            var carListVm = new CarListViewModel
-            {
-                Cars = _carlistService.GetCars()
-            };
+            var cars = _carlistService.GetCars(query);
 
             if (parameter != null)
             {
                 if (parameter == "nya" || parameter == "begagnade")
                 {
-                    carListVm.Cars = CarListHelper.Filter(parameter, carListVm.Cars);
+                    cars = cars.FilterByParameter(parameter);
                 }
             }
 
-            carListVm.Cars = CarListHelper.FilterByQuery(query, carListVm.Cars);
-
-            return View(carListVm);
+            return View(new CarListViewModel()
+            {
+                Cars = cars.ToArray()
+            });
         }
     }
 }

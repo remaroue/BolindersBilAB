@@ -27,11 +27,9 @@ namespace WU16.BolindersBilAB.DAL.Repository
             _ctx.Entry(entity).State = EntityState.Modified;
         }
 
-        public IEnumerable<T> Get(Expression<Func<T, bool>> expression = null)
+        public IQueryable<T> Get()
         {
-            if(expression == null) return _ctx.Set<T>().AsEnumerable();
-
-            return _ctx.Set<T>().Where(expression);
+            return _ctx.Set<T>();
         }
 
         public T Insert(T entity)

@@ -1,62 +1,79 @@
-﻿@model WU16.BolindersBilAB.DAL.Models.Car
+﻿@model WU16.BolindersBilAB.Web.Models.CarDetailsViewModel
 @{
-    ViewData["Title"] = $"{Model.CarBrand.BrandName} {Model.Model} {Model.ModelYear}";
+    var car = Model.Car;
 
+    ViewData["Title"] = $"{car.CarBrand.BrandName} {car.Model} {car.ModelYear}";
+
+    var taxedPrice = Math.Round(car.Price * 1.25m, 2);
+    var cashPayment = Math.Round(taxedPrice * 0.2m, 2).ToString(new System.Globalization.CultureInfo("en-US"));
+
+    var anyImages = car.CarImages != null ? car.CarImages.Any() : false;
+    string[] imageUrls = null;
+    if (anyImages)
+    {
+        imageUrls = car.CarImages.Select(x => $"/images/{x.Id}.jpg").ToArray();
+    }
+
+    var condition = car.Used ? "Begagnad" : "Ny";
 }
+
 <div class="container" id="cars-details-container">
+    @* Image display *@
     <div class="row image-container">
-        @if (Model.CarImages != null)
+        @if (anyImages)
         {
             <div class="current-image col-xl-8 col-lg-8 col-md-8 col-sm-12">
-                @{
-                    var url = "/images/" + Model.CarImages.First().Id + ".jpg";
-
-                    <text>
-                    <img src="@url" />
-                    </text>
-                }
+                <img src="@imageUrls.First()" />
             </div>
+
             <div class="image-preview col-xl-4 col-lg-4 col-md-4 col-sm-12 align-self-end">
-                @foreach (var img in Model.CarImages)
+                @foreach (var url in imageUrls)
                 {
-                    var imgUrl = "/images/" + img.Id + ".jpg";
-                    <text>
-                    <img class="img-responsive" src="@imgUrl" />
-                    </text>
+                    <img src="@url" />
                 }
             </div>
-
-                    }
-                    else
-                    {
-                        <text>
-                        <div class="no-images col-12">
-                            <p>
-                                <i class="fa fa-file-image-o"></i> Inga bilder upplaggda än.
-                            </p>
-                        </div>
-                        </text>
-                    }
-
+        }
+        else
+        {
+            <div class="no-images col-12">
+                <p>
+                    <i class="fa fa-file-image-o"></i> Inga bilder upplaggda än.
+                </p>
+            </div>
+        }
     </div>
+    @* /Image display *@
+
 
     <div class="row">
-        <header class="col-xl-8 col-lg-8 col-md-8 ">
-            <h1>@Model.CarBrand.BrandName @Model.Model @Model.ModelYear <button class="share-button btn btn-primary float-right"><i class="fa fa-share"></i></button></h1>
+        @* Main Content *@
+        <main class="col-xl-8 col-lg-8 col-md-8 ">
+            <h1>
+                @ViewData["Title"]
+
+                <button class="share-button btn btn-primary float-right">
+                    <i class="fa fa-share"></i>
+                </button>
+            </h1>
+
             <p>
-                @Model.Description
+                @car.Description
             </p>
 
             <div>
-                @foreach (var s in Model.Equipment.Split("|"))
+                @if (!string.IsNullOrEmpty(car.Equipment))
                 {
-                    <text>
-                    <span class="badge badge-success">@s</span>
-                    </text>
+                    foreach (var e in car.Equipment.Split("|"))
+                    {
+                        <span class="badge badge-success">@e</span>
+                    }
                 }
             </div>
-        </header>
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 px-0 parts-table-container">
+        </main>
+        @* /Main Content *@
+
+        @* Information table *@
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 px-0">
             <table class="information-table table table-bordered">
                 <thead>
                     <tr>
@@ -68,85 +85,84 @@
                 <tbody>
                     <tr>
                         <td>Registrerings Nummer</td>
-                        <td>@Model.LicenseNumber</td>
+                        <td>@car.LicenseNumber</td>
                     </tr>
                     <tr>
                         <td>Märke</td>
-                        <td>@Model.CarBrand.BrandName</td>
+                        <td>@car.CarBrand.BrandName</td>
                     </tr>
                     <tr>
-                        <td>Model</td>
-                        <td>@Model.Model</td>
+                        <td>car</td>
+                        <td>@car.Model</td>
                     </tr>
                     <tr>
-                        <td>Årsmodell</td>
-                        <td>@Model.ModelYear</td>
+                        <td>Årscarl</td>
+                        <td>@car.ModelYear</td>
                     </tr>
                     <tr>
                         <td>Färg</td>
-                        <td>@Model.Color</td>
+                        <td>@car.Color</td>
+                    </tr>
+                    <tr>
+                        <td>Växellåda</td>
+                        <td>@car.Gearbox.ToString()</td>
+                    </tr>
+                    <tr>
+                        <td>Hästkrafter</td>
+                        <td>@car.HorsePower hk</td>
+                    </tr>
+                    <tr>
+                        <td>Biltyp</td>
+                        <td>@car.CarType.ToString()</td>
                     </tr>
                     <tr>
                         <td>Miltal</td>
-                        <td>@Model.Milage</td>
+                        <td>@car.Milage</td>
+                    </tr>
+                    <tr>
+                        <td>Bränsletyp</td>
+                        <td>@car.FuelType.ToString()</td>
                     </tr>
                     <tr>
                         <td>Ny/Begagnad</td>
-                        <td>
-                            @if (Model.Used)
-                            {
-                                <text>Begagnad</text>
-                            }
-                            else
-                            {
-                                <text>Ny</text>
-
-                            }
-                        </td>
+                        <td>@condition</td>
                     </tr>
                     <tr>
                         <td>Pris</td>
-                        <td>
-                            @{
-                                var price = Model.Price * 1.25m;
-                                <text>
-                                @price kr
-                                </text>
-                            }
-                        </td>
+                        <td>@taxedPrice kr</td>
                     </tr>
-                    @if (Model.IsLeaseable)
+                    @if (car.IsLeaseable)
                     {
                         <tr>
                             <td>Leasing Pris</td>
-                            <td>@Model.Price kr</td>
+                            <td>@car.Price kr</td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
+        @* /Information table *@
     </div>
+    @* /Main Content *@
 
-
-    <div class="row calculator">
+    @* Price Calculator *@
+    <div class="row price-calculator">
         <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
             <form class="form">
-                @{
-                    var cash = Math.Floor(Model.Price * 0.2m);
-                }
+                <input type="hidden" value="@taxedPrice" />
 
-                @*<h4>Priskalkyl</h4>*@
-                <div class="col-md-12 col-sm-12 form-group">
+                <div class="col-12 form-group">
                     <div class="input-group">
                         <div class="input-group-addon">Kontant</div>
-                        <input type="number" value="@cash" class="form-control" />
+                        <input type="number" value="@cashPayment" class="form-control" />
                         <div class="input-group-addon">Kr</div>
                     </div>
                 </div>
-                <div class="col-md-12 col-sm-12 form-group">
+
+                <div class="col-12 form-group">
                     <div class="input-group">
                         <div class="input-group-addon">Avbetalnigs längd</div>
-                        <select value="36" class="custom-select form-control">
+                        <select class="custom-select form-control">
                             <option value="12">12 månader</option>
                             <option value="24">24 månader</option>
                             <option selected="selected" value="36">36 månader</option>
@@ -157,122 +173,38 @@
                     </div>
                 </div>
 
-                <div class="col-md-12 col-sm-12 form-group">
+                <div class="col-12 form-group">
                     <button class="btn btn-block btn-primary">Räkna ut</button>
                 </div>
             </form>
-
-
         </div>
         <div class="col-md-4 col-sm-12 price-result justify-content-sm-start">
-            @*<h4>Konstnad</h4>*@
             <p class="month"></p>
             <p class="total"></p>
-            <p>Kontakta säljare: <a href="tel:@Model.Location.PhoneNumber">@Model.Location.PhoneNumber</a></p>
+            <p>Kontakta säljare: <a href="tel:@car.Location.PhoneNumber">@car.Location.PhoneNumber</a></p>
         </div>
     </div>
+    @* /Price Calculator *@
+
+    @* Similar Cars *@
+    @if (Model.SimilarCars != null)
+    {
+        if (Model.SimilarCars.Any())
+        {
+            <div class="row">
+                @foreach (var sc in Model.SimilarCars)
+                {
+                    @sc.LicenseNumber;
+                }
+            </div>
+        }
+    }
+
+    @* /Similar Cars *@
+
+
 </div>
 
-
-
 @section Scripts {
-    <script>
-        $(document).ready(function () {
-            $("#cars-details-container .image-preview img").on("click", function (e) {
-                $("#cars-details-container .current-image img").off("click");
-
-                let clone = e.target.cloneNode();
-                $("#cars-details-container .current-image img").replaceWith(clone);
-
-                addClickEvent();
-                findHeight();
-            });
-
-            function addClickEvent() {
-                $("#cars-details-container .current-image img").on("click", function (e) {
-                    console.log("click");
-                    $("body").append("<div class='cars-details-container-overlay'></div>");
-                    $("body").append("<div class='card col-10 cars-details-container-modal'></div>");
-                    $(".cars-details-container-modal").append(e.target.cloneNode());
-
-                    $(".cars-details-container-overlay").on("click", function (e) {
-                        e.target.remove();
-                        $(".cars-details-container-modal").remove();
-                    });
-
-                });
-            }
-
-            addClickEvent();
-
-
-            function findHeight() {
-                if (!(window.innerWidth < 762)) {
-                    const height = $("#cars-details-container .current-image img").height();
-                    $("#cars-details-container .image-container").css("height", height + "px");
-                }
-                else {
-                    $("#cars-details-container .image-container").css("height", "auto");
-                }
-            }
-            $(window).on("resize", findHeight);
-            $("#cars-details-container .current-image img").one("load", findHeight);
-            findHeight();
-
-            function calculatePrice() {
-                const carCost = parseFloat("@Model.Price") * 1.25;
-                const cashPayment = parseFloat($("#cars-details-container input[type=number]").val());
-                const paymentLength = parseInt($("#cars-details-container select").val());
-
-                const payment = Math.round((((carCost / paymentLength) * 12) * 1.045) / 12);
-                const totalCost = payment * paymentLength
-                $("#cars-details-container .price-result > p.month").text(payment + "Kr per månad");
-                $("#cars-details-container .price-result > p.total").text("Total pris: " + totalCost + "Kr");
-            }
-
-            $("#cars-details-container form").on("submit", function (e) {
-                e.preventDefault();
-                calculatePrice();
-            });
-
-            calculatePrice();
-
-            $("#cars-details-container .share-button").on("click", function (e) {
-                $("body").append("<div class='cars-details-container-overlay'></div>");
-                $("body").append("<div class='card col-xl-4 col-lg-4 col-md-6 col-sm-10 cars-details-container-modal'></div>");
-                $(".cars-details-container-modal").append([
-                    '<form>',
-                        '<h4>Dela denna bil!</h4>',
-                        '<div class="form-group"><input type="email" placeholder="Email" class="form-control" /></div><div class="form-group"><input type="submit" class="btn btn-primary btn-block" /></div>',
-                    '</form>'
-                ].join(""));
-
-                $(".cars-details-container-modal form").on("submit", function (e) {
-                    e.preventDefault();
-
-                    $(".cars-details-container-modal").empty().append('<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>')
-
-                    $.ajax({
-                        method: "POST",
-                        url: "/api/bil/dela",
-                        data: {
-                            email: $(".cars-details-container-modal form input[type='email']").val(),
-                            licenseNumber: "@Model.LicenseNumber"
-                        },
-                        success: function () {
-                            $(".cars-details-container-modal").remove();
-                            $(".cars-details-container-overlay").remove();
-                        }
-                    })
-                });
-
-                $(".cars-details-container-overlay").on("click", function (e) {
-                    e.target.remove();
-                    $(".cars-details-container-modal").remove();
-                });
-
-
-            });
-        })
-    </script>
+    <script src="~/js/_cars-details.js" asp-append-version="true"></script>
 }

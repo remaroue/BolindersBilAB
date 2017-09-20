@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using WU16.BolindersBilAB.DAL.Helpers;
 using WU16.BolindersBilAB.DAL.Models;
 using WU16.BolindersBilAB.DAL.Repository;
 
@@ -17,14 +19,27 @@ namespace WU16.BolindersBilAB.DAL.Services
             _repo = Repo;
         }
 
-        public IEnumerable<Car> GetCars(Expression<Func<Car, bool>> expression = null)
-        {        
-            return _repo.Get(expression);
+        public IQueryable<Car> GetCars(CarListQuery query = null)
+        {
+            var cars = _repo.Get()
+                .Include(x => x.CarBrand)
+                .Include(x => x.Location)
+                .Include(x => x.CarImages)
+                .OrderBy(x => x.LastUpdated != null ? x.LastUpdated : x.CreationDate)
+                .AsQueryable()
+                .FilterByQuery(query);
+
+            return cars;
         }
 
         public Car GetCar(string licenseNumber)
         {
-            return _repo.Get(x => x.LicenseNumber == licenseNumber).First();
+            licenseNumber = CarListHelper.NormalizeLicenseNumber(licenseNumber);
+
+            return _repo.Get()
+                .Include(x => x.CarBrand)
+                .Include(x => x.Location)
+                .FirstOrDefault(x => x.LicenseNumber == licenseNumber);
         }
     }
 }
