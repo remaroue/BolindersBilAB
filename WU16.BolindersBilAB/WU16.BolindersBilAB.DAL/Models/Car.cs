@@ -8,6 +8,12 @@ namespace WU16.BolindersBilAB.DAL.Models
 {
     public class Car
     {
+        public Car()
+        {
+            CarImages = new HashSet<CarImage>();
+        }
+
+        [Display(Name ="Registreringsnummer")]
         [Key]
         public string LicenseNumber { get; set; }
         [ForeignKey("CarBrand")]
