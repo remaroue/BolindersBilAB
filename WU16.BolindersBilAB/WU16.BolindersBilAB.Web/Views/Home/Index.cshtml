@@ -1,4 +1,4 @@
-﻿<!--model WU16.BolindersBilAB.Web.Models.HomeViewModel-->
+﻿@model WU16.BolindersBilAB.DAL.Models.CarListQuery
 @{
     ViewData["Title"] = "Index";
 }
@@ -7,7 +7,7 @@
         <form asp-controller="Cars" asp-action="Cars" class="search-form col-md-6 container">
             <h1 class="container text-center">Bolinders Bil AB</h1>
             <div class="input-group">
-                <input type="text" class="form-control col-md-12" placeholder="Sök på..." aria-label="Sök på...">
+                <input asp-for="FreeSearch" type="text" class="form-control col-md-12" placeholder="Sök på..." aria-label="Sök på...">
                 <span class="input-group-btn">
                     <button type="submit" class="btn btn-secondary">Sök!</button>
                 </span>

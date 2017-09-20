@@ -4,14 +4,11 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using WU16.BolindersBilAB.DAL.Models;
 
 namespace WU16.BolindersBilAB.Web.Models
 {
     public class HomeViewModel
     {
-        [Required]
-        [DisplayName("SearchQuery")]
-        [DataType(DataType.Text)]
-        public string SearchQuery { get; set; }
     }
 }
