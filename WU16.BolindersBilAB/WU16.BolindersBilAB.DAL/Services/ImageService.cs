@@ -20,6 +20,7 @@ namespace WU16.BolindersBilAB.DAL.Services
         public ImageService(IConfiguration configuration)
         {
             _basePath = configuration.GetSection("ImageUploadFolder").Value;
+            Directory.CreateDirectory(_basePath);
         }
 
         const int _size = 800;
