@@ -1,15 +1,15 @@
-﻿@model WU16.BolindersBilAB.Web.Models.HomeViewModel
+﻿<!--model WU16.BolindersBilAB.Web.Models.HomeViewModel-->
 @{
     ViewData["Title"] = "Index";
 }
 <div id="home-index-container" class="container-fluid">
     <div class="search-wrapper row">
-        <form asp-action="Index" class="search-form col-md-6 container">
+        <form asp-controller="Cars" asp-action="Cars" class="search-form col-md-6 container">
             <h1 class="container text-center">Bolinders Bil AB</h1>
             <div class="input-group">
-                <input asp-for="SearchQuery" type="text" class="form-control col-md-12" placeholder="Sök på..." aria-label="Search for...">
+                <input type="text" class="form-control col-md-12" placeholder="Sök på..." aria-label="Sök på...">
                 <span class="input-group-btn">
-                    <button type="submit" class="btn btn-secondary" type="button">Sök!</button>
+                    <button type="submit" class="btn btn-secondary">Sök!</button>
                 </span>
             </div>
 
@@ -81,3 +81,7 @@
     </div>
 
 </div>
+@section Scripts {
+    <script src="~/js/_home-index.js" asp-append-version="true"></script>
+
+}
