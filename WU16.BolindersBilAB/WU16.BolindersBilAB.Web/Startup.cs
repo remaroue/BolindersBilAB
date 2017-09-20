@@ -39,6 +39,7 @@ namespace WU16.BolindersBilAB.Web
                 .AddDefaultTokenProviders();
 
             services.AddScoped<EmailService>();
+            services.AddScoped<CarSearchService>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -102,18 +103,18 @@ namespace WU16.BolindersBilAB.Web
 
             app.UseMvc(x => x.MapRoute("default", template: "{Controller=Home}/{Action=Index}/{Id?}"));
 
-            /*if (!userManager.Users.Any())
-            {
-                var user1 = new ApplicationUser { UserName = "jonkoping@bolindersbil.se", Email = "jonkoping@bolindersbil.se" };
-                var user2 = new ApplicationUser { UserName = "varnamo@bolindersbil.se", Email = "varnamo@bolindersbil.se" };
-                var user3 = new ApplicationUser { UserName = "goteborg@bolindersbil.se", Email = "goteborg@bolindersbil.se" };
-                var user4 = new ApplicationUser { UserName = "admin@bolindersbil.se", Email = "admin@bolindersbil.se" };
+            //if (!userManager.Users.Any())
+            //{
+            //    var user1 = new ApplicationUser { UserName = "jonkoping@bolindersbil.se", Email = "jonkoping@bolindersbil.se" };
+            //    var user2 = new ApplicationUser { UserName = "varnamo@bolindersbil.se", Email = "varnamo@bolindersbil.se" };
+            //    var user3 = new ApplicationUser { UserName = "goteborg@bolindersbil.se", Email = "goteborg@bolindersbil.se" };
+            //    var user4 = new ApplicationUser { UserName = "admin@bolindersbil.se", Email = "admin@bolindersbil.se" };
 
-                Task.WaitAll(userManager.CreateAsync(user1, "Admin1234"));
-                Task.WaitAll(userManager.CreateAsync(user2, "Admin1234"));
-                Task.WaitAll(userManager.CreateAsync(user3, "Admin1234"));
-                Task.WaitAll(userManager.CreateAsync(user4, "Admin1234"));
-            }*/
+            //    Task.WaitAll(userManager.CreateAsync(user1, "Admin1234"));
+            //    Task.WaitAll(userManager.CreateAsync(user2, "Admin1234"));
+            //    Task.WaitAll(userManager.CreateAsync(user3, "Admin1234"));
+            //    Task.WaitAll(userManager.CreateAsync(user4, "Admin1234"));
+            //}
 
             //if (!_ctx.Locations.Any())
             //{
@@ -163,6 +164,12 @@ namespace WU16.BolindersBilAB.Web
             //    _ctx.AddRange(cars);
             //    _ctx.SaveChanges();
             //}
+
+            //// similar car
+            //var vw2 = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "Volkswagen");
+            //var location2 = _ctx.Locations.FirstOrDefault(x => x.City == "Jönköping");
+            //_ctx.Cars.Add(new Car { Location = location2, LicenseNumber = "L0L404", CarBrand = vw2, CarType = CarType.Småbil, Color = "Red", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description = "<insert description here>", HorsePower = 354, Gearbox = Gearbox.Automat, FuelType = FuelType.Bensin, IsLeaseable = false, ModelYear = 2014, Used = true, Milage = 5000, Model = "Golf GTI", Price = 95000 });
+            //_ctx.SaveChanges();
         }
     }
 }

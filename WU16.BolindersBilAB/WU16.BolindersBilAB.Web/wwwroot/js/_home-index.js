@@ -3,10 +3,10 @@ var api_key = "40f2eef1b2884b309ff075ca16508d76";
     $.ajax({
         url: "https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=" + api_key,
         success: function (result) {
-            console.log(result);
+            //console.log(result);
 
             $.each(result.articles, function (key, value) {
-                console.log(value);
+                //console.log(value);
 
                 const url = "https://i.ytimg.com/vi/d_T5P-zIIAs/maxresdefault.jpg";
 
