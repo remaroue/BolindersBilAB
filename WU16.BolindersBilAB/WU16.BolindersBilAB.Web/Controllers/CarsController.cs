@@ -7,6 +7,11 @@ using WU16.BolindersBilAB.DAL.Models;
 using WU16.BolindersBilAB.DAL.Services;
 using WU16.BolindersBilAB.Web.Models;
 using WU16.BolindersBilAB.DAL.Helpers;
+using WU16.BolindersBilAB.DAL.DataAccess;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text.Encodings.Web;
+using System.IO;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -21,59 +26,45 @@ namespace WU16.BolindersBilAB.Web.Controllers
             _carlistService = carListService;
         }
 
-        [Route("/bil/{registrationNumer}")]
-        public IActionResult Details(string registrationNumer)
+        [HttpGet]
+        [Route("/bil/{licenseNumber}")]
+        public IActionResult Details(string licenseNumber)
         {
-            return View(new Car() {
-                CarBrand = new CarBrand { BrandName = "Volvo" },
-                CarType = CarType.Sedan,
-                Color = "Moon grey",
-                CreationDate = DateTime.Now,
-                IsLeaseable = false,
-                LicenseNumber = "abc505",
-                HorsePower = 1000,
-                ModelYear = 2016,
-                Location = new Location() { City = "Värnamo", Address = "kaptensgaten 9", Id = "bb3", Name = "Värnamo", PhoneNumber = "0705731798", Zip = "33152" },
-                Milage = 20000,
-                Used = true,
-                Price = 120000,
-                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultricies, dui ut condimentum fermentum, ligula ligula ultrices nibh, sed feugiat eros lorem id leo. Curabitur at lacus sit amet massa congue tempus maximus id nunc. Etiam pretium ultricies blandit. Duis congue orci quis magna porttitor, eu congue odio feugiat. Quisque tempus purus magna, ac imperdiet odio tempus vel. Fusce sed varius massa. Sed turpis nisi, porta non feugiat consequat, consequat tempus risus. Pellentesque maximus dictum libero scelerisque ultricies. Curabitur at cursus nisl, eu commodo leo. Ut in nisl eu justo scelerisque aliquam.",
-                Model = "s60",
-                Equipment = "Elsäten|Krockkuddar",
-                CarImages = new CarImage[]
-                {
-                    new CarImage() { Id = Guid.Parse("A93918A5-E96C-4AA1-9328-03BB51D28A5C"), Priority = 1 },
-                    new CarImage() { Id = Guid.Parse("7BCDFC19-80DC-4FCE-A7AF-ADC48E7B166E"), Priority = 2 },
-                    new CarImage() { Id = Guid.Parse("C31ADF26-CD8F-497C-9FA3-3E7B8B6F4D6F"), Priority = 3 }
-                }
+            var car = _carlistService.GetCar(licenseNumber);
+            if (car == null) return BadRequest();
+
+            var similarCars = _carlistService.GetCars(car.GetSimilarCarsQuery()).ToArray();
+            
+            return View(new CarDetailsViewModel()
+            {
+                Car = car,
+                SimilarCars = similarCars
             });
         }
 
-        [Route("/api/bil/dela")]
         [HttpPost]
-        public async Task<bool> Share(string email, string licenseNumber)
+        [Route("/bil/dela")]
+        public bool Share([FromBody]ShareViewModel model)
         {
-            try
-            {
-                var subject = "Någon Har delat en bil med dig.";
-                _emailService.SendTo(email, subject, "localhost:24314/bil/" + licenseNumber);
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
+            var subject = "Någon Har delat en bil med dig.";
+
+            TagBuilder tagBuilder = new TagBuilder("a");
+            var url = $"http://localhost:63037/bil/{model.LicenseNumber}";
+            tagBuilder.Attributes["href"] = url;
+            tagBuilder.InnerHtml.AppendHtml(url);
+
+            var writer = new System.IO.StringWriter();
+            tagBuilder.WriteTo(writer, HtmlEncoder.Default);
+
+            return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
 
-       [Route("/bilar/{parameter?}")]
-       public IActionResult Cars(string parameter)
+        [Route("/bilar/{parameter?}")]
+        public IActionResult Cars(string parameter)
         {
-            var carListVm = new CarListViewModel
-            {
-                Cars = _carlistService.GetCars()
-            };
+            var cars = _carlistService.GetCars();
 
-            if(parameter != null)
+            if (parameter != null)
             {
                 if (parameter != "nya" && parameter != "begagnade")
                 {
@@ -81,33 +72,34 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 }
                 else
                 {
-                    carListVm.Cars = CarListHelper.Filter(parameter, carListVm.Cars);
+                    cars = cars.FilterByParameter(parameter);
                 }
-            }      
-            return View(carListVm);
+            }
+
+            return View(new CarListViewModel
+            {
+                Cars = cars.ToArray()
+            });
         }
+
         [HttpPost]
         [Route("/bilar/{parameter?}")]
         public IActionResult Cars(CarListQuery query, string parameter)
         {
-            var carListVm = new CarListViewModel
-            {
-                Cars = _carlistService.GetCars()
-            };
+            var cars = _carlistService.GetCars(query);
 
             if (parameter != null)
             {
                 if (parameter == "nya" || parameter == "begagnade")
                 {
-                    carListVm.Cars = CarListHelper.Filter(parameter, carListVm.Cars);
+                    cars = cars.FilterByParameter(parameter);
                 }
             }
 
-            carListVm.Cars = CarListHelper.FilterByQuery(query, carListVm.Cars);
-
-            carListVm.Cars = CarListHelper.PaginateCars(carListVm.Cars, 1);
-
-            return View(carListVm);
+            return View(new CarListViewModel()
+            {
+                Cars = cars.ToArray()
+            });
         }
     }
 }

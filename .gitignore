@@ -28,6 +28,8 @@ bld/
 .vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
 lib/
+dist/
+Migrations/
 appsettings.json
 
 # MSTest test Results
@@ -287,4 +289,3 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-
