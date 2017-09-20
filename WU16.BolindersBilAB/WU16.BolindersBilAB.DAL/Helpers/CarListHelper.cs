@@ -9,7 +9,7 @@ namespace WU16.BolindersBilAB.DAL.Helpers
 {
     public static class CarListHelper
     {
-        private static Regex _pattern = new Regex("[^a-z,0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private static readonly Regex _pattern = new Regex("[^a-z,å,ä,ö,0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         public static string NormalizeLicenseNumber(string input)
         {
             return _pattern.Replace(input.ToUpper(), string.Empty);
