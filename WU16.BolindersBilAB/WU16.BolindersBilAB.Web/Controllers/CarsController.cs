@@ -17,11 +17,13 @@ namespace WU16.BolindersBilAB.Web.Controllers
 {
     public class CarsController : Controller
     {
+        private CarSearchService _carSearchService;
         private EmailService _emailService;
         private CarListService _carlistService;
 
-        public CarsController(EmailService emailService, CarListService carListService)
+        public CarsController(EmailService emailService, CarListService carListService, CarSearchService carSearchService)
         {
+            _carSearchService = carSearchService;
             _emailService = emailService;
             _carlistService = carListService;
         }
@@ -60,9 +62,10 @@ namespace WU16.BolindersBilAB.Web.Controllers
         }
 
         [Route("/bilar/{parameter?}")]
-        public IActionResult Cars(string parameter)
+        public IActionResult Cars(string parameter, string searchquery)
         {
-            var cars = _carlistService.GetCars();
+            var query = _carSearchService.GetCarListQuery(searchquery);
+            var cars = _carlistService.GetCars(query);
 
             if (parameter != null)
             {
@@ -78,7 +81,8 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return View(new CarListViewModel
             {
-                Cars = cars.ToArray()
+                Cars = cars.ToArray(),
+                Query = query
             });
         }
 
