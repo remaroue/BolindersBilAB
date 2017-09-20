@@ -31,7 +31,7 @@ lib/
 dist/
 Migrations/
 appsettings.json
-wwwroot/images/upload/
+Upload/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
