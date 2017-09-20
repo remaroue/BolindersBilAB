@@ -41,5 +41,12 @@ namespace WU16.BolindersBilAB.DAL.Services
                 .Include(x => x.Location)
                 .FirstOrDefault(x => x.LicenseNumber == licenseNumber);
         }
+
+        public IEnumerable<Car> Get()
+        {
+            return _repo.Get()
+                .Include(x => x.CarBrand)
+                .Include(x => x.Location);
+        }
     }
 }
