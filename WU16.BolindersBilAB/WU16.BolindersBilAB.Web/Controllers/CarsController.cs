@@ -61,6 +61,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
 
+        [HttpPost]
         [Route("/bilar/{parameter?}")]
         public IActionResult Cars(string parameter, string searchquery)
         {
@@ -86,7 +87,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             });
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("/bilar/{parameter?}")]
         public IActionResult Cars(CarListQuery query, string parameter)
         {
