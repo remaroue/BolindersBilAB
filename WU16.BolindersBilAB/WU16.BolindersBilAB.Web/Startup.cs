@@ -39,6 +39,7 @@ namespace WU16.BolindersBilAB.Web
                 .AddDefaultTokenProviders();
 
             services.AddScoped<EmailService>();
+            services.AddScoped<CarSearchService>();
 
             services.Configure<IdentityOptions>(options =>
             {
