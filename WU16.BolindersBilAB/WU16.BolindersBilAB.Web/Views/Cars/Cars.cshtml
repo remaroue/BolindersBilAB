@@ -1,9 +1,9 @@
 ﻿@model CarListViewModel
 @{
-    ViewData["Title"] = "Cars";
+    ViewData["Title"] = "Bilar";
 }
 
-<h2>Cars</h2>
+<h2>Bilar</h2>
 
 <div class="container">
     <div class="row">
@@ -12,7 +12,7 @@
                 <div class="form-row">
                     <div class="form-group col-lg-2">
                         <label class="col-form-label">Årsmodell från</label>
-                        <select name="year-min" asp-for="Query.YearFrom" class="form-control">
+                        <select asp-for="Query.YearFrom" class="form-control">
                             <option>Årsmodell från</option>
                         </select>
                     </div>
@@ -42,7 +42,7 @@
                 <div class="form-row">
                     <div class="form-group col-lg-4">
                         <label>Karosstyp</label>
-                        <select name="cartype" asp-for="Query.CarType" class="form-control" multiple="multiple">
+                        <select id="carType" asp-for="Query.CarType" class="form-control" multiple="multiple">
                             @foreach (var type in Enum.GetNames(typeof(CarType)))
                             {
                                 <option>@type</option>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Drivmedel</label>
-                        <select asp-for="Query.FuelType" class="form-control" multiple="multiple">
+                        <select id="fuelType" asp-for="Query.FuelType" class="form-control" multiple="multiple">
                             @foreach (var type in Enum.GetNames(typeof(FuelType)))
                             {
                                 <option>@type</option>
@@ -60,7 +60,7 @@
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Växellåda</label>
-                        <select asp-for="Query.Gearbox" class="form-control" multiple="multiple">
+                        <select id="gearbox" asp-for="Query.Gearbox" class="form-control" multiple="multiple">
                             @foreach (var type in Enum.GetNames(typeof(Gearbox)))
                             {
                                 <option>@type</option>
@@ -79,15 +79,22 @@
             {
                 @foreach(var car in Model.Cars)
                 { 
-                    <div class="card">
+                    <a href="/bil/@car.LicenseNumber"><div class="card">
                         <div class="card-header">
                             @car.CarBrand.BrandName - @car.Model - @car.ModelYear
                         </div>
                         <div class="card-body">
-                            <a href="/bil/@car.LicenseNumber">Till bilen</a>
                         </div>
-                    </div>
+                    </div></a>
                 }
+            }
+            else
+            {
+                <div class="card">
+                    <div class="card-body">
+                        Inga bilar hittades.
+                    </div>
+                </div>
             }
         </div>
     </div>

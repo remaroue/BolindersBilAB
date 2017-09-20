@@ -10,5 +10,7 @@ namespace WU16.BolindersBilAB.Web.Models
     {
         public CarListQuery Query { get; set; }
         public IEnumerable<Car> Cars { get; set; }
+        public PagingInfo Pager { get; set; }
+
     }
 }

@@ -36,7 +36,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             if (car == null) return BadRequest();
 
             var similarCars = _carlistService.GetCars(car.GetSimilarCarsQuery()).ToArray();
-            
+
             return View(new CarDetailsViewModel()
             {
                 Car = car,
@@ -64,9 +64,8 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Route("/bilar/{parameter?}")]
         public IActionResult Cars(string parameter, string searchquery)
         {
-            var query = _carSearchService.GetCarListQuery(searchquery);
-            var cars = _carlistService.GetCars(query);
-
+                var query = _carSearchService.GetCarListQuery(searchquery);
+                var cars = _carlistService.GetCars(query);
             if (parameter != null)
             {
                 if (parameter != "nya" && parameter != "begagnade")
@@ -88,7 +87,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         [HttpGet]
         [Route("/bilar/{parameter?}")]
-        public IActionResult Cars(CarListQuery query, string parameter)
+        public IActionResult Cars(CarListQuery query, string parameter="")
         {
             var cars = _carlistService.GetCars(query);
 
@@ -98,6 +97,10 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 {
                     cars = cars.FilterByParameter(parameter);
                 }
+            }
+            else
+            {
+                return Redirect("/bilar");
             }
 
             return View(new CarListViewModel()
