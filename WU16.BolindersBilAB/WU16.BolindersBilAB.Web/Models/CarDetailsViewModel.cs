@@ -6,11 +6,9 @@ using WU16.BolindersBilAB.DAL.Models;
 
 namespace WU16.BolindersBilAB.Web.Models
 {
-    public class CarListViewModel
+    public class CarDetailsViewModel
     {
-        public CarListQuery Query { get; set; }
-        public ICollection<Car> Cars { get; set; }
-        public PagingInfo Pager { get; set; }
-
+        public Car Car { get; set; }
+        public IEnumerable<Car> SimilarCars { get; set; }
     }
 }

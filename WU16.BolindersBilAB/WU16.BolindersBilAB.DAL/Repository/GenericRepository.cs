@@ -4,6 +4,7 @@ using System.Text;
 using WU16.BolindersBilAB.DAL.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace WU16.BolindersBilAB.DAL.Repository
 {
@@ -26,9 +27,9 @@ namespace WU16.BolindersBilAB.DAL.Repository
             _ctx.Entry(entity).State = EntityState.Modified;
         }
 
-        public IEnumerable<T> Get()
+        public IQueryable<T> Get()
         {
-            return _ctx.Set<T>().AsEnumerable();
+            return _ctx.Set<T>();
         }
 
         public T Insert(T entity)
