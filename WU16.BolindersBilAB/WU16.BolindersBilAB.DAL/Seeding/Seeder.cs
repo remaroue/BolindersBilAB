@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using WU16.BolindersBilAB.DAL.Seeding.Attributes;
 using WU16.BolindersBilAB.DAL.Seeding.Enums;
+using WU16.BolindersBilAB.DAL.Seeding.Helper;
 
 namespace WU16.BolindersBilAB.DAL.Seeding
 {
@@ -73,7 +74,7 @@ namespace WU16.BolindersBilAB.DAL.Seeding
                     {
                         var rand = new Random();
                             for (int i = 0; i < numberOfRows; i++)
-                                property.SetValue(rows[i], Convert.ToDecimal(rand.Next(snAttr.Min, snAttr.Max)));
+                                property.SetValue(rows[i], rand.NextDecimal(Convert.ToDecimal(snAttr.Min), Convert.ToDecimal(snAttr.Max)));
                     }
                 }
                 else if (attributes.FirstOrDefault(x => x is SeedFixedValueAttribute) is SeedFixedValueAttribute sfAttr)

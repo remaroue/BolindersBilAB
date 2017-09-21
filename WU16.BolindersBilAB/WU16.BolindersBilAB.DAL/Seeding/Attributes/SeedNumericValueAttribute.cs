@@ -11,7 +11,7 @@ namespace WU16.BolindersBilAB.DAL.Seeding.Attributes
         public SeedNumericValueAttribute(int min, int max)
         {
             Min = min;
-            Max = min;
+            Max = max;
         }
     }
 }
