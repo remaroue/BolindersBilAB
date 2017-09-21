@@ -4,31 +4,29 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using WU16.BolindersBilAB.DAL.DataAccess;
+using WU16.BolindersBilAB.DAL.Seeding.Attributes;
+using WU16.BolindersBilAB.DAL.Seeding.Enums;
 
 namespace WU16.BolindersBilAB.DAL.Models
 {
     public class Car
     {
-        public Car()
-        {
-            CarImages = new HashSet<CarImage>();
-        }
-
-        [Display(Name ="Registreringsnummer")]
         [Key]
+        [Display(Name ="Registreringsnummer")]
         [SeedStringFromEnumArray(new CharacterDescription[] { CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine })]
         public string LicenseNumber { get; set; }
 
-        [SeedFromArray(new object[] { "Volvo", "BMW", "Audi", "Ford", "Mercedes-benz", "Volkswagen" })]
         [ForeignKey("CarBrand")]
+        [SeedFromArray(new object[] { "Volvo", "BMW", "Audi", "Ford", "Mercedes-benz", "Volkswagen" })]
         public string CarBrandId { get; set; }
 
         [SeedIgnore]
         public virtual CarBrand CarBrand { get; set; }
 
-        [SeedFromArray(new object[] { "BB1", "BB2", "BB3" })]
         [ForeignKey("Location")]
+        [SeedFromArray(new object[] { "BB1", "BB2", "BB3" })]
         public string LocationId { get; set; }
+
         [SeedIgnore]
         public virtual Location Location { get; set; }
 
@@ -59,8 +57,10 @@ namespace WU16.BolindersBilAB.DAL.Models
 
         [Seed(SeederDataType.Now)]
         public DateTime CreationDate { get; set; }
+
         [SeedIgnore]
         public DateTime? LastUpdated { get; set; }
+
         [SeedIgnore]
         public virtual ICollection<CarImage>  CarImages { get; set; }
 

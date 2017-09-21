@@ -5,86 +5,11 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Linq;
 using System.Reflection;
+using WU16.BolindersBilAB.DAL.Seeding.Attributes;
+using WU16.BolindersBilAB.DAL.Seeding.Enums;
 
-namespace WU16.BolindersBilAB.DAL.DataAccess
+namespace WU16.BolindersBilAB.DAL.Seeding
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class SeedAttribute : Attribute
-    {
-        public SeederDataType DataType { get; private set; }
-
-        public SeedAttribute(SeederDataType dataType)
-        {
-            DataType = dataType;
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class SeedFromArrayAttribute : Attribute
-    {
-        public object[] Values { get; private set; }
-
-        public SeedFromArrayAttribute(object[] values)
-        {
-            Values = values;
-        }
-    }
-
-    public enum CharacterDescription
-    {
-        ZeroToNine,
-        AToZ
-    }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class SeedStringFromEnumArrayAttribute : Attribute
-    {
-        public CharacterDescription[] Description { get; private set; }
-
-        public SeedStringFromEnumArrayAttribute(CharacterDescription[] description)
-        {
-            Description = description;
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class SeedIgnoreAttribute : Attribute
-    {
-    }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class SeedFixedValueAttribute : Attribute
-    {
-        public object Value { get; private set; }
-
-        public SeedFixedValueAttribute(object value)
-        {
-            Value = value;
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class SeedNumericValueAttribute : Attribute
-    {
-        public int Min { get; set; }
-        public int Max { get; set; }
-
-        public SeedNumericValueAttribute(int min, int max)
-        {
-            Min = min;
-            Max = min;
-        }
-    }
-
-    public enum SeederDataType
-    {
-        Name,
-        LoremIpsum,
-        PhoneNumber,
-        Year,
-        Now
-    }
-
     public static class Seeder 
     {
         public static void Seed<T>(DbContext dbContext, int numberOfRows) where T : class, new()
@@ -139,12 +64,16 @@ namespace WU16.BolindersBilAB.DAL.DataAccess
                         }
                         else if (Convert.GetTypeCode(property.PropertyType) != TypeCode.Double)
                         {
-                            
+                            var rand = new Random();
+                            for (int i = 0; i < numberOfRows; i++)
+                                property.SetValue(rows[i], Convert.ToDouble(rand.Next(snAttr.Min, snAttr.Max)));
                         }
                     }
                     else if (property.PropertyType.Equals(typeof(decimal)))
                     {
-                        
+                        var rand = new Random();
+                            for (int i = 0; i < numberOfRows; i++)
+                                property.SetValue(rows[i], Convert.ToDecimal(rand.Next(snAttr.Min, snAttr.Max)));
                     }
                 }
                 else if (attributes.FirstOrDefault(x => x is SeedFixedValueAttribute) is SeedFixedValueAttribute sfAttr)

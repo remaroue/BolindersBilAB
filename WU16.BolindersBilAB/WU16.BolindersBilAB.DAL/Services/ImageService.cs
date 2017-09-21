@@ -155,5 +155,10 @@ namespace WU16.BolindersBilAB.DAL.Services
 
             return carBrand;
         }
+
+        public void RemoveImage(string imageName)
+        {
+            File.Delete($"{_basePath}{imageName}");
+        }
     }
 }
