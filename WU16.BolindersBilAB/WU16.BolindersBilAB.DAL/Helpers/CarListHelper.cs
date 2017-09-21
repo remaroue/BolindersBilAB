@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -66,7 +67,7 @@ namespace WU16.BolindersBilAB.DAL.Helpers
             if (query.Skip > 0)
                 cars = cars.Skip(query.Skip);
             if (query.Take > 0)
-                cars = cars.Skip(query.Take);
+                cars = cars.Take(query.Take);
 
             // TODO: Free Search match
             if (query.FreeSearch != null)
