@@ -10,7 +10,7 @@ using WU16.BolindersBilAB.Web.Models;
 
 namespace WU16.BolindersBilAB.Web.Infrastructure
 {
-    [HtmlTargetElement("div", Attributes ="page-model, page-action")]
+    [HtmlTargetElement("div", Attributes ="page-model")]
     public class PagingTagHelper : TagHelper
     {
         private IUrlHelperFactory _helper;
@@ -23,7 +23,6 @@ namespace WU16.BolindersBilAB.Web.Infrastructure
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
         public PagingInfo PageModel { get; set; }
-        public string PageAction { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -31,6 +30,7 @@ namespace WU16.BolindersBilAB.Web.Infrastructure
             {
                 var tag = new TagBuilder("a");
                 tag.AddCssClass("btn btn-primary");
+                tag.Attributes["id"] = "showMore";
                 tag.InnerHtml.Append("Visa fler");
 
                 output.Content.AppendHtml(tag);

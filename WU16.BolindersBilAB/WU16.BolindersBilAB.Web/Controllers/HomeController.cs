@@ -36,7 +36,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 {
                     if(item.BrandName == brand.Key.BrandName)
                     {
-                        imgUrl = item.ImageUrl;
+                        imgUrl = item.ImageName;
                     }
                 }
 

@@ -139,15 +139,15 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             var totalItems = cars.ToList().Count;
 
-            cars.PaginateCars(page);
 
             ViewBag.Prices = CarListHelper.GetPriceRange();
             ViewBag.Years = CarListHelper.GetModelYears();
             ViewBag.Milages = CarListHelper.GetMilageRange();
 
+
             return View(new CarListViewModel()
             {
-                Cars = cars.ToList(),
+                Cars = cars.PaginateCars(page).ToList(),
                 Query = query,
                 Pager = new PagingInfo
                 {

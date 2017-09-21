@@ -93,7 +93,7 @@ namespace WU16.BolindersBilAB.DAL.Helpers
         }
         public static IEnumerable<Car> PaginateCars(this IEnumerable<Car> cars, int page)
         {
-            return cars.Take(8 * page);
+            return cars.Take((8 * page)).AsEnumerable();
         }
 
         public static Dictionary<int, string> GetModelYears()
