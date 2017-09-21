@@ -17,14 +17,16 @@ namespace WU16.BolindersBilAB.Web.Controllers
 {
     public class CarsController : Controller
     {
+        private CarSearchService _carSearchService;
         private EmailService _emailService;
         private CarListService _carlistService;
         private CarBrandService _brandService;
         private LocationService _locationService;
         private CarService _carService;
 
-        public CarsController(EmailService emailService, CarListService carListService, CarBrandService carBrandService, LocationService locationService, CarService CarService)
+        public CarsController(CarSearchService carSearchService, EmailService emailService, CarListService carListService, CarBrandService carBrandService, LocationService locationService, CarService CarService)
         {
+            _carSearchService = carSearchService;
             _emailService = emailService;
             _carlistService = carListService;
             _brandService = carBrandService;
@@ -40,7 +42,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             if (car == null) return BadRequest();
 
             var similarCars = _carlistService.GetCars(car.GetSimilarCarsQuery()).ToArray();
-            
+
             return View(new CarDetailsViewModel()
             {
                 Car = car,
@@ -98,10 +100,11 @@ namespace WU16.BolindersBilAB.Web.Controllers
             }
         }
 
+        [HttpGet]
         [Route("/bilar/{parameter?}")]
-        public IActionResult Cars(string parameter)
+        public IActionResult Cars(string parameter, [FromQuery(Name = "homepageQuery")]string homepageQuery)
         {
-            var cars = _carlistService.GetCars();
+            var cars = _carlistService.GetCars(_carSearchService.GetCarListQuery(homepageQuery));
 
             if (parameter != null)
             {
@@ -117,27 +120,45 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return View(new CarListViewModel
             {
-                Cars = cars.ToArray()
+                Cars = cars.ToList()
             });
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("/bilar/{parameter?}")]
-        public IActionResult Cars(CarListQuery query, string parameter)
+        public IActionResult Cars(CarListQuery query, string parameter = "", int page = 1)
         {
             var cars = _carlistService.GetCars(query);
-
-            if (parameter != null)
+            if (parameter.Length > 0)
             {
                 if (parameter == "nya" || parameter == "begagnade")
                 {
                     cars = cars.FilterByParameter(parameter);
                 }
+                else
+                {
+                    return Redirect("/bilar");
+                }
             }
+
+            var totalItems = cars.ToList().Count;
+
+
+            ViewBag.Prices = CarListHelper.GetPriceRange();
+            ViewBag.Years = CarListHelper.GetModelYears();
+            ViewBag.Milages = CarListHelper.GetMilageRange();
+
 
             return View(new CarListViewModel()
             {
-                Cars = cars.ToArray()
+                Cars = cars.PaginateCars(page).ToList(),
+                Query = query,
+                Pager = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = 8,
+                    TotalItems = totalItems
+                }
             });
         }
     }

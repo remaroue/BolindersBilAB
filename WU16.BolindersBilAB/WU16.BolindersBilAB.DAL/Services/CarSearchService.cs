@@ -43,6 +43,8 @@ namespace WU16.BolindersBilAB.DAL.Services
 
         public CarListQuery GetCarListQuery(string input)
         {
+            if (input == null) return null;
+
             input = input.ToLower();
 
             var query = GetEnums(input);
