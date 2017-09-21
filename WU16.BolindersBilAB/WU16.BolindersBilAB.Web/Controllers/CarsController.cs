@@ -116,8 +116,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return View(new CarListViewModel
             {
-                Cars = cars.ToList(),
-                Query = query
+                Cars = cars.ToList()
             });
         }
 
@@ -149,6 +148,13 @@ namespace WU16.BolindersBilAB.Web.Controllers
             return View(new CarListViewModel()
             {
                 Cars = cars.ToList(),
+                Query = query,
+                Pager = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = 8,
+                    TotalItems = totalItems
+                }
             });
         }
     }
