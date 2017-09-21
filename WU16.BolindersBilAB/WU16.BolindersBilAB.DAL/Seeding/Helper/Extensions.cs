@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WU16.BolindersBilAB.DAL.Seeding.Helper
 {
-    public static class Extensions
+    internal static class Extensions
     {
         public static decimal NextDecimal(this Random rnd, decimal from, decimal to)
         {

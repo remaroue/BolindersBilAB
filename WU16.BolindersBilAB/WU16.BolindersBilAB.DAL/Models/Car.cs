@@ -14,7 +14,7 @@ namespace WU16.BolindersBilAB.DAL.Models
     {
         [Key]
         [Display(Name ="Registreringsnummer")]
-        [SeedPatternCreateStringAttribute(CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine)]
+        [SeedPatternCreateString(CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine)]
         public string LicenseNumber { get; set; }
 
     
