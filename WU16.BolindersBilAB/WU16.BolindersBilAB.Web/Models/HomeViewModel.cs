@@ -10,5 +10,8 @@ namespace WU16.BolindersBilAB.Web.Models
 {
     public class HomeViewModel
     {
+        public string CarBrand { get; set; }
+        public int CarCount { get; set; }
+        public string CarImage { get; set; }
     }
 }
