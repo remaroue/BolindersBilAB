@@ -9,6 +9,12 @@ namespace WU16.BolindersBilAB.DAL.Models
 {
     public class Car
     {
+        public Car()
+        {
+            CarImages = new HashSet<CarImage>();
+        }
+
+        [Display(Name ="Registreringsnummer")]
         [Key]
         [SeedStringFromEnumArray(new CharacterDescription[] { CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine })]
         public string LicenseNumber { get; set; }
