@@ -14,7 +14,7 @@ namespace WU16.BolindersBilAB.DAL.Helpers
         {
             return _pattern.Replace(input.ToUpper(), string.Empty);
         }
-
+        
         public static IQueryable<Car> FilterByParameter(this IQueryable<Car> cars, string parameter)
         {
             bool isUsed = true;

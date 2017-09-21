@@ -40,6 +40,7 @@ namespace WU16.BolindersBilAB.Web
 
             services.AddScoped<EmailService>();
             services.AddScoped<CarSearchService>();
+            services.AddScoped<ImageService>();
 
             services.Configure<IdentityOptions>(options =>
             {
