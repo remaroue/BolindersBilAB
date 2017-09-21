@@ -9,22 +9,24 @@ using WU16.BolindersBilAB.DAL.Seeding.Enums;
 
 namespace WU16.BolindersBilAB.DAL.Models
 {
+    [SeedingSettings(SeedingType.Implicit)]
     public class Car
     {
         [Key]
         [Display(Name ="Registreringsnummer")]
-        [SeedStringFromEnumArray(new CharacterDescription[] { CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine })]
+        [SeedPatternCreateStringAttribute(CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine)]
         public string LicenseNumber { get; set; }
 
+    
         [ForeignKey("CarBrand")]
-        [SeedFromArray(new object[] { "Volvo", "BMW", "Audi", "Ford", "Mercedes-benz", "Volkswagen" })]
+        [SeedChooseFrom("Volvo", "BMW", "Audi", "Ford", "Mercedes-benz", "Volkswagen")]
         public string CarBrandId { get; set; }
 
         [SeedIgnore]
         public virtual CarBrand CarBrand { get; set; }
 
         [ForeignKey("Location")]
-        [SeedFromArray(new object[] { "BB1", "BB2", "BB3" })]
+        [SeedChooseFrom("BB1", "BB2", "BB3")]
         public string LocationId { get; set; }
 
         [SeedIgnore]
@@ -33,10 +35,10 @@ namespace WU16.BolindersBilAB.DAL.Models
         [SeedFixedValue("test model")]
         public string Model { get; set; }
 
-        [Seed(SeederDataType.LoremIpsum)]
+        [SeedDataType(SeederDataType.LoremIpsum)]
         public string Description { get; set; }
 
-        [Seed(SeederDataType.Year)]
+        [SeedDataType(SeederDataType.Year)]
         public int ModelYear { get; set; }
 
         public bool IsLeaseable { get; set; }
@@ -47,7 +49,7 @@ namespace WU16.BolindersBilAB.DAL.Models
         [SeedNumericValue(30000, 150000)]
         public decimal Price { get; set; }
 
-        [SeedFromArray(new object[] {"grå", "grön", "mörkblå", "rengbåge"})]
+        [SeedChooseFrom("grå", "grön", "mörkblå", "rengbåge")]
         public string Color { get; set; }
 
         [SeedNumericValue(80, 200)]
@@ -55,7 +57,7 @@ namespace WU16.BolindersBilAB.DAL.Models
 
         public bool Used { get; set; }
 
-        [Seed(SeederDataType.Now)]
+        [SeedDataType(SeederDataType.Now)]
         public DateTime CreationDate { get; set; }
 
         [SeedIgnore]
