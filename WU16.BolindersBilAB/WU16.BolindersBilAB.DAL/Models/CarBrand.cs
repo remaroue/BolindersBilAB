@@ -11,5 +11,6 @@ namespace WU16.BolindersBilAB.DAL.Models
         public string BrandName { get; set; }
         public string ImageName { get; set; }
         public virtual ICollection<Car> Cars { get; set; }
+
     }
 }

@@ -26,81 +26,71 @@ namespace WU16.BolindersBilAB.DAL.Services
         const int _size = 800;
         const int _quality = 75;
 
-        public async Task OptimizeImages(params string[] fileNames)
+        private void OptimizeAndSaveImage(Stream imgStream, string fileName)
         {
-            foreach (var fileName in fileNames)
+            try
             {
-                try
+                using (var image = new Bitmap(Image.FromStream(imgStream)))
                 {
-                    using (var mStream = new MemoryStream())
+                    imgStream.Dispose();
+
+                    int height = image.Height,
+                        width = image.Width;
+
+                    if (image.Height > image.Width)
                     {
-                        using (var fStream = File.Open($"{_basePath}{fileName}", FileMode.Open, FileAccess.ReadWrite))
+                        if (image.Height > _size)
                         {
-                            fStream.CopyTo(mStream);
-                        }
-
-                        using (var image = new Bitmap(Image.FromStream(mStream)))
-                        {
-                            mStream.Dispose();
-
-                            int height = 0,
-                                width = 0;
-
-                            if (image.Height > image.Width)
-                            {
-                                if (image.Height > _size)
-                                {
-                                    height = _size;
-                                    width = Convert.ToInt32(image.Width * ((double)height / (double)image.Height));
-                                }
-                            }
-                            else
-                            {
-                                if (image.Width > _size)
-                                {
-                                    width = _size;
-                                    height = Convert.ToInt32(image.Height * ((double)width / (double)image.Width));
-                                }
-                            }
-
-                            var resized = new Bitmap(width, height);
-                            using (var graphics = Graphics.FromImage(resized))
-                            {
-                                graphics.CompositingQuality = CompositingQuality.HighSpeed;
-                                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                                graphics.CompositingMode = CompositingMode.SourceCopy;
-
-                                graphics.DrawImage(image, 0, 0, width, height);
-                                var qualityParamId = Encoder.Quality;
-                                var encoderParameters = new EncoderParameters(1);
-                                encoderParameters.Param[0] = new EncoderParameter(qualityParamId, _quality);
-
-                                ImageCodecInfo codec = null;
-                                switch (fileName.Split(".")[1])
-                                {
-                                    case "png":
-                                        codec = ImageCodecInfo.GetImageDecoders()
-                                            .FirstOrDefault(x => x.FormatID == ImageFormat.Png.Guid);
-                                        break;
-                                    case "jpg":
-                                    case "jpeg":
-                                        codec = ImageCodecInfo.GetImageDecoders()
-                                            .FirstOrDefault(x => x.FormatID == ImageFormat.Jpeg.Guid);
-                                        break;
-                                }
-
-                                using (var fStream = File.Open($"{_basePath}{fileName}", FileMode.Create, FileAccess.Write))
-                                    resized.Save(fStream, codec, encoderParameters);
-                            }
+                            height = _size;
+                            width = Convert.ToInt32(image.Width * ((double)height / (double)image.Height));
                         }
                     }
-                }
-                catch (Exception e)
-                {
+                    else
+                    {
+                        if (image.Width > _size)
+                        {
+                            width = _size;
+                            height = Convert.ToInt32(image.Height * ((double)width / (double)image.Width));
+                        }
+                    }
 
+                    var resized = new Bitmap(width, height);
+                    using (var graphics = Graphics.FromImage(resized))
+                    {
+                        graphics.CompositingQuality = CompositingQuality.HighSpeed;
+                        graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                        graphics.CompositingMode = CompositingMode.SourceCopy;
+
+                        graphics.DrawImage(image, 0, 0, width, height);
+                        var qualityParamId = Encoder.Quality;
+                        var encoderParameters = new EncoderParameters(1);
+                        encoderParameters.Param[0] = new EncoderParameter(qualityParamId, _quality);
+
+                        ImageCodecInfo codec = null;
+                        switch (fileName.Split(".")[1])
+                        {
+                            case "png":
+                                codec = ImageCodecInfo.GetImageDecoders()
+                                    .FirstOrDefault(x => x.FormatID == ImageFormat.Png.Guid);
+                                break;
+                            case "jpg":
+                            case "jpeg":
+                                codec = ImageCodecInfo.GetImageDecoders()
+                                    .FirstOrDefault(x => x.FormatID == ImageFormat.Jpeg.Guid);
+                                break;
+                        }
+
+                        using (var fStream = File.Open($"{_basePath}{fileName}", FileMode.Create, FileAccess.Write))
+                            resized.Save(fStream, codec, encoderParameters);
+                    }
                 }
             }
+            catch (Exception e)
+            {
+
+            }
         }
+
 
         public IEnumerable<string> UploadImages(params IFormFile[] images)
         {
@@ -127,19 +117,14 @@ namespace WU16.BolindersBilAB.DAL.Services
 
                 var fileName = $"{id}.{fileType}";
 
-                using (var fileStream = File.OpenWrite($"{_basePath}{fileName}"))
+                using (var imgStream = image.OpenReadStream())
                 {
-                    using (var imgStream = image.OpenReadStream())
-                    {
-                        imgStream.CopyTo(fileStream);
-                    }
+                    OptimizeAndSaveImage(imgStream, fileName);
                 }
-
 
                 fileNames.Add(fileName);
             }
 
-            OptimizeImages(fileNames.ToArray());
             return fileNames;
         }
 

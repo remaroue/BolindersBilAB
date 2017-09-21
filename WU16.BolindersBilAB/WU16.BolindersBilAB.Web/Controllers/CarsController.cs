@@ -17,15 +17,19 @@ namespace WU16.BolindersBilAB.Web.Controllers
 {
     public class CarsController : Controller
     {
-        private CarSearchService _carSearchService;
         private EmailService _emailService;
         private CarListService _carlistService;
+        private CarBrandService _brandService;
+        private LocationService _locationService;
+        private CarService _carService;
 
-        public CarsController(EmailService emailService, CarListService carListService, CarSearchService carSearchService)
+        public CarsController(EmailService emailService, CarListService carListService, CarBrandService carBrandService, LocationService locationService, CarService CarService)
         {
-            _carSearchService = carSearchService;
             _emailService = emailService;
             _carlistService = carListService;
+            _brandService = carBrandService;
+            _locationService = locationService;
+            _carService = CarService;
         }
 
         [HttpGet]
@@ -61,11 +65,43 @@ namespace WU16.BolindersBilAB.Web.Controllers
             return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
 
-        [Route("/bilar/{parameter?}")]
-        public IActionResult Cars(string parameter, string searchquery)
+        [Route("/bil/ny")]
+        public IActionResult AddCar()
         {
-                var query = _carSearchService.GetCarListQuery(searchquery);
-                var cars = _carlistService.GetCars(query);
+            
+            ViewBag.CarBrands = _brandService.Get();
+            ViewBag.Locations = _locationService.Get();
+            return View();
+        }
+
+        [HttpPost]
+        [Route("/bil/ny")]
+        public IActionResult AddCar(Car car)
+        {
+            var location = _locationService.Get();
+
+            //car.Location.Id = car.LocationId;
+            //car.CarBrand.BrandName = car.CarBrandId;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(); // Todo return to view.
+            }
+            else
+            {
+                
+                car.CreationDate = DateTime.Now;
+                car.LastUpdated = DateTime.Now;
+
+                _carService.SaveCar(car);
+                return Redirect("/"); // Todo Return to view.            
+
+            }
+        }
+
+        [Route("/bilar/{parameter?}")]
+        public IActionResult Cars(string parameter)
+        {
+            var cars = _carlistService.GetCars();
             if (parameter != null)
             {
                 if (parameter != "nya" && parameter != "begagnade")
