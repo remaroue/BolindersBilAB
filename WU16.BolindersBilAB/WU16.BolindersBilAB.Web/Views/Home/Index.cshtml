@@ -1,10 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Index";
 }
-@foreach (var item in ViewBag.CarCount)
-{
-    <span>@item.CarBrand.BrandName</span>
-}
+
 <div id="home-index-container" class="container-fluid">
     <div class="search-wrapper row">
         <form asp-controller="Cars" asp-action="Cars" method="GET" class="search-form col-md-6 container">
@@ -37,12 +34,12 @@
 
     <div class="available-logo col-md-10 container">
         <div class="row">
-            @foreach (var item in ViewBag.CarBrands)
+            @foreach (var item in ViewBag.CarCount)
             {
-                <div class="col-md-2">
-                    <img src="@item.ImageUrl" class="img-fluid" alt="@item.BrandName - Logo">
+                <div class="col-md-2 col-centered">
+                    <img src="@item.CarImage" class="img-fluid" alt="@item.CarBrand - Logo">
                     <div class="center-badge">
-                        <span class="badge badge-pill badge-primary align-bottom">13</span>
+                        <span class="badge badge-pill badge-primary align-bottom">@item.CarCount</span>
                     </div>
                 </div>
             }
