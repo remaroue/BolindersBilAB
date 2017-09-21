@@ -71,7 +71,8 @@ namespace WU16.BolindersBilAB.DAL.DataAccess
 
         public SeedNumericValueAttribute(int min, int max)
         {
-            IntMinMax = (min, max);
+            Min = min;
+            Max = min;
         }
     }
 
