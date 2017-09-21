@@ -12,12 +12,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Encodings.Web;
 using System.IO;
+using WU16.BolindersBilAB.Web.ModelBinder;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
     public class CarsController : Controller
     {
-        //private EmailService _emailService;
+        private EmailService _emailService;
         private CarListService _carlistService;
         private CarBrandService _brandService;
         private LocationService _locationService;
@@ -25,7 +26,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         public CarsController(EmailService emailService, CarListService carListService, CarBrandService carBrandService, LocationService locationService, CarService CarService)
         {
-            //_emailService = emailService;
+            _emailService = emailService;
             _carlistService = carListService;
             _brandService = carBrandService;
             _locationService = locationService;
@@ -122,7 +123,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         [HttpGet]
         [Route("/bilar/{parameter?}")]
-        public IActionResult Cars(CarListQuery query, string parameter="", int page=1)
+        public IActionResult Cars([ModelBinder(BinderType = typeof(QueryModelBinder))]CarListQuery query, string parameter="", int page=1)
         {
             var cars = _carlistService.GetCars(query);
             if (parameter.Length > 0)
@@ -139,7 +140,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             var totalItems = cars.ToList().Count;
 
-
+            ViewBag.Query = Request.QueryString.ToString();
             ViewBag.Prices = CarListHelper.GetPriceRange();
             ViewBag.Years = CarListHelper.GetModelYears();
             ViewBag.Milages = CarListHelper.GetMilageRange();

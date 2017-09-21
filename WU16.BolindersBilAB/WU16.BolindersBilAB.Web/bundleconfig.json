@@ -1,0 +1,18 @@
+[
+  {
+    "outputFileName": "wwwroot/dist/js/vendor.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/lib/popper.js/dist/umd/popper.js",
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "wwwroot/lib/select2/dist/js/select2.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/dist/css/vendor.css",
+    "inputFiles": [
+      "wwwroot/lib/font-awesome/css/font-awesome.css",
+      "wwwroot/lib/select2/dist/css/select2.css"
+    ]
+  }
+]

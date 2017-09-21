@@ -12,8 +12,8 @@
                 <div class="form-row">
                     <div class="form-group col-lg-2">
                         <label class="col-form-label">Årsmodell från</label>
-                        <select asp-for="Query.YearFrom" class="form-control">
-                            <option value="">-</option>
+                        <select name="min-year" asp-for="Query.YearFrom" class="form-control">
+                            <option value="0">-</option>
                             @foreach(var row in ViewBag.Years)
                             {
                                 <option value="@row.Key">@row.Value</option>
@@ -23,8 +23,8 @@
                     </div>
                     <div class="form-group col-lg-2">
                         <label for="inputEmail4" class="col-form-label">Årsmodell till</label>
-                        <select asp-for="Query.YearTo" class="form-control">
-                            <option value="">-</option>
+                        <select name="max-year" asp-for="Query.YearTo" class="form-control">
+                            <option value="0">-</option>
                             @foreach(var row in ViewBag.Years)
                             {
                                 <option value="@row.Key">@row.Value</option>
@@ -33,8 +33,8 @@
                     </div>
                     <div class="form-group col-lg-2">
                         <label for="inputEmail4" class="col-form-label">Pris från</label>
-                        <select asp-for="Query.PriceFrom" class="form-control">
-                            <option value="">-</option>
+                        <select name="min-price" asp-for="Query.PriceFrom" class="form-control">
+                            <option value="0">-</option>
                             @foreach(var row in ViewBag.Prices)
                             {
                                 <option value="@row.Key">@row.Value</option>
@@ -43,8 +43,8 @@
                     </div>
                     <div class="form-group col-lg-2">
                         <label for="inputEmail4" class="col-form-label">Pris till</label>
-                        <select asp-for="Query.PriceTo" class="form-control">
-                            <option value="">-</option>
+                        <select name="max-price" asp-for="Query.PriceTo" class="form-control">
+                            <option value="0">-</option>
                             @foreach (var row in ViewBag.Prices)
                             {
                                 <option value="@row.Key">@row.Value</option>
@@ -53,8 +53,8 @@
                     </div>
                     <div class="form-group col-lg-2">
                         <label for="inputEmail4" class="col-form-label">Mil från</label>
-                        <select asp-for="Query.MilageFrom" class="form-control">
-                            <option value="">-</option>
+                        <select name="min-milage" asp-for="Query.MilageFrom" class="form-control">
+                            <option value="0">-</option>
                             @foreach(var row in ViewBag.Milages)
                             { 
                                 <option value="@row.Key">@row.Value</option>
@@ -63,8 +63,8 @@
                     </div>
                     <div class="form-group col-lg-2">
                         <label for="inputEmail4" class="col-form-label">Mil till</label>
-                        <select asp-for="Query.MilageTo" class="form-control">
-                            <option value="">-</option>
+                        <select name="max-milage" asp-for="Query.MilageTo" class="form-control">
+                            <option value="0">-</option>
                                 @foreach(var row in ViewBag.Milages)
                                 { 
                                     <option value="@row.Key">@row.Value</option>
@@ -75,7 +75,7 @@
                 <div class="form-row">
                     <div class="form-group col-lg-4">
                         <label>Karosstyp</label>
-                        <select id="carType" asp-for="Query.CarType" class="form-control" multiple="multiple">
+                        <select name="type" style="display:none;" id="carType" asp-for="Query.CarType" class="form-control" multiple="multiple">
                             @foreach (var type in Enum.GetNames(typeof(CarType)))
                             {
                                 <option>@type</option>
@@ -84,7 +84,7 @@
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Drivmedel</label>
-                        <select id="fuelType" asp-for="Query.FuelType" class="form-control" multiple="multiple">
+                        <select name="fuel" style="display:none;" name="fuel" id="fuelType" asp-for="Query.FuelType" class="form-control" multiple="multiple">
                             @foreach (var type in Enum.GetNames(typeof(FuelType)))
                             {
                                 <option>@type</option>
@@ -93,7 +93,7 @@
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Växellåda</label>
-                        <select id="gearbox" asp-for="Query.Gearbox" class="form-control" multiple="multiple">
+                        <select name="gearbox" style="display:none;" id="gearbox" asp-for="Query.Gearbox" class="form-control" multiple="multiple">
                             @foreach (var type in Enum.GetNames(typeof(Gearbox)))
                             {
                                 <option>@type</option>
@@ -121,7 +121,8 @@
                     </div></a>
                 }
 
-                <div id="pager" data-page="@Model.Pager.CurrentPage" page-action="Cars" page-model="@Model.Pager"></div>
+                <div id="pager" page-query="@ViewBag.Query" data-page="@Model.Pager.CurrentPage" page-action="Cars" page-model="@Model.Pager"></div>
+
             }
             else
             {
@@ -134,4 +135,7 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script src="~/js/_cars-cars.js" asp-append-version="true"></script>
+}
 
