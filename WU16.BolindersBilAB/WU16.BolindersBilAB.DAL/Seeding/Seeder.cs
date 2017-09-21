@@ -48,7 +48,7 @@ namespace WU16.BolindersBilAB.DAL.Seeding
                 if (Attribute.IsDefined(property, typeof(SeedIgnoreAttribute)))
                     continue;
 
-                // Find Handler
+                // Find Appropritive Handler
                 var pair = _handlers.FirstOrDefault(x => Attribute.IsDefined(property, x.Key));
 
                 if (pair.Key != null)
