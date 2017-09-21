@@ -80,32 +80,39 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return View(new CarListViewModel
             {
-                Cars = cars.ToArray(),
+                Cars = cars.ToList(),
                 Query = query
             });
         }
 
         [HttpGet]
         [Route("/bilar/{parameter?}")]
-        public IActionResult Cars(CarListQuery query, string parameter="")
+        public IActionResult Cars(CarListQuery query, string parameter="", int page=1)
         {
             var cars = _carlistService.GetCars(query);
-
-            if (parameter != null)
+            if (parameter.Length > 0)
             {
                 if (parameter == "nya" || parameter == "begagnade")
                 {
                     cars = cars.FilterByParameter(parameter);
                 }
+                else
+                {
+                    return Redirect("/bilar");
+                }
             }
-            else
-            {
-                return Redirect("/bilar");
-            }
+
+            var totalItems = cars.ToList().Count;
+
+            cars.PaginateCars(page);
+
+            ViewBag.Prices = CarListHelper.GetPriceRange();
+            ViewBag.Years = CarListHelper.GetModelYears();
+            ViewBag.Milages = CarListHelper.GetMilageRange();
 
             return View(new CarListViewModel()
             {
-                Cars = cars.ToArray()
+                Cars = cars.ToList(),
             });
         }
     }
