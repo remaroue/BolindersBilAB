@@ -3,8 +3,5 @@
     $('#carType').select2();
     $('#gearbox').select2();
 
-    $("showMore").on('click', function () {
-
-
-    });
+    //$("html, body").animate({ scrollTop: $(document).height() }, 1000);
 });
