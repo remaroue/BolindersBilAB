@@ -40,6 +40,7 @@ namespace WU16.BolindersBilAB.Web
 
             services.AddScoped<EmailService>();
             services.AddScoped<CarSearchService>();
+            services.AddScoped<ImageService>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -106,7 +107,7 @@ namespace WU16.BolindersBilAB.Web
 
             app.UseMvc(x => x.MapRoute("default", template: "{Controller=Home}/{Action=Index}/{Id?}"));
 
-            if (!userManager.Users.Any())
+            /*if (!userManager.Users.Any())
             {
                 var user1 = new ApplicationUser { UserName = "jonkoping@bolindersbil.se", Email = "jonkoping@bolindersbil.se" };
                 var user2 = new ApplicationUser { UserName = "varnamo@bolindersbil.se", Email = "varnamo@bolindersbil.se" };
@@ -166,7 +167,7 @@ namespace WU16.BolindersBilAB.Web
                 };
                 _ctx.AddRange(cars);
                 _ctx.SaveChanges();
-            }
+            }*/
 
             //// similar car
             //var vw2 = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "Volkswagen");

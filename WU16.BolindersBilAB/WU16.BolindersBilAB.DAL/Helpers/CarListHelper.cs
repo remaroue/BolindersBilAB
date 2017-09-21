@@ -14,7 +14,7 @@ namespace WU16.BolindersBilAB.DAL.Helpers
         {
             return _pattern.Replace(input.ToUpper(), string.Empty);
         }
-
+        
         public static IQueryable<Car> FilterByParameter(this IQueryable<Car> cars, string parameter)
         {
             bool isUsed = true;
@@ -69,6 +69,27 @@ namespace WU16.BolindersBilAB.DAL.Helpers
                 cars = cars.Skip(query.Take);
 
             // TODO: Free Search match
+            if(query.FreeSearch != null)
+            {
+                IQueryable<Car> tempCars = null;
+                if (cars.Where(x => x.Description.Contains(query.FreeSearch)) != null)
+                    tempCars = tempCars.Concat(cars.Where(x => x.Description.Contains(query.FreeSearch)));
+
+                if (cars.Where(x => x.Equipment.Contains(query.FreeSearch)) != null)
+                    tempCars = tempCars.Concat(cars.Where(x => x.Equipment.Contains(query.FreeSearch)));
+
+                try{
+                    if (cars.Where(x => x.ModelYear.Equals(int.Parse(query.FreeSearch))) != null)
+                    {
+                        tempCars = tempCars.Concat(cars.Where(x => x.ModelYear.Equals(int.Parse(query.FreeSearch))));
+                    }
+                } catch { Console.WriteLine("Car modelyear did not match, ignore"); }
+
+                if (cars.Where(x => x.Model.Contains(query.FreeSearch)) != null)
+                    tempCars = tempCars.Concat(cars.Where(x => x.Model.Contains(query.FreeSearch)));
+
+                cars = tempCars;
+            }
 
             return cars;
         }

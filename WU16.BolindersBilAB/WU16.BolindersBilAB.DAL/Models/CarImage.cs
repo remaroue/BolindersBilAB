@@ -8,10 +8,10 @@ namespace WU16.BolindersBilAB.DAL.Models
 {
     public class CarImage
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public Guid Id { get; set; }
+        public string FileName { get; set; }
         public int Priority { get; set; }
+
         [ForeignKey("Car")]
         public string CarId { get; set; }
         public virtual Car Car { get; set; }
