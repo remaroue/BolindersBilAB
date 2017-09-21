@@ -10,10 +10,12 @@ namespace WU16.BolindersBilAB.Web.Controllers
 {
     public class ImageController : Controller
     {
+        private CarBrandService _bs;
         private ImageService _imageService;
 
-        public ImageController(ImageService imageService)
+        public ImageController(ImageService imageService, CarBrandService bs)
         {
+            _bs = bs;
             _imageService = imageService;
         }
 
@@ -23,9 +25,10 @@ namespace WU16.BolindersBilAB.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(ICollection<IFormFile> images)
+        public IActionResult Index(ICollection<IFormFile> images, string id)
         {
-            _imageService.UploadImages(images.ToArray());
+            var carbrand = _imageService.ChangeImageOnCarBrand(_bs.GetBrand(id), images.First());
+            _bs.Update(carbrand);
             return View();
         }
     }

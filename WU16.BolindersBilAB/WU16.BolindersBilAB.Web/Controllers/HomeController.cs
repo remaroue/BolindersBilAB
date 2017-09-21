@@ -23,9 +23,6 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         public IActionResult Index()
         {
-            //ViewBag.CarBrands = _brandService.Get();
-            //Console.WriteLine("TRORLROLRORL " + _brandService.Get().OrderBy(i => i.CarBrand));
-
             var sortedBrands = _carListService.Get().GroupBy(i => i.CarBrand);
 
             List<HomeViewModel> brandCount = new List<HomeViewModel>();

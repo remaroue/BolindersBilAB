@@ -108,6 +108,16 @@ namespace WU16.BolindersBilAB.Web
 
             app.UseMvc(x => x.MapRoute("default", template: "{Controller=Home}/{Action=Index}/{Id?}"));
 
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             //// New Seeder
 
             if (!userManager.Users.Any())
@@ -147,10 +157,7 @@ namespace WU16.BolindersBilAB.Web
                 _ctx.SaveChanges();
             }
 
-            if (!_ctx.Cars.Any())
-            {
-                Seeder.Seed<Car>(_ctx, 1000);
-            }
+            Seeder.Seed<Car>(_ctx, 1000);
         }
     }
 }

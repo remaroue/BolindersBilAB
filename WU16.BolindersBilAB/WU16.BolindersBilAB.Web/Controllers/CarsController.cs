@@ -99,7 +99,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         }
 
         [Route("/bilar/{parameter?}")]
-        public IActionResult Cars(string parameter)
+        public IActionResult Cars(string parameter, string query)
         {
             var cars = _carlistService.GetCars();
 
