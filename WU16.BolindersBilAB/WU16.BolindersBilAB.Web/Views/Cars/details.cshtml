@@ -11,7 +11,7 @@
     string[] imageUrls = null;
     if (anyImages)
     {
-        imageUrls = car.CarImages.Select(x => $"/images/{x.Id}.jpg").ToArray();
+        imageUrls = car.CarImages.Select(x => $"/images/{x.FileName}.jpg").ToArray();
     }
 
     var condition = car.Used ? "Begagnad" : "Ny";

@@ -15,6 +15,7 @@ using Microsoft.Net.Http.Headers;
 using WU16.BolindersBilAB.DAL.Repository;
 using WU16.BolindersBilAB.DAL.Services;
 using WU16.BolindersBilAB.DAL.Seeding;
+using Microsoft.AspNetCore.Routing;
 
 namespace WU16.BolindersBilAB.Web
 {
@@ -61,6 +62,8 @@ namespace WU16.BolindersBilAB.Web
                 // User settings
                 options.User.RequireUniqueEmail = true;
             });
+
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
 
             services.ConfigureApplicationCookie(options =>

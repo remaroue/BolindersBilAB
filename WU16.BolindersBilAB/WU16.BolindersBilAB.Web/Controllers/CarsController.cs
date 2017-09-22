@@ -99,7 +99,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             }
         }
 
-        [Route("/bilar/{parameter?}")]
+        //[Route("/bilar/{parameter?}")]
         public IActionResult Cars(string parameter)
         {
             var cars = _carlistService.GetCars();
@@ -144,7 +144,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             ViewBag.Prices = CarListHelper.GetPriceRange();
             ViewBag.Years = CarListHelper.GetModelYears();
             ViewBag.Milages = CarListHelper.GetMilageRange();
-
+            ViewBag.Parameter = parameter;
 
             return View(new CarListViewModel()
             {

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using WU16.BolindersBilAB.Web.Models;
 
 namespace WU16.BolindersBilAB.Web.Infrastructure
@@ -33,11 +34,13 @@ namespace WU16.BolindersBilAB.Web.Infrastructure
             if(PageModel.CurrentPage * PageModel.ItemsPerPage < PageModel.TotalItems)
             {              
                 IUrlHelper urlHelper = _helper.GetUrlHelper(ViewContext);
-
+                var newQuery = HttpUtility.ParseQueryString(PageQuery);
                 var tag = new TagBuilder("a");
-                tag.AddCssClass("btn btn-primary");
-                tag.Attributes["id"] = "showMore";              
-                tag.Attributes["href"] = urlHelper.Action(PageAction, new {page = (PageModel.CurrentPage + 1) });
+                tag.AddCssClass("btn btn-primary mx-center");
+                tag.Attributes["id"] = "showMore";
+
+                newQuery.Set("page", (PageModel.CurrentPage + 1).ToString());
+                tag.Attributes["href"] = ViewContext.HttpContext.Request.Path + "?" + newQuery.ToString();
                 tag.InnerHtml.Append("Visa fler");
 
                 output.Content.AppendHtml(tag);
