@@ -1,10 +1,10 @@
 ﻿@model CarListViewModel
 @{
-    if(ViewBag.Parameter == "nya")
+    if (ViewBag.Parameter == "nya")
     {
         ViewData["Title"] = "Nya bilar";
     }
-    else if(ViewBag.Parameter == "begagnade")
+    else if (ViewBag.Parameter == "begagnade")
     {
         ViewData["Title"] = "Begagnade bilar";
     }
@@ -14,44 +14,43 @@
     }
 }
 
-<div class="container">
-    <h2>@ViewData["Title"]</h2>
+<div class="container mt-2">
     <div class="row">
-        <div class="col-lg-12 card">
+        <div class="col-lg-12">
+            <h2 class="text-center">@ViewData["Title"]</h2>
             <form asp-action="Cars" method="get">
                 <div class="form-row">
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col-lg-2 col-sm-6 col-6">
                         <label class="col-form-label">Årsmodell från</label>
                         <select name="min-year" asp-for="Query.YearFrom" class="form-control">
                             <option value="0">-</option>
-                            @foreach(var row in ViewBag.Years)
+                            @foreach (var row in ViewBag.Years)
                             {
                                 <option value="@row.Key">@row.Value</option>
-
                             }
                         </select>
                     </div>
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col-lg-2 col-sm-6 col-6">
                         <label for="inputEmail4" class="col-form-label">Årsmodell till</label>
                         <select name="max-year" asp-for="Query.YearTo" class="form-control">
                             <option value="0">-</option>
-                            @foreach(var row in ViewBag.Years)
+                            @foreach (var row in ViewBag.Years)
                             {
                                 <option value="@row.Key">@row.Value</option>
                             }
                         </select>
                     </div>
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col-lg-2 col-sm-6 col-6">
                         <label for="inputEmail4" class="col-form-label">Pris från</label>
                         <select name="min-price" asp-for="Query.PriceFrom" class="form-control">
                             <option value="0">-</option>
-                            @foreach(var row in ViewBag.Prices)
+                            @foreach (var row in ViewBag.Prices)
                             {
                                 <option value="@row.Key">@row.Value</option>
                             }
                         </select>
                     </div>
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col-lg-2 col-sm-6 col-6">
                         <label for="inputEmail4" class="col-form-label">Pris till</label>
                         <select name="max-price" asp-for="Query.PriceTo" class="form-control">
                             <option value="0">-</option>
@@ -61,31 +60,31 @@
                             }
                         </select>
                     </div>
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col-lg-2 col-sm-6 col-6">
                         <label for="inputEmail4" class="col-form-label">Mil från</label>
                         <select name="min-milage" asp-for="Query.MilageFrom" class="form-control">
                             <option value="0">-</option>
-                            @foreach(var row in ViewBag.Milages)
-                            { 
+                            @foreach (var row in ViewBag.Milages)
+                            {
                                 <option value="@row.Key">@row.Value</option>
                             }
                         </select>
                     </div>
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col-lg-2 col-sm-6 col-6">
                         <label for="inputEmail4" class="col-form-label">Mil till</label>
                         <select name="max-milage" asp-for="Query.MilageTo" class="form-control">
                             <option value="0">-</option>
-                                @foreach(var row in ViewBag.Milages)
-                                { 
-                                    <option value="@row.Key">@row.Value</option>
-                                }
+                            @foreach (var row in ViewBag.Milages)
+                            {
+                                <option value="@row.Key">@row.Value</option>
+                            }
                         </select>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-lg-4">
                         <label>Karosstyp</label>
-                        <select name="type" style="display:none;" id="carType" asp-for="Query.CarType" class="form-control" multiple="multiple">
+                        <select style="width:99%; display:none;" name="type" id="carType" asp-for="Query.CarType" class="form-control" multiple="multiple">
                             @foreach (var type in Enum.GetNames(typeof(CarType)))
                             {
                                 <option>@type</option>
@@ -94,7 +93,7 @@
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Drivmedel</label>
-                        <select name="fuel" style="display:none;" name="fuel" id="fuelType" asp-for="Query.FuelType" class="form-control" multiple="multiple">
+                        <select style="width:99%; display:none;" name="fuel" id="fuelType" asp-for="Query.FuelType" class="form-control" multiple="multiple">
                             @foreach (var type in Enum.GetNames(typeof(FuelType)))
                             {
                                 <option>@type</option>
@@ -103,42 +102,51 @@
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Växellåda</label>
-                        <select name="gearbox" style="display:none;" id="gearbox" asp-for="Query.Gearbox" class="form-control" multiple="multiple">
+                        <select style="width:100%; display:none;" name="gearbox" id="gearbox" asp-for="Query.Gearbox" class="form-control" multiple="multiple">
                             @foreach (var type in Enum.GetNames(typeof(Gearbox)))
                             {
                                 <option>@type</option>
                             }
                         </select>
+                    </div>
                 </div>
-                    <div class="form-group ml-auto">
+                <div class="form-row">
+                    <div class="form-group ml-auto mr-1">
                         <button type="submit" class="btn btn-primary">Sök</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <hr class="w-100" />
     <div class="row">
-            @if(Model.Cars.Count > 0)
-            {
-                @foreach (var car in Model.Cars)
+        @if (Model.Cars.Count > 0)
+        {
+            @foreach (var car in Model.Cars)
                 {
-                    <div class="card col-lg-6">
+                <div class="col-lg-6 mt-2">
+                    <div role="button" class="card car-list-item">
+                            <img src="http://via.placeholder.com/250x250" />
                         <div class="card-body">
-                            <img src="http://via.placeholder.com/150x150" />
+                            <h5 class="card-title">@car.CarBrand.BrandName @car.Model -@car.ModelYear.ToString().Substring(2)</h5>
+                            <div class="float-left pt-1"><span class="car-details car-price">@car.Price kr</span></div>
+                            <div class="text-right">
+                                <a asp-action="Details" asp-route-licenseNumber="@car.LicenseNumber" class="btn btn-primary">Detaljer</a>
+                            </div>
                         </div>
-                    </div>
-                }
-                <div class="mt-3" id="pager" page-query="@ViewBag.Query" data-page="@Model.Pager.CurrentPage" page-action="Cars" page-model="@Model.Pager"></div>
-
-            }
-            else
-            {
-                <div class="card">
-                    <div class="card-body">
-                        Inga bilar hittades.
                     </div>
                 </div>
             }
+            <hr class="w-100" />
+            <div class="mx-auto mt-3 mb-3" id="pager" page-query="@ViewBag.Query" data-page="@Model.Pager.CurrentPage" page-action="Cars" page-model="@Model.Pager"></div>
+
+        }
+        else
+        {
+            <div class="col-lg-12 text-center">
+                    <h5>Inga bilar hittades.</h5>
+                </div>
+        }
     </div>
 </div>
 @section Scripts {
