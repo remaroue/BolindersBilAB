@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Encodings.Web;
 using System.IO;
+using System.Text;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -41,7 +42,13 @@ namespace WU16.BolindersBilAB.Web.Controllers
             var car = _carlistService.GetCar(licenseNumber);
             if (car == null) return BadRequest();
 
-            var similarCars = _carlistService.GetCars(car.GetSimilarCarsQuery()).ToArray();
+            var similarCars = _carlistService.GetCars(car.GetSimilarCarsQuery())
+                .Select(x => new SimilarViewModel() {
+                    Title = $"{x.CarBrand.BrandName} {x.Model} {x.ModelYear}",
+                    LicenseNumber = x.LicenseNumber,
+                    ImageName = x.CarImages.FirstOrDefault().FileName ?? ""
+                })
+                .ToArray();
 
             return View(new CarDetailsViewModel()
             {
@@ -70,7 +77,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Route("/bil/ny")]
         public IActionResult AddCar()
         {
-            
+
             ViewBag.CarBrands = _brandService.Get();
             ViewBag.Locations = _locationService.Get();
             return View();
@@ -90,12 +97,12 @@ namespace WU16.BolindersBilAB.Web.Controllers
             }
             else
             {
-                
+
                 car.CreationDate = DateTime.Now;
                 car.LastUpdated = DateTime.Now;
 
                 _carService.SaveCar(car);
-                return Redirect("/"); // Todo Return to view.            
+                return Redirect("/"); // Todo Return to view.
 
             }
         }
@@ -143,11 +150,9 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             var totalItems = cars.ToList().Count;
 
-
             ViewBag.Prices = CarListHelper.GetPriceRange();
             ViewBag.Years = CarListHelper.GetModelYears();
             ViewBag.Milages = CarListHelper.GetMilageRange();
-
 
             return View(new CarListViewModel()
             {

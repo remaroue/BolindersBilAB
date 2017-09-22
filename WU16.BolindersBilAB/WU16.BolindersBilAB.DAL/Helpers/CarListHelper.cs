@@ -42,12 +42,11 @@ namespace WU16.BolindersBilAB.DAL.Helpers
             if (query.CarType?.Count > 0)
                 cars = cars.Where(x => query.CarType.Contains(x.CarType));
             if (query.CarBrand?.Count > 0)
-                cars = cars.Where(x => query.CarBrand.Select(y => x.CarBrandId).Contains(x.CarBrand.BrandName));
+                cars = cars.Where(x => query.CarBrand.Select(y => y.BrandName).Contains(x.CarBrand.BrandName));
             if (query.Gearbox?.Count > 0)
                 cars = cars.Where(x => query.Gearbox.Contains(x.Gearbox));
             if (query.FuelType?.Count > 0)
                 cars = cars.Where(x => query.FuelType.Contains(x.FuelType));
-
 
             if (query.MilageFrom > 0)
                 cars = cars.Where(x => x.Milage >= query.MilageFrom);
@@ -63,11 +62,6 @@ namespace WU16.BolindersBilAB.DAL.Helpers
                 cars = cars.Where(x => x.ModelYear >= query.YearFrom);
             if (query.YearTo > 0)
                 cars = cars.Where(x => x.ModelYear <= query.YearTo);
-
-            if (query.Skip > 0)
-                cars = cars.Skip(query.Skip);
-            if (query.Take > 0)
-                cars = cars.Take(query.Take);
 
             // TODO: Free Search match
             if (query.FreeSearch != null)
@@ -89,6 +83,11 @@ namespace WU16.BolindersBilAB.DAL.Helpers
 
                 cars = tempCars ?? cars;
             }
+
+            if (query.Skip > 0)
+                cars = cars.Skip(query.Skip);
+            if (query.Take > 0)
+                cars = cars.Take(query.Take);
 
             return cars;
         }

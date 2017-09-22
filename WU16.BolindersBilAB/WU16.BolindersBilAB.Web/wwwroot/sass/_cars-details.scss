@@ -16,6 +16,37 @@
         }
     }
 
+    .similar-car .card-block h5 {
+        margin: 15px;
+    }
+
+    .similar-car {
+        cursor: pointer;
+        color: inherit;
+
+        margin-top: 15px;
+
+    }
+
+    .similar-car img {
+        max-height: 100px;
+    }
+
+    .no-image {
+        position: relative;
+        height: 100px;
+        background-color: $grey;
+
+        P {
+            font-size: 1.4em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            text-align: center;
+        }
+    }
+
     .no-images {
         height: 300px;
         background-color: $grey;
@@ -94,7 +125,6 @@
             font-weight: 600;
         }
     }
-
     /* desktop */
     @media screen and (min-width: 762px) {
         .image-preview {
@@ -112,7 +142,6 @@
         }
     }
     /* /desktop */
-
     /* Mobile */
     @media screen and (max-width: 762px) {
         margin-top: 0;
