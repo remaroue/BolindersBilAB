@@ -96,15 +96,7 @@ namespace WU16.BolindersBilAB.DAL.Helpers
         {
             return new CarListQuery()
             {
-                CarType = new List<CarType>() { car.CarType },
-                Gearbox = new List<Gearbox>() { car.Gearbox },
-                FuelType = new List<FuelType>() { car.FuelType },
-                MilageFrom = (int)(car.Milage * 0.8),
-                MilageTo = (int)(car.Milage * 1.2),
                 PriceFrom = car.Price,
-                PriceTo = car.Price * 1.4m,
-                YearFrom = car.ModelYear - 5,
-                YearTo = car.ModelYear + 5,
                 CarBrand = new List<CarBrand>() { car.CarBrand },
                 Take = 4
             };

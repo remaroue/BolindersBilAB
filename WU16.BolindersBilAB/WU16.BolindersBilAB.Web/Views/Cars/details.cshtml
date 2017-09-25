@@ -96,7 +96,7 @@
                         <td>@car.Model</td>
                     </tr>
                     <tr>
-                        <td>Årscarl</td>
+                        <td>Modelår</td>
                         <td>@car.ModelYear</td>
                     </tr>
                     <tr>
@@ -197,7 +197,7 @@
                     {
                         <a href="/bil/@sc.LicenseNumber" class="card similar-car col-3">
                             <div class="card-deck">
-                                @if (sc.ImageName != "")
+                                @if (!string.IsNullOrEmpty(sc.ImageName))
                                 {
                                     <img class="card-img-top" src="~/Images/Upload/@sc.ImageName" alt="@sc.Title" />
                                 }
