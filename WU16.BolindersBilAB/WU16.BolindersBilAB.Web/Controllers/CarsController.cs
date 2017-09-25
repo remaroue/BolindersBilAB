@@ -12,7 +12,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Encodings.Web;
 using System.IO;
+<<<<<<< HEAD
 using System.Text;
+=======
+using WU16.BolindersBilAB.Web.ModelBinder;
+>>>>>>> refs/remotes/origin/Jacob-dev
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -133,7 +137,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         [HttpGet]
         [Route("/bilar/{parameter?}")]
-        public IActionResult Cars(CarListQuery query, string parameter = "", int page = 1)
+        public IActionResult Cars([ModelBinder(BinderType = typeof(QueryModelBinder))]CarListQuery query, string parameter="", int page=1)
         {
             var cars = _carlistService.GetCars(query);
             if (parameter.Length > 0)
@@ -150,9 +154,12 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             var totalItems = cars.ToList().Count;
 
+
+            ViewBag.Query = Request.QueryString.ToString();
             ViewBag.Prices = CarListHelper.GetPriceRange();
             ViewBag.Years = CarListHelper.GetModelYears();
             ViewBag.Milages = CarListHelper.GetMilageRange();
+            ViewBag.Parameter = parameter;
 
             return View(new CarListViewModel()
             {

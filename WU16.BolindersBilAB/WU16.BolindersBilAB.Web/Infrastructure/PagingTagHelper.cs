@@ -7,11 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using WU16.BolindersBilAB.Web.Models;
 
 namespace WU16.BolindersBilAB.Web.Infrastructure
 {
-    [HtmlTargetElement("div", Attributes ="page-model, page-action")]
+    [HtmlTargetElement("div", Attributes ="page-model, page-action, page-query")]
     public class PagingTagHelper : TagHelper
     {
         private IUrlHelperFactory _helper;
@@ -25,17 +26,21 @@ namespace WU16.BolindersBilAB.Web.Infrastructure
         public ViewContext ViewContext { get; set; }
         public PagingInfo PageModel { get; set; }
         public string PageAction { get; set; }
+        public string PageQuery { get; set; }
 
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             if(PageModel.CurrentPage * PageModel.ItemsPerPage < PageModel.TotalItems)
-            {
+            {              
                 IUrlHelper urlHelper = _helper.GetUrlHelper(ViewContext);
+                var newQuery = HttpUtility.ParseQueryString(PageQuery);
                 var tag = new TagBuilder("a");
-                tag.AddCssClass("btn btn-primary");
+                tag.AddCssClass("btn btn-primary mx-center");
                 tag.Attributes["id"] = "showMore";
-                tag.Attributes["href"] = urlHelper.Action(PageAction, new { page = (PageModel.CurrentPage + 1) });
+
+                newQuery.Set("page", (PageModel.CurrentPage + 1).ToString());
+                tag.Attributes["href"] = ViewContext.HttpContext.Request.Path + "?" + newQuery.ToString();
                 tag.InnerHtml.Append("Visa fler");
 
                 output.Content.AppendHtml(tag);

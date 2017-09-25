@@ -5,20 +5,47 @@
     <meta name="viewport" content="width=device-width" />
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
-
-    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" rel="stylesheet" />
-    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" asp-append-version="true" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <link href="~/dist/css/vendor.css" rel="stylesheet" asp-append-version="true"/>
     <link href="~/dist/css/main.min.css" rel="stylesheet" asp-append-version="true" />
 
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Bolinders bil AB</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Start</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Cars" asp-controller="Cars" asp-route-parameter="">Alla bilar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Cars" asp-controller="Cars" asp-route-parameter="nya">Nya bilar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Cars" asp-controller="Cars" asp-route-parameter="begagnade">Begagnade bilar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Kontakt</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
     @RenderBody()
 
-    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <footer class="bg-dark" style="height:200px;">
+    </footer>
+
+
+    <script src="~/dist/js/vendor.js"></script>
     @RenderSection("Scripts", false)
-    <script src="~/js/_home-index.js" asp-append-version="true"></script>
-    <script src="~/js/_cars-cars.js"></script>
 </body>
 </html>

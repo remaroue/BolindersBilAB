@@ -172,8 +172,6 @@ namespace WU16.BolindersBilAB.DAL.Helpers
             var milages = new Dictionary<int, string>();
             var startMilage = 999;
 
-            milages.Add(0, "0");
-
             while (startMilage < 30000)
             {
                 milages.Add(startMilage, startMilage.ToString("## ###"));
