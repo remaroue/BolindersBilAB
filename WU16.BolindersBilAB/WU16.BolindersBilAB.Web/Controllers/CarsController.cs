@@ -26,14 +26,14 @@ namespace WU16.BolindersBilAB.Web.Controllers
         private LocationService _locationService;
         private CarService _carService;
 
-        public CarsController(CarSearchService carSearchService, EmailService emailService, CarListService carListService, CarBrandService carBrandService, LocationService locationService, CarService CarService)
+        public CarsController(CarSearchService carSearchService, EmailService emailService, CarListService carListService, CarBrandService carBrandService, LocationService locationService, CarService carService)
         {
             _carSearchService = carSearchService;
             _emailService = emailService;
             _carlistService = carListService;
             _brandService = carBrandService;
             _locationService = locationService;
-            _carService = CarService;
+            _carService = carService;
         }
 
         [HttpGet]
@@ -72,7 +72,6 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Route("/bil/ny")]
         public IActionResult AddCar()
         {
-
             ViewBag.CarBrands = _brandService.Get();
             ViewBag.Locations = _locationService.Get();
             return View();
