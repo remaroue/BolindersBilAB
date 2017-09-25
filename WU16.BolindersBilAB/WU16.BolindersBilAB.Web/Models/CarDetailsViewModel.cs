@@ -9,13 +9,6 @@ namespace WU16.BolindersBilAB.Web.Models
     public class CarDetailsViewModel
     {
         public Car Car { get; set; }
-        public IEnumerable<SimilarViewModel> SimilarCars { get; set; }
-    }
-
-    public class SimilarViewModel
-    {
-        public string LicenseNumber { get; set; }
-        public string Title { get; set; }
-        public string ImageName { get; set; }
+        public IEnumerable<SimilarCarViewModel> SimilarCars { get; set; }
     }
 }

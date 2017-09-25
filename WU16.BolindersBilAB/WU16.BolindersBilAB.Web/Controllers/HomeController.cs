@@ -23,7 +23,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         public IActionResult Index()
         {
-            var sortedBrands = _carListService.Get().GroupBy(i => i.CarBrand);
+            var sortedBrands = _carListService.GetCars().GroupBy(i => i.CarBrand);
 
             List<HomeViewModel> brandCount = new List<HomeViewModel>();
             foreach (var brand in sortedBrands)

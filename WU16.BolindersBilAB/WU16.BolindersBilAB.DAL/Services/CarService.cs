@@ -12,7 +12,6 @@ namespace WU16.BolindersBilAB.DAL.Services
         public CarService(IRepository<Car> Repo)
         {
             _repo = Repo;
-          
         }
 
         public void SaveCar(Car car)
@@ -20,16 +19,12 @@ namespace WU16.BolindersBilAB.DAL.Services
             _repo.Insert(car);
             _repo.Save();
         }
+
         public Car DeleteCar(Car car)
         {
             _repo.Delete(car);
             _repo.Save();
             return car;
         }
-
-        
-      
-
-    
     }
 }

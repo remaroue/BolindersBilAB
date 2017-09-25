@@ -42,13 +42,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             var car = _carlistService.GetCar(licenseNumber);
             if (car == null) return BadRequest();
 
-            var similarCars = _carlistService.GetCars(car.GetSimilarCarsQuery())
-                .Select(x => new SimilarViewModel() {
-                    Title = $"{x.CarBrand.BrandName} {x.Model} {x.ModelYear}",
-                    LicenseNumber = x.LicenseNumber,
-                    ImageName = x.CarImages.FirstOrDefault().FileName ?? ""
-                })
-                .ToArray();
+            var similarCars = _carlistService.GetSimilarCars(car);
 
             return View(new CarDetailsViewModel()
             {
