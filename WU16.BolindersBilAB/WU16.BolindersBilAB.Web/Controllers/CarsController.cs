@@ -108,7 +108,6 @@ namespace WU16.BolindersBilAB.Web.Controllers
             }
         }
 
-        [HttpGet]
         [Route("/bilar/{parameter?}")]
         public IActionResult Cars(string parameter, [FromQuery(Name = "homepageQuery")]string homepageQuery)
         {
