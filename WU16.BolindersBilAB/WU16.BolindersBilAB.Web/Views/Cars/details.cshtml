@@ -11,11 +11,7 @@
     string[] imageUrls = null;
     if (anyImages)
     {
-<<<<<<< HEAD
         imageUrls = car.CarImages.Select(x => $"/images/upload/{x.FileName}").ToArray();
-=======
-        imageUrls = car.CarImages.Select(x => $"/images/{x.FileName}.jpg").ToArray();
->>>>>>> refs/remotes/origin/Jacob-dev
     }
 
     var condition = car.Used ? "Begagnad" : "Ny";

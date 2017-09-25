@@ -12,11 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Encodings.Web;
 using System.IO;
-<<<<<<< HEAD
 using System.Text;
-=======
 using WU16.BolindersBilAB.Web.ModelBinder;
->>>>>>> refs/remotes/origin/Jacob-dev
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
