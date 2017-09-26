@@ -69,10 +69,8 @@ namespace WU16.BolindersBilAB.DAL.Helpers
                     cars = cars.Where(x => x.Description.Contains(query.Search));
                 if (cars.Any(x => x.Equipment.Contains(query.Search)))
                     cars = cars.Where(x => x.Equipment.Contains(query.Search));
-
                 if (cars.Any(x => query.Search.Contains(x.ToString())))
                     cars = cars.Where(x => query.Search.Contains(x.ToString()));
-
                 if (cars.Any(x => x.Model.Contains(query.Search)))
                     cars = cars.Where(x => x.Model.Contains(query.Search));
             }
