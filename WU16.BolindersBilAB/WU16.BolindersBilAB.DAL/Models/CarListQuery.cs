@@ -8,7 +8,6 @@ namespace WU16.BolindersBilAB.DAL.Models
 {
     public class CarListQuery
     {
-        
         public int YearFrom { get; set; }
         public int YearTo { get; set; }
         public decimal PriceFrom { get; set; }
@@ -21,6 +20,6 @@ namespace WU16.BolindersBilAB.DAL.Models
         public List<CarType> CarType { get; set; }
         public int Skip { get; set; }
         public int Take { get; set; }
-        public string FreeSearch { get; set; }
+        public string Search { get; set; }
     }
 }
