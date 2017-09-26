@@ -288,3 +288,4 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 
+WU16.BolindersBilAB/WU16.BolindersBilAB.DAL/Migrations/ApplicationDbContextModelSnapshot.cs
