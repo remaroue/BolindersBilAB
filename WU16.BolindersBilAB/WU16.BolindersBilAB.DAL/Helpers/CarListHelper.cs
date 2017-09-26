@@ -64,22 +64,22 @@ namespace WU16.BolindersBilAB.DAL.Helpers
                 cars = cars.Where(x => x.ModelYear <= query.YearTo);
 
             // TODO: Free Search match
-            if (query.FreeSearch != null)
+            if (query.Search != null)
             {
                 IQueryable<Car> tempCars = null;
-                if (cars.Any(x => x.Description.Contains(query.FreeSearch)))
-                    tempCars = tempCars.Concat(cars.Where(x => x.Description.Contains(query.FreeSearch)));
+                if (cars.Any(x => x.Description.Contains(query.Search)))
+                    tempCars = tempCars.Concat(cars.Where(x => x.Description.Contains(query.Search)));
 
-                if (cars.Any(x => x.Equipment.Contains(query.FreeSearch)))
-                    tempCars = tempCars.Concat(cars.Where(x => x.Equipment.Contains(query.FreeSearch)));
+                if (cars.Any(x => x.Equipment.Contains(query.Search)))
+                    tempCars = tempCars.Concat(cars.Where(x => x.Equipment.Contains(query.Search)));
 
-                if (cars.Any(x => query.FreeSearch.Contains(x.ToString())))
+                if (cars.Any(x => query.Search.Contains(x.ToString())))
                 {
-                    tempCars = tempCars.Concat(cars.Where(x => query.FreeSearch.Contains(x.ToString())));
+                    tempCars = tempCars.Concat(cars.Where(x => query.Search.Contains(x.ToString())));
                 }
 
-                if (cars.Any(x => x.Model.Contains(query.FreeSearch)))
-                    tempCars = tempCars.Concat(cars.Where(x => x.Model.Contains(query.FreeSearch)));
+                if (cars.Any(x => x.Model.Contains(query.Search)))
+                    tempCars = tempCars.Concat(cars.Where(x => x.Model.Contains(query.Search)));
 
                 cars = tempCars ?? cars;
             }

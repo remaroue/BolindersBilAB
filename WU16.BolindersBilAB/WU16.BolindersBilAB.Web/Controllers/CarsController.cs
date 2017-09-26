@@ -26,14 +26,14 @@ namespace WU16.BolindersBilAB.Web.Controllers
         private LocationService _locationService;
         private CarService _carService;
 
-        public CarsController(CarSearchService carSearchService, EmailService emailService, CarListService carListService, CarBrandService carBrandService, LocationService locationService, CarService CarService)
+        public CarsController(CarSearchService carSearchService, EmailService emailService, CarListService carListService, CarBrandService carBrandService, LocationService locationService, CarService carService)
         {
             _carSearchService = carSearchService;
             _emailService = emailService;
             _carlistService = carListService;
             _brandService = carBrandService;
             _locationService = locationService;
-            _carService = CarService;
+            _carService = carService;
         }
 
         [HttpGet]
@@ -72,7 +72,6 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Route("/bil/ny")]
         public IActionResult AddCar()
         {
-
             ViewBag.CarBrands = _brandService.Get();
             ViewBag.Locations = _locationService.Get();
             return View();
@@ -102,48 +101,40 @@ namespace WU16.BolindersBilAB.Web.Controllers
             }
         }
 
-        [Route("/bilar/{parameter?}")]
-        public IActionResult Cars(string parameter, [FromQuery(Name = "homepageQuery")]string homepageQuery)
-        {
-            var cars = _carlistService.GetCars(_carSearchService.GetCarListQuery(homepageQuery));
+        //[Route("/bilar/{parameter?}")]
+        //public IActionResult Cars(string parameter, [FromQuery(Name = "homepageQuery")]string homepageQuery)
+        //{
+        //    var cars = _carlistService.GetCars(_carSearchService.GetCarListQuery(homepageQuery));
 
-            if (parameter != null)
-            {
-                if (parameter != "nya" && parameter != "begagnade")
-                {
-                    return Redirect("/bilar");
-                }
-                else
-                {
-                    cars = cars.FilterByParameter(parameter);
-                }
-            }
+        //    if (parameter != null)
+        //    {
+        //        if (parameter != "nya" && parameter != "begagnade")
+        //        {
+        //            return Redirect("/bilar");
+        //        }
+        //        else
+        //        {
+        //            cars = cars.FilterByParameter(parameter);
+        //        }
+        //    }
 
-            return View(new CarListViewModel
-            {
-                Cars = cars.ToList()
-            });
-        }
+        //    return View(new CarListViewModel
+        //    {
+        //        Cars = cars.ToList()
+        //    });
+        //}
 
         [HttpGet]
         [Route("/bilar/{parameter?}")]
-        public IActionResult Cars([ModelBinder(BinderType = typeof(QueryModelBinder))]CarListQuery query, string parameter="", int page=1)
+        public IActionResult Cars([ModelBinder(BinderType = typeof(QueryModelBinder))]CarListQuery query, string parameter = "", int page = 1)
         {
-            var cars = _carlistService.GetCars(query);
-            if (parameter.Length > 0)
-            {
-                if (parameter == "nya" || parameter == "begagnade")
-                {
-                    cars = cars.FilterByParameter(parameter);
-                }
-                else
-                {
-                    return Redirect("/bilar");
-                }
-            }
+            query = _carSearchService.GetCarListQuery(query.Search, query);
+
+            var cars = _carlistService
+                .GetCars(query)
+                .FilterByParameter(parameter);
 
             var totalItems = cars.ToList().Count;
-
 
             ViewBag.Query = Request.QueryString.ToString();
             ViewBag.Prices = CarListHelper.GetPriceRange();
