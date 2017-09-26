@@ -126,9 +126,9 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         [HttpGet]
         [Route("/bilar/{parameter?}")]
-        public IActionResult Cars([ModelBinder(BinderType = typeof(QueryModelBinder))]CarListQuery query, string parameter = "", string search = null, int page = 1)
+        public IActionResult Cars([ModelBinder(BinderType = typeof(QueryModelBinder))]CarListQuery query, string parameter = "", int page = 1)
         {
-            query = _carSearchService.GetCarListQuery(search, query);
+            query = _carSearchService.GetCarListQuery(query.Search, query);
 
             var cars = _carlistService
                 .GetCars(query)

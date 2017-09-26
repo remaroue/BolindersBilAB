@@ -48,7 +48,6 @@ namespace WU16.BolindersBilAB.DAL.Services
 
             var query = GetEnums(input.ToLower());
             query.CarBrand = _carbrandRepository.Get().Where(x => input.ToLower().Contains(x.BrandName.ToLower())).ToList();
-            query.FreeSearch = input;
 
             if (inputQuery != null)
             {
@@ -59,7 +58,7 @@ namespace WU16.BolindersBilAB.DAL.Services
                 inputQuery.CarBrand = inputQuery.CarBrand ?? new List<CarBrand>();
                 inputQuery.CarBrand = inputQuery.CarBrand.Union(query.CarBrand).ToList();
 
-                inputQuery.FreeSearch = query.FreeSearch;
+                inputQuery.Search = input;
 
                 return inputQuery;
             }
