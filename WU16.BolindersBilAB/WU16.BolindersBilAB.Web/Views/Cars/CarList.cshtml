@@ -1,0 +1,114 @@
+﻿@model IEnumerable<WU16.BolindersBilAB.DAL.Models.Car>
+@{
+    ViewData["Title"] = "CarList";
+}
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+            <table class="table table-inverse">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Model)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ModelYear)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsLeaseable)
+                        </th>
+                     
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                    
+                        <th>
+                            @Html.DisplayNameFor(model => model.HorsePower)
+                        </th>
+                     
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreationDate)
+                        </th>
+                      
+                        <th>
+                            @Html.DisplayNameFor(model => model.CarType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FuelType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Gearbox)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Equipment)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CarBrand)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Location)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Model)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModelYear)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsLeaseable)
+                            </td>
+                        
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                         
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HorsePower)
+                            </td>
+                          
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreationDate)
+                            </td>
+                         
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CarType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FuelType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Gearbox)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Equipment)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CarBrand.BrandName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Location.Id)
+                            </td>
+                            @*<td>
+                                <a asp-action="Edit" asp-route-id="@item.LicenseNumber">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.LicenseNumber">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.LicenseNumber">Delete</a>
+                            </td>*@
+                        </tr>
+                    }
+                </tbody>
+            </table>

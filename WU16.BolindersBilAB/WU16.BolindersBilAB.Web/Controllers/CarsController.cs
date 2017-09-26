@@ -40,7 +40,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             if (car == null) return BadRequest();
 
             var similarCars = _carlistService.GetCars(car.GetSimilarCarsQuery()).ToArray();
-            
+
             return View(new CarDetailsViewModel()
             {
                 Car = car,
@@ -65,10 +65,24 @@ namespace WU16.BolindersBilAB.Web.Controllers
             return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
 
+
+        [HttpGet]
+        [Route("/bil/lista")]
+        public IActionResult CarList()
+        {
+            var carList = _carlistService.GetCars();
+            if(carList == null)
+            {
+                return BadRequest();
+            }
+            return View(carList);
+          
+
+        }
         [Route("/bil/ny")]
         public IActionResult AddCar()
         {
-            
+
             ViewBag.CarBrands = _brandService.Get();
             ViewBag.Locations = _locationService.Get();
             return View();
@@ -88,14 +102,38 @@ namespace WU16.BolindersBilAB.Web.Controllers
             }
             else
             {
-                
+
                 car.CreationDate = DateTime.Now;
                 car.LastUpdated = DateTime.Now;
 
                 _carService.SaveCar(car);
-                return Redirect("/"); // Todo Return to view.            
+                return Redirect("/"); // Todo Return to View.            
 
             }
+        }
+
+        [Route("/bil/nybrand")]
+        public IActionResult AddCarBrand()
+        {
+            var CarBrand = _brandService.Get();
+            return View();
+        }
+
+        [HttpPost]
+        [Route("/bil/nybrand")]
+        public IActionResult AddCarBrand(CarBrand carBrand)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                var brand = _brandService.Get();
+                _brandService.SaveBrand(carBrand);
+                return Redirect("/"); //Todo Return View.
+            }
+           
         }
 
         [Route("/bilar/{parameter?}")]
