@@ -24,7 +24,7 @@ namespace WU16.BolindersBilAB.DAL.Seeding
 
         public static void Seed(DbContext dbContext, int numberOfRows)
         {
-            var useOnlyAttributes = true;
+            var useOnlyAttributes = false;
 
             if (Attribute.IsDefined(typeof(T), typeof(SeedingSettingsAttribute)))
             {
@@ -32,8 +32,8 @@ namespace WU16.BolindersBilAB.DAL.Seeding
 
                 switch (attr.SeedingType)
                 {
-                    case SeedingType.Implicit:
-                        useOnlyAttributes = false;
+                    case SeedingType.Explicit:
+                        useOnlyAttributes = true;
                         break;
                 }
             }
@@ -71,6 +71,7 @@ namespace WU16.BolindersBilAB.DAL.Seeding
                                 property.SetValue(rows[i], Convert.ToBoolean(rand.Next(2)));
                         }
                     }
+
                     else if (property.PropertyType.IsEnum)
                     {
                         var rand = new Random();
