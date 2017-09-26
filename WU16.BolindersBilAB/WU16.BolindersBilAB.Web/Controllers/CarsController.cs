@@ -101,29 +101,6 @@ namespace WU16.BolindersBilAB.Web.Controllers
             }
         }
 
-        //[Route("/bilar/{parameter?}")]
-        //public IActionResult Cars(string parameter, [FromQuery(Name = "homepageQuery")]string homepageQuery)
-        //{
-        //    var cars = _carlistService.GetCars(_carSearchService.GetCarListQuery(homepageQuery));
-
-        //    if (parameter != null)
-        //    {
-        //        if (parameter != "nya" && parameter != "begagnade")
-        //        {
-        //            return Redirect("/bilar");
-        //        }
-        //        else
-        //        {
-        //            cars = cars.FilterByParameter(parameter);
-        //        }
-        //    }
-
-        //    return View(new CarListViewModel
-        //    {
-        //        Cars = cars.ToList()
-        //    });
-        //}
-
         [HttpGet]
         [Route("/bilar/{parameter?}")]
         public IActionResult Cars([ModelBinder(BinderType = typeof(QueryModelBinder))]CarListQuery query, string parameter = "", int page = 1)

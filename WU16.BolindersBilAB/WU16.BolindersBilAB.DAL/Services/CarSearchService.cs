@@ -45,7 +45,6 @@ namespace WU16.BolindersBilAB.DAL.Services
         {
             if (string.IsNullOrEmpty(input)) return inputQuery;
 
-
             var query = GetEnums(input.ToLower());
             query.CarBrand = _carbrandRepository.Get().Where(x => input.ToLower().Contains(x.BrandName.ToLower())).ToList();
 

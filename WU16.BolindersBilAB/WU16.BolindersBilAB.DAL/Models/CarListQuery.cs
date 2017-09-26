@@ -8,7 +8,6 @@ namespace WU16.BolindersBilAB.DAL.Models
 {
     public class CarListQuery
     {
-        
         public int YearFrom { get; set; }
         public int YearTo { get; set; }
         public decimal PriceFrom { get; set; }
