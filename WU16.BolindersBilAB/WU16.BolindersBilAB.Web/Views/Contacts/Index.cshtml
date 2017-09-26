@@ -1,0 +1,11 @@
+﻿@model ContactsViewModel
+<h2>Contacts</h2>
+<h4>ContactsViewModel</h4>
+<hr />
+<form asp-action="Index" asp-controller="ContactMailViewModel" method="post">
+    <div class="form-group">
+        <label asp-for="FirstName">First Name: </label>
+        <input asp--for="FirstName" class="form-control" />
+    </div>
+
+</form>

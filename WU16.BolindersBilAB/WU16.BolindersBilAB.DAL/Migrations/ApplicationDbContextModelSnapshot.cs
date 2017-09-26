@@ -199,11 +199,10 @@ namespace WU16.BolindersBilAB.DAL.Migrations
 
                     b.Property<string>("Description");
 
-<<<<<<< HEAD
+
                     b.Property<string>("Equipment");
 
-=======
->>>>>>> refs/remotes/origin/Jacob-dev
+
                     b.Property<int>("FuelType");
 
                     b.Property<int>("Gearbox");
