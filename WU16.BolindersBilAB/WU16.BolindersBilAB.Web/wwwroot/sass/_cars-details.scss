@@ -1,7 +1,7 @@
 ﻿
-
-
 #cars-details-container {
+    $grey: #f1f1f1;
+
     margin-top: 25px;
     margin-bottom: 25px;
 
@@ -16,61 +16,52 @@
         }
     }
 
-    @media screen and (min-width: 762px) {
-        .image-preview {
-            overflow-y: scroll;
-            height: 100%;
-            float: right;
-            padding: 0;
-            padding-left: 5px;
-
-            img {
-                max-width: 100%;
-                margin: 0;
-                cursor: pointer;
-            }
-        }
+    .similar-car .card-block h5 {
+        margin: 15px;
     }
-    /* Mobile */
-    @media screen and (max-width: 762px) {
-        margin-top: 0;
-        margin-bottom: 0px;
 
-        .image-container {
-            height: auto;
-        }
+    .similar-car {
+        cursor: pointer;
+        color: inherit;
 
-        .image-preview {
-            width: 100%;
-            white-space: nowrap;
-            overflow-x: scroll;
-            height: 100px;
-            margin: 10px 0 0;
+        margin-top: 15px;
+
+    }
+
+    .similar-car img {
+        max-height: 100px;
+    }
+
+    .no-image {
+        position: relative;
+        height: 100px;
+        background-color: $grey;
+
+        P {
+            font-size: 1.4em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
             text-align: center;
         }
+    }
 
-        .current-image {
-            width: 100%;
-        }
+    .no-images {
+        height: 300px;
+        background-color: $grey;
 
-        .image-preview img {
-            display: inline-block;
-            height: 100%;
-            margin: 0;
-            cursor: pointer;
-        }
-
-        .image-preview img:last-child {
-            margin-right: 0;
+        P {
+            font-size: 1.4em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            text-align: center;
         }
     }
 
-    h4 {
-        text-align: center;
-        padding: 25px;
-    }
-
-    header {
+    main {
         margin: 0;
         padding: 25px;
 
@@ -82,10 +73,16 @@
         & > h1 {
             font-size: 2.5em;
         }
+
+        .badge {
+            padding: 5px;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
     }
 
-    .calculator {
-        background-color: #f1f1f1;
+    .price-calculator {
+        background-color: $grey;
         padding: 0;
 
         form {
@@ -96,7 +93,6 @@
             display: block;
             text-align: center;
             font-size: 1.6em;
-
             position: relative;
             top: 50%;
             transform: translateY(-50%);
@@ -112,8 +108,6 @@
             }
         }
     }
-
-
 
     .information-table {
         text-align: center;
@@ -131,31 +125,127 @@
             font-weight: 600;
         }
     }
+    /* desktop */
+    @media screen and (min-width: 762px) {
+        .image-preview {
+            overflow-y: scroll;
+            height: 100%;
+            float: right;
+            padding: 0;
+            padding-left: 5px;
 
-    .badge {
-        padding: 5px;
-        font-size: 1em;
+            img {
+                max-width: 100%;
+                margin: 0;
+                cursor: pointer;
+            }
+        }
     }
+    /* /desktop */
+    /* Mobile */
+    @media screen and (max-width: 762px) {
+        margin-top: 0;
+        margin-bottom: 0px;
+
+        .image-container {
+            height: auto;
+
+            .current-image {
+                width: 100%;
+            }
+
+            .image-preview {
+                width: 100%;
+                white-space: nowrap;
+                overflow-x: scroll;
+                height: 100px;
+                margin: 10px 0 0;
+                text-align: center;
+
+                img {
+                    display: inline-block;
+                    height: 100%;
+                    margin: 0;
+                    cursor: pointer;
+
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+    }
+    /* /Mobile */
 }
 
-
-.cars-details-container-overlay {
+.card-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: rgba(0,0,0,.4);
+    z-index: 1000;
 }
 
-.cars-details-container-modal {
+.card-modal {
     position: absolute;
     left: 50%;
     top: 5%;
     transform: translateX(-50%);
     padding: 25px;
+    z-index: 1001;
+
+    img {
+        width: 100%;
+    }
+
+    .spinner {
+        margin: 50px auto;
+        width: 70px;
+        text-align: center;
+    }
+
+    .spinner > div {
+        width: 18px;
+        height: 18px;
+        background-color: #333;
+        border-radius: 100%;
+        display: inline-block;
+        -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+        animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    }
+
+    .spinner .bounce1 {
+        -webkit-animation-delay: -0.32s;
+        animation-delay: -0.32s;
+    }
+
+    .spinner .bounce2 {
+        -webkit-animation-delay: -0.16s;
+        animation-delay: -0.16s;
+    }
+
+    @-webkit-keyframes sk-bouncedelay {
+        0%, 80%, 100% {
+            -webkit-transform: scale(0)
+        }
+
+        40% {
+            -webkit-transform: scale(1.0)
+        }
+    }
+
+    @keyframes sk-bouncedelay {
+        0%, 80%, 100% {
+            -webkit-transform: scale(0);
+            transform: scale(0);
+        }
+
+        40% {
+            -webkit-transform: scale(1.0);
+            transform: scale(1.0);
+        }
+    }
 }
 
-.cars-details-container-modal img {
-    width: 100%;
-}
