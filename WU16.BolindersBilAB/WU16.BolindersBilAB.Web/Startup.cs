@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using WU16.BolindersBilAB.DAL.DataAccess;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +10,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using WU16.BolindersBilAB.DAL.Repository;
 using WU16.BolindersBilAB.DAL.Services;
+using Microsoft.AspNetCore.Routing;
+using WU16.BolindersBilAB.BLL.Configuration;
+using WU16.BolindersBilAB.BLL.Services;
+using DNTScheduler.Core;
 
 namespace WU16.BolindersBilAB.Web
 {
@@ -34,6 +34,10 @@ namespace WU16.BolindersBilAB.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
 
+            services.Configure<EmailServiceConfiguration>(Configuration.GetSection("EmailService"));
+            services.Configure<ImageUploadConfiguration>(Configuration.GetSection("ImageUpload"));
+            services.Configure<FtpServiceConfiguration>(Configuration.GetSection("FtpService"));
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -41,6 +45,19 @@ namespace WU16.BolindersBilAB.Web
             services.AddScoped<EmailService>();
             services.AddScoped<CarSearchService>();
             services.AddScoped<ImageService>();
+
+            services.AddSingleton<FtpService>();
+
+            services.AddDNTScheduler(options =>
+            {
+                options.AddScheduledTask<FtpScheduledTask>(
+                    runAt: utcNow =>
+                    {
+                        var now = utcNow.AddMinutes(2);
+                        return now.Day % 3 == 0 && now.Hour == 0 && now.Minute == 1 && now.Second == 1;
+                    },
+                    order: 1);
+            });
 
             services.Configure<IdentityOptions>(options =>
             {

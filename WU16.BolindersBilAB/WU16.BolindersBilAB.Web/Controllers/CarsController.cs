@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WU16.BolindersBilAB.DAL.Models;
 using WU16.BolindersBilAB.DAL.Services;
 using WU16.BolindersBilAB.Web.Models;
 using WU16.BolindersBilAB.DAL.Helpers;
-using WU16.BolindersBilAB.DAL.DataAccess;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Encodings.Web;
-using System.IO;
+using WU16.BolindersBilAB.BLL.Services;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
