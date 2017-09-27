@@ -114,7 +114,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             var totalItems = cars.ToList().Count;
 
-            ViewBag.Query = Request.QueryString.ToString();
+            ViewBag.Query = Request.QueryString;
             ViewBag.Prices = CarListHelper.GetPriceRange();
             ViewBag.Years = CarListHelper.GetModelYears();
             ViewBag.Milages = CarListHelper.GetMilageRange();
