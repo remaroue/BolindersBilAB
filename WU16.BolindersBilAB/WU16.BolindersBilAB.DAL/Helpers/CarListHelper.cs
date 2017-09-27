@@ -14,12 +14,12 @@ namespace WU16.BolindersBilAB.DAL.Helpers
         {
             return _pattern.Replace(input.ToUpper(), string.Empty);
         }
-        
+
         public static IQueryable<Car> FilterByParameter(this IQueryable<Car> cars, string parameter)
         {
             bool isUsed = true;
 
-            switch(parameter)
+            switch (parameter)
             {
                 case "nya":
                     isUsed = false;
@@ -69,26 +69,23 @@ namespace WU16.BolindersBilAB.DAL.Helpers
                 cars = cars.Skip(query.Take);
 
             // TODO: Free Search match
-            if(query.Search != null)
+            if (query.Search != null)
             {
-     
+
                 if (cars.Where(x => x.Description.Contains(query.Search)) != null)
-                    cars = cars.Concat(cars.Where(x => x.Description.Contains(query.Search)));
+                    cars = cars.Where(x => x.Description.Contains(query.Search));
 
-                if (cars.Where(x => x.Equipment.Contains(query.FreeSearch)) != null)
-                    tempCars = tempCars.Concat(cars.Where(x => x.Equipment.Contains(query.FreeSearch)));
+                if (cars.Where(x => x.Equipment.Contains(query.Search)) != null)
+                    cars = cars.Where(x => x.Equipment.Contains(query.Search));
 
-                try{
-                    if (cars.Where(x => x.ModelYear.Equals(int.Parse(query.FreeSearch))) != null)
-                    {
-                        tempCars = tempCars.Concat(cars.Where(x => x.ModelYear.Equals(int.Parse(query.FreeSearch))));
-                    }
-                } catch { Console.WriteLine("Car modelyear did not match, ignore"); }
 
-                if (cars.Where(x => x.Model.Contains(query.FreeSearch)) != null)
-                    tempCars = tempCars.Concat(cars.Where(x => x.Model.Contains(query.FreeSearch)));
+                if (cars.Where(x => x.ModelYear.Equals(int.Parse(query.Search))) != null)
 
-                cars = tempCars;
+                    cars = cars.Where(x => x.ModelYear.Equals(int.Parse(query.Search)));
+
+
+                if (cars.Where(x => x.Model.Contains(query.Search)) != null)
+                    cars = cars.Where(x => x.Model.Contains(query.Search));
             }
 
             return cars;
