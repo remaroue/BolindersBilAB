@@ -69,11 +69,11 @@ namespace WU16.BolindersBilAB.DAL.Helpers
                 cars = cars.Skip(query.Take);
 
             // TODO: Free Search match
-            if(query.FreeSearch != null)
+            if(query.Search != null)
             {
-                IQueryable<Car> tempCars = null;
-                if (cars.Where(x => x.Description.Contains(query.FreeSearch)) != null)
-                    tempCars = tempCars.Concat(cars.Where(x => x.Description.Contains(query.FreeSearch)));
+     
+                if (cars.Where(x => x.Description.Contains(query.Search)) != null)
+                    cars = cars.Concat(cars.Where(x => x.Description.Contains(query.Search)));
 
                 if (cars.Where(x => x.Equipment.Contains(query.FreeSearch)) != null)
                     tempCars = tempCars.Concat(cars.Where(x => x.Equipment.Contains(query.FreeSearch)));
@@ -110,6 +110,81 @@ namespace WU16.BolindersBilAB.DAL.Helpers
                 CarBrand = new List<CarBrand>() { car.CarBrand },
                 Take = 4
             };
+        }
+
+        public static IEnumerable<Car> PaginateCars(this IEnumerable<Car> cars, int page)
+        {
+            return cars.Take((8 * page)).AsEnumerable();
+        }
+
+        public static Dictionary<int, string> GetModelYears()
+        {
+            var years = new Dictionary<int, string>();
+            var startYear = DateTime.Now.Year;
+            while (startYear > 1940)
+            {
+                if (startYear > 1980)
+                {
+                    years.Add(startYear, startYear.ToString());
+                    startYear--;
+                }
+                else
+                {
+                    years.Add(startYear, startYear.ToString());
+                    startYear -= 10;
+                }
+            };
+
+            years.Add(1940, "1940 eller äldre");
+
+            return years;
+        }
+
+        public static Dictionary<int, string> GetPriceRange()
+        {
+            var prices = new Dictionary<int, string>();
+            var startPrice = 5000;
+
+            while (startPrice < 1000000)
+            {
+                prices.Add(startPrice, startPrice.ToString("# ### ### ###kr"));
+                if (startPrice < 10000)
+                {
+                    startPrice += 1000;
+                }
+                else if (startPrice < 200000)
+                {
+                    startPrice += 10000;
+                }
+                else if (startPrice < 500000)
+                {
+                    startPrice += 50000;
+                }
+                else if (startPrice < 1000000)
+                {
+                    startPrice += 100000;
+                }
+            }
+
+            prices.Add(1000001, "1 000 000kr +");
+
+            return prices;
+        }
+        public static Dictionary<int, string> GetMilageRange()
+        {
+            var milages = new Dictionary<int, string>();
+            var startMilage = 999;
+
+            while (startMilage < 30000)
+            {
+                milages.Add(startMilage, startMilage.ToString("## ###"));
+
+                startMilage += 1000;
+            }
+
+            milages.Add(30001, "30 000 +");
+
+            return milages;
         }
     }
 }

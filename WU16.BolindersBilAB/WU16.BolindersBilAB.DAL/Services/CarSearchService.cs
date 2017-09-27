@@ -41,13 +41,26 @@ namespace WU16.BolindersBilAB.DAL.Services
             };
         }
 
-        public CarListQuery GetCarListQuery(string input)
+        public CarListQuery GetCarListQuery(string input, CarListQuery inputQuery = null)
         {
-            input = input.ToLower();
+            if (string.IsNullOrEmpty(input)) return inputQuery;
 
-            var query = GetEnums(input);
-            query.CarBrand = _carbrandRepository.Get().Where(x => input.Contains(x.BrandName.ToLower())).ToList();
-            query.FreeSearch = input;
+            var query = GetEnums(input.ToLower());
+            query.CarBrand = _carbrandRepository.Get().Where(x => input.ToLower().Contains(x.BrandName.ToLower())).ToList();
+
+            if (inputQuery != null)
+            {
+                inputQuery.CarType = inputQuery.CarType.Union(query.CarType).ToList();
+                inputQuery.FuelType = inputQuery.FuelType.Union(query.FuelType).ToList();
+                inputQuery.Gearbox = inputQuery.Gearbox.Union(query.Gearbox).ToList();
+
+                inputQuery.CarBrand = inputQuery.CarBrand ?? new List<CarBrand>();
+                inputQuery.CarBrand = inputQuery.CarBrand.Union(query.CarBrand).ToList();
+
+                inputQuery.Search = input;
+
+                return inputQuery;
+            }
 
             return query;
         }

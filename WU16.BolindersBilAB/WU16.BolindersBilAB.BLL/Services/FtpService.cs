@@ -6,7 +6,7 @@ using WU16.BolindersBilAB.BLL.Configuration;
 
 namespace WU16.BolindersBilAB.BLL.Services
 {
-    class FtpService
+    public class FtpService
     {
         private FtpServiceConfiguration _config;
 
