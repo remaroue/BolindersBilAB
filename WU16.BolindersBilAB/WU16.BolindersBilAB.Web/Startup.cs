@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Routing;
 using WU16.BolindersBilAB.BLL.Configuration;
 using WU16.BolindersBilAB.BLL.Services;
 using DNTScheduler.Core;
+using WU16.BolindersBilAB.Web.Infrastructure;
 
 namespace WU16.BolindersBilAB.Web
 {
@@ -104,8 +105,11 @@ namespace WU16.BolindersBilAB.Web
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/error.html");
+                //app.UseDeveloperExceptionPage();
                 app.UseStaticFiles();
+                app.UseMiddleware<ErrorHandlerMiddleWare>();
+
             }
             else
             {
