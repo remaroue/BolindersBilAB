@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
 using System.Linq;
 using System.Reflection;
 using WU16.BolindersBilAB.DAL.Seeding.Attributes;
@@ -11,7 +9,7 @@ using WU16.BolindersBilAB.DAL.Seeding.Helper;
 
 namespace WU16.BolindersBilAB.DAL.Seeding
 {
-    public static class Seeder<T> where T : class, new()
+    public class Seeder<T> where T : class, new()
     {
         private static readonly Dictionary<Type, Func<Attribute, PropertyInfo, T[], T[]>> _handlers = new Dictionary<Type, Func<Attribute, PropertyInfo, T[], T[]>>()
         {
@@ -22,7 +20,7 @@ namespace WU16.BolindersBilAB.DAL.Seeding
             { typeof(SeedPatternCreateStringAttribute), DefaultHandlers<T>.HandleSeedPatternCreateStringAttribute }
         };
 
-        public static void Seed(DbContext dbContext, int numberOfRows)
+        public static T[] Seed(int numberOfRows)
         {
             var useOnlyAttributes = false;
 
@@ -83,10 +81,30 @@ namespace WU16.BolindersBilAB.DAL.Seeding
                 }
             }
 
-            var set = dbContext.Set<T>();
-            set.AddRange(rows);
+            return rows;
+        }
+
+        public static void SeedDbContext(DbContext dbContext, int numberOfRows, SeedDbContextSettings settings = SeedDbContextSettings.AppendToExisting)
+        {
+            switch (settings)
+            {
+                case SeedDbContextSettings.ReplaceExisting:
+                    dbContext.Database.ExecuteSqlCommand($"TRUNCATE TABLE {dbContext.Model.FindEntityType(typeof(T)).SqlServer().TableName}");
+                    break;
+                case SeedDbContextSettings.LeaveIfExists:
+                    if (dbContext.Set<T>().Any())
+                        return;
+                    break;
+                default:
+                    break;
+            }
+
+            var rows = Seed(numberOfRows);
+
+            dbContext.Set<T>().AddRange(rows);
             dbContext.SaveChanges();
         }
     }
 }
+
 

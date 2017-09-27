@@ -26,5 +26,11 @@ namespace WU16.BolindersBilAB.DAL.Services
             _repo.Save();
             return car;
         }
+
+        public void Update(Car car)
+        {
+            _repo.Edit(car);
+            _repo.Save();
+        }
     }
 }

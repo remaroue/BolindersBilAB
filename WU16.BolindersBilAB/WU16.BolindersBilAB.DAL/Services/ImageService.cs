@@ -32,8 +32,6 @@ namespace WU16.BolindersBilAB.DAL.Services
             {
                 using (var image = new Bitmap(Image.FromStream(imgStream)))
                 {
-                    imgStream.Dispose();
-
                     int height = image.Height,
                         width = image.Width;
 
@@ -107,11 +105,9 @@ namespace WU16.BolindersBilAB.DAL.Services
                     case "image/png":
                         fileType = "png";
                         break;
+                    case "image/jpeg":
                     case "image/jpg":
                         fileType = "jpg";
-                        break;
-                    case "image/jpeg":
-                        fileType = "jpeg";
                         break;
                 }
 
@@ -119,7 +115,11 @@ namespace WU16.BolindersBilAB.DAL.Services
 
                 using (var imgStream = image.OpenReadStream())
                 {
-                    OptimizeAndSaveImage(imgStream, fileName);
+                    using (var ms = new MemoryStream())
+                    {
+                        imgStream.CopyTo(ms);
+                        OptimizeAndSaveImage(ms, fileName);
+                    }
                 }
 
                 fileNames.Add(fileName);

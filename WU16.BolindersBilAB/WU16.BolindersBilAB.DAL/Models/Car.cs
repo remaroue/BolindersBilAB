@@ -32,7 +32,7 @@ namespace WU16.BolindersBilAB.DAL.Models
         [SeedIgnore]
         public virtual Location Location { get; set; }
 
-        [SeedFixedValue("test model")]
+        [SeedChooseFrom("v70", "TT3", "turbo", "TT4", "v60", "v40", "i3", "i5", "roadster")]
         public string Model { get; set; }
 
         [SeedDataType(SeederDataType.LoremIpsum)]
