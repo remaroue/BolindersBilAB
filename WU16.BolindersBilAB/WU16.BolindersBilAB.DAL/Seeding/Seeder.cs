@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using WU16.BolindersBilAB.DAL.Seeding.Attributes;
 using WU16.BolindersBilAB.DAL.Seeding.Enums;
@@ -89,7 +90,7 @@ namespace WU16.BolindersBilAB.DAL.Seeding
             switch (settings)
             {
                 case SeedDbContextSettings.ReplaceExisting:
-                    dbContext.Database.ExecuteSqlCommand($"TRUNCATE TABLE {dbContext.Model.FindEntityType(typeof(T)).SqlServer().TableName}");
+                    dbContext.Database.ExecuteSqlCommand($"TRUNCATE TABLE {dbContext.GetTableName<T>()}");
                     break;
                 case SeedDbContextSettings.LeaveIfExists:
                     if (dbContext.Set<T>().Any())

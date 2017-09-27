@@ -14,6 +14,7 @@ using System.Text.Encodings.Web;
 using System.IO;
 using System.Text;
 using WU16.BolindersBilAB.Web.ModelBinder;
+using WU16.BolindersBilAB.BLL.Services;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {

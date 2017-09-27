@@ -1,30 +1,26 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using WU16.BolindersBilAB.DAL.Models;
-using WU16.BolindersBilAB.DAL.Repository;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using Microsoft.Extensions.Configuration;
+using System.IO;
+using System.Linq;
+using WU16.BolindersBilAB.BLL.Configuration;
+using WU16.BolindersBilAB.DAL.Models;
 
 namespace WU16.BolindersBilAB.DAL.Services
 {
     public class ImageService
     {
-        private string _basePath;
+        private ImageUploadConfiguration _config;
 
-        public ImageService(IConfiguration configuration)
+        public ImageService(IOptions<ImageUploadConfiguration> config)
         {
-            _basePath = configuration.GetSection("ImageUploadFolder").Value;
-            Directory.CreateDirectory(_basePath);
+            _config = config.Value;
+            Directory.CreateDirectory(_config.BasePath);
         }
-
-        const int _size = 800;
-        const int _quality = 75;
 
         private void OptimizeAndSaveImage(Stream imgStream, string fileName)
         {
@@ -37,17 +33,17 @@ namespace WU16.BolindersBilAB.DAL.Services
 
                     if (image.Height > image.Width)
                     {
-                        if (image.Height > _size)
+                        if (image.Height > _config.MaxSize)
                         {
-                            height = _size;
+                            height = _config.MaxSize;
                             width = Convert.ToInt32(image.Width * ((double)height / (double)image.Height));
                         }
                     }
                     else
                     {
-                        if (image.Width > _size)
+                        if (image.Width > _config.MaxSize)
                         {
-                            width = _size;
+                            width = _config.MaxSize;
                             height = Convert.ToInt32(image.Height * ((double)width / (double)image.Width));
                         }
                     }
@@ -62,7 +58,7 @@ namespace WU16.BolindersBilAB.DAL.Services
                         graphics.DrawImage(image, 0, 0, width, height);
                         var qualityParamId = Encoder.Quality;
                         var encoderParameters = new EncoderParameters(1);
-                        encoderParameters.Param[0] = new EncoderParameter(qualityParamId, _quality);
+                        encoderParameters.Param[0] = new EncoderParameter(qualityParamId, _config.Quality);
 
                         ImageCodecInfo codec = null;
                         switch (fileName.Split(".")[1])
@@ -78,7 +74,7 @@ namespace WU16.BolindersBilAB.DAL.Services
                                 break;
                         }
 
-                        using (var fStream = File.Open($"{_basePath}{fileName}", FileMode.Create, FileAccess.Write))
+                        using (var fStream = File.Open($"{_config.BasePath}{fileName}", FileMode.Create, FileAccess.Write))
                             resized.Save(fStream, codec, encoderParameters);
                     }
                 }
@@ -158,7 +154,7 @@ namespace WU16.BolindersBilAB.DAL.Services
 
         public void RemoveImage(string imageName)
         {
-            File.Delete($"{_basePath}{imageName}");
+            File.Delete($"{_config.BasePath}{imageName}");
         }
     }
 }
