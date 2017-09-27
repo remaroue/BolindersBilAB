@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WU16.BolindersBilAB.BLL\WU16.BolindersBilAB.BLL.csproj" />
     <ProjectReference Include="..\WU16.BolindersBilAB.DAL\WU16.BolindersBilAB.DAL.csproj" />
   </ItemGroup>
 
