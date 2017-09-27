@@ -44,7 +44,6 @@ namespace WU16.BolindersBilAB.Web
             services.Configure<ImageUploadConfiguration>(Configuration.GetSection("ImageUpload"));
             services.Configure<FtpServiceConfiguration>(Configuration.GetSection("FtpService"));
 
-            #region Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
