@@ -14,6 +14,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using WU16.BolindersBilAB.DAL.Repository;
 using WU16.BolindersBilAB.DAL.Services;
+using WU16.BolindersBilAB.DAL.Seeding;
+using Microsoft.AspNetCore.Routing;
+using WU16.BolindersBilAB.DAL.Seeding.Enums;
+using WU16.BolindersBilAB.Web.Models;
+using WU16.BolindersBilAB.BLL.Configuration;
+using WU16.BolindersBilAB.BLL.Services;
 
 namespace WU16.BolindersBilAB.Web
 {
@@ -34,6 +40,11 @@ namespace WU16.BolindersBilAB.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
 
+            services.Configure<EmailServiceConfiguration>(Configuration.GetSection("EmailService"));
+            services.Configure<ImageUploadConfiguration>(Configuration.GetSection("ImageUpload"));
+            services.Configure<FtpServiceConfiguration>(Configuration.GetSection("FtpService"));
+
+            #region Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
