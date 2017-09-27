@@ -32,7 +32,7 @@ namespace WU16.BolindersBilAB.DAL.Models
         public int HorsePower { get; set; }
         public bool Used { get; set; }
         public DateTime CreationDate { get; set; }
-        public DateTime LastUpdated { get; set; }
+        public DateTime? LastUpdated { get; set; }
         public virtual ICollection<CarImage>  CarImages { get; set; }
         public CarType CarType { get; set; }
         public FuelType FuelType { get; set; }

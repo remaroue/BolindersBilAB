@@ -6,9 +6,8 @@
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
 
-    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" rel="stylesheet" />
-    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" asp-append-version="true" />
-    <link href="~/dist/css/main.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/dist/css/main.min.css" asp-append-version="true" rel="stylesheet" />
+    <link href="~/dist/css/vendor.min.css" asp-append-version="true" rel="stylesheet" />
 
 </head>
 <body>
@@ -42,7 +41,8 @@
 
     @RenderBody()
 
-    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="/dist/js/vendor.min.js" asp-append-version="true"></script>
+
     @RenderSection("Scripts", false)
 </body>
 </html>
