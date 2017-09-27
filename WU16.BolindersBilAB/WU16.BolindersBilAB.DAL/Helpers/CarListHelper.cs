@@ -41,7 +41,7 @@ namespace WU16.BolindersBilAB.DAL.Helpers
             if (query.CarType?.Count > 0)
                 cars = cars.Where(x => query.CarType.Contains(x.CarType));
             if (query.CarBrand?.Count > 0)
-                cars = cars.Where(x => query.CarBrand.Select(y => x.CarBrandId).Contains(x.CarBrand.BrandName));
+                cars = cars.Where(x => query.CarBrand.Select(y => y.BrandName).Contains(x.CarBrand.BrandName));
             if (query.Gearbox?.Count > 0)
                 cars = cars.Where(x => query.Gearbox.Contains(x.Gearbox));
             if (query.FuelType?.Count > 0)
@@ -63,10 +63,7 @@ namespace WU16.BolindersBilAB.DAL.Helpers
             if (query.YearTo > 0)
                 cars = cars.Where(x => x.ModelYear <= query.YearTo);
 
-            if (query.Skip > 0)
-                cars = cars.Skip(query.Skip);
-            if (query.Take > 0)
-                cars = cars.Skip(query.Take);
+            
 
             // TODO: Free Search match
             if (query.Search != null)
@@ -87,6 +84,11 @@ namespace WU16.BolindersBilAB.DAL.Helpers
                 if (cars.Where(x => x.Model.Contains(query.Search)) != null)
                     cars = cars.Where(x => x.Model.Contains(query.Search));
             }
+
+            if (query.Skip > 0)
+                cars = cars.Skip(query.Skip);
+            if (query.Take > 0)
+                cars = cars.Take(query.Take);
 
             return cars;
         }
