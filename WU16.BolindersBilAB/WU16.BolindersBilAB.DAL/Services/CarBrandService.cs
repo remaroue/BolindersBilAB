@@ -16,7 +16,7 @@ namespace WU16.BolindersBilAB.DAL.Services
             _repo = Repo;
         }
 
-        public IEnumerable<CarBrand> Get()
+        public IQueryable<CarBrand> Get()
         {
             return _repo.Get();
         }

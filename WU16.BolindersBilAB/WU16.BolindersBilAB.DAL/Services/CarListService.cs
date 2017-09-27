@@ -42,11 +42,22 @@ namespace WU16.BolindersBilAB.DAL.Services
                 .FirstOrDefault(x => x.LicenseNumber == licenseNumber);
         }
 
-        public IEnumerable<Car> Get()
+        public IEnumerable<SimplifiedCar> GetSimilarCars(Car car)
         {
+            var query = car.GetSimilarCarsQuery();
+
             return _repo.Get()
                 .Include(x => x.CarBrand)
-                .Include(x => x.Location);
+                .Include(x => x.Location)
+                .Include(x => x.CarImages)
+                .Where(x => x.LicenseNumber != car.LicenseNumber)
+                .FilterByQuery(query)
+                .Select(x => new SimplifiedCar()
+                {
+                    Title = $"{x.CarBrand.BrandName} {x.Model} {x.ModelYear}",
+                    LicenseNumber = x.LicenseNumber,
+                    ImageName = x.CarImages.FirstOrDefault().FileName ?? null
+                }).ToArray();
         }
     }
 }
