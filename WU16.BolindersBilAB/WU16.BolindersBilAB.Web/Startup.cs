@@ -105,10 +105,12 @@ namespace WU16.BolindersBilAB.Web
         {
             if (env.IsDevelopment())
             {
+
                 app.UseExceptionHandler("/error.html");
                 //app.UseDeveloperExceptionPage();
                 app.UseStaticFiles();
                 app.UseMiddleware<ErrorHandlerMiddleWare>();
+                app.UseBrowserLink();
 
             }
             else

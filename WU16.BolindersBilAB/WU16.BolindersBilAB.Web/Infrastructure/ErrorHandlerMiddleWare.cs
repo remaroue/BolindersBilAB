@@ -21,7 +21,7 @@ namespace WU16.BolindersBilAB.Web.Infrastructure
 
            if (context.Response.StatusCode == 404)
             {
-                context.Response.Redirect("/404.html");
+                context.Response.Redirect("/404");
             }
             else
             {
