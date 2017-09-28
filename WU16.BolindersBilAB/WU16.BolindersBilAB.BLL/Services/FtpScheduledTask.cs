@@ -21,7 +21,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                 return;
             }
 
-            //_ftpService.Run();
+            _ftpService.Run();
         }
     }
 }

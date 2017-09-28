@@ -53,8 +53,7 @@ namespace WU16.BolindersBilAB.Web
                 options.AddScheduledTask<FtpScheduledTask>(
                     runAt: utcNow =>
                     {
-                        var now = utcNow.AddMinutes(2);
-                        return now.Day % 3 == 0 && now.Hour == 0 && now.Minute == 1 && now.Second == 1;
+                        return utcNow.Second == 1;
                     },
                     order: 1);
             });
@@ -121,7 +120,7 @@ namespace WU16.BolindersBilAB.Web
             }
 
             app.UseAuthentication();
-
+            app.UseDNTScheduler();
             app.UseMvc(x => x.MapRoute("default", template: "{Controller=Home}/{Action=Index}/{Id?}"));
 
             /*if (!userManager.Users.Any())
