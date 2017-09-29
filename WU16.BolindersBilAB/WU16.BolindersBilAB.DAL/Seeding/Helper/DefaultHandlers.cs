@@ -15,19 +15,21 @@ namespace WU16.BolindersBilAB.DAL.Seeding.Helper
 
             if (property.PropertyType.IsPrimitive)
             {
-                if (Convert.GetTypeCode(property.PropertyType) != TypeCode.Int32)
+                var typecode = Type.GetTypeCode(property.PropertyType);
+
+                if (typecode == TypeCode.Int32)
                 {
                     var min = Convert.ToInt32(attr.Min);
-                    var max = Convert.ToInt32(attr.Min);
+                    var max = Convert.ToInt32(attr.Max);
 
                     var rand = new Random();
                     for (int i = 0; i < rows.Length; i++)
                         property.SetValue(rows[i], rand.Next(min, max));
                 }
-                else if (Convert.GetTypeCode(property.PropertyType) != TypeCode.Double)
+                else if (typecode == TypeCode.Double)
                 {
                     var min = Convert.ToDouble(attr.Min);
-                    var max = Convert.ToDouble(attr.Min);
+                    var max = Convert.ToDouble(attr.Max);
 
                     var rand = new Random();
                     for (int i = 0; i < rows.Length; i++)

@@ -14,6 +14,10 @@ using Microsoft.AspNetCore.Routing;
 using WU16.BolindersBilAB.BLL.Configuration;
 using WU16.BolindersBilAB.BLL.Services;
 using DNTScheduler.Core;
+using WU16.BolindersBilAB.BLL.ScheduledTasks;
+using Microsoft.AspNetCore.StaticFiles.Infrastructure;
+using WU16.BolindersBilAB.DAL.Seeding;
+using WU16.BolindersBilAB.DAL.Seeding.Enums;
 
 namespace WU16.BolindersBilAB.Web
 {
@@ -53,7 +57,7 @@ namespace WU16.BolindersBilAB.Web
                 options.AddScheduledTask<FtpScheduledTask>(
                     runAt: utcNow =>
                     {
-                        return utcNow.Second == 1;
+                        return false;
                     },
                     order: 1);
             });
@@ -123,73 +127,69 @@ namespace WU16.BolindersBilAB.Web
             app.UseDNTScheduler();
             app.UseMvc(x => x.MapRoute("default", template: "{Controller=Home}/{Action=Index}/{Id?}"));
 
-            /*if (!userManager.Users.Any())
-            {
-                var user1 = new ApplicationUser { UserName = "jonkoping@bolindersbil.se", Email = "jonkoping@bolindersbil.se" };
-                var user2 = new ApplicationUser { UserName = "varnamo@bolindersbil.se", Email = "varnamo@bolindersbil.se" };
-                var user3 = new ApplicationUser { UserName = "goteborg@bolindersbil.se", Email = "goteborg@bolindersbil.se" };
-                var user4 = new ApplicationUser { UserName = "admin@bolindersbil.se", Email = "admin@bolindersbil.se" };
+            //if (!userManager.Users.Any())
+            //{
+            //    var user1 = new ApplicationUser { UserName = "jonkoping@bolindersbil.se", Email = "jonkoping@bolindersbil.se" };
+            //    var user2 = new ApplicationUser { UserName = "varnamo@bolindersbil.se", Email = "varnamo@bolindersbil.se" };
+            //    var user3 = new ApplicationUser { UserName = "goteborg@bolindersbil.se", Email = "goteborg@bolindersbil.se" };
+            //    var user4 = new ApplicationUser { UserName = "admin@bolindersbil.se", Email = "admin@bolindersbil.se" };
 
-                Task.WaitAll(userManager.CreateAsync(user1, "Admin1234"));
-                Task.WaitAll(userManager.CreateAsync(user2, "Admin1234"));
-                Task.WaitAll(userManager.CreateAsync(user3, "Admin1234"));
-                Task.WaitAll(userManager.CreateAsync(user4, "Admin1234"));
-            }
+            //    Task.WaitAll(userManager.CreateAsync(user1, "Admin1234"));
+            //    Task.WaitAll(userManager.CreateAsync(user2, "Admin1234"));
+            //    Task.WaitAll(userManager.CreateAsync(user3, "Admin1234"));
+            //    Task.WaitAll(userManager.CreateAsync(user4, "Admin1234"));
+            //}
 
-            if (!_ctx.Locations.Any())
-            {
-                var locations = new List<Location>
-                {
-                    new Location{Name="Bolinders Bil Jönköping", Address="Lovsjövägen 33", City="Jönköping", Zip="55626", PhoneNumber="036-123456", Email="jonkoping@bolindersbil.se", Id="BB1"},
-                    new Location{Name="Bolinders Bil Värnamo", Address="Bultgatan 2", City="Värnamo", Zip="54452", PhoneNumber="0370-123456", Email="varnamo@bolindersbil.se", Id="BB2"},
-                    new Location{Name="Bolinders Bil Göteborg", Address="Industrivägen 1", City="Göteborg", Zip="55336", PhoneNumber="031-123456", Email="goteborg@bolindersbil.se", Id="BB3"}
-                };
+            //if (!_ctx.Locations.Any())
+            //{
+            //    var locations = new List<Location>
+            //    {
+            //        new Location{Name="Bolinders Bil Jönköping", Address="Lovsjövägen 33", City="Jönköping", Zip="55626", PhoneNumber="036-123456", Email="jonkoping@bolindersbil.se", Id="BB1"},
+            //        new Location{Name="Bolinders Bil Värnamo", Address="Bultgatan 2", City="Värnamo", Zip="54452", PhoneNumber="0370-123456", Email="varnamo@bolindersbil.se", Id="BB2"},
+            //        new Location{Name="Bolinders Bil Göteborg", Address="Industrivägen 1", City="Göteborg", Zip="55336", PhoneNumber="031-123456", Email="goteborg@bolindersbil.se", Id="BB3"}
+            //    };
 
-                _ctx.AddRange(locations);
-                _ctx.SaveChanges();
-            }
+            //    _ctx.AddRange(locations);
+            //    _ctx.SaveChanges();
+            //}
 
-            if (!_ctx.CarBrands.Any())
-            {
-                var carBrands = new List<CarBrand>
-                {
-                    new CarBrand{BrandName="Volvo", ImageUrl="/images/carbrands/bmw-logo.png"},
-                    new CarBrand{BrandName="BMW", ImageUrl="/images/carbrands/ferrari-logo.png"},
-                    new CarBrand{BrandName="Audi", ImageUrl="/images/carbrands/koenigsegg-logo.png"},
-                    new CarBrand{BrandName="Ford", ImageUrl="/images/carbrands/saab-logo.png"},
-                    new CarBrand{BrandName="Mercedes-benz", ImageUrl="/images/carbrands/saab-logo.png"},
-                    new CarBrand{BrandName="Volkswagen", ImageUrl="/images/carbrands/volvo-logo.png"},
-                };
+            //if (!_ctx.CarBrands.Any())
+            //{
+            //    var carBrands = new List<CarBrand>
+            //    {
+            //        new CarBrand{BrandName="Volvo", ImageUrl="/images/carbrands/bmw-logo.png"},
+            //        new CarBrand{BrandName="BMW", ImageUrl="/images/carbrands/ferrari-logo.png"},
+            //        new CarBrand{BrandName="Audi", ImageUrl="/images/carbrands/koenigsegg-logo.png"},
+            //        new CarBrand{BrandName="Ford", ImageUrl="/images/carbrands/saab-logo.png"},
+            //        new CarBrand{BrandName="Mercedes-benz", ImageUrl="/images/carbrands/saab-logo.png"},
+            //        new CarBrand{BrandName="Volkswagen", ImageUrl="/images/carbrands/volvo-logo.png"},
+            //    };
 
-                _ctx.AddRange(carBrands);
-                _ctx.SaveChanges();
-            }
-            if (!_ctx.Cars.Any())
-            {
-                var mercedes = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "Mercedes-benz");
-                var volvo = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "Volvo");
-                var bmw = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "BMW");
-                var vw = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "Volkswagen");
+            //    _ctx.AddRange(carBrands);
+            //    _ctx.SaveChanges();
+            //}
+            //if (!_ctx.Cars.Any())
+            //{
+            //    var mercedes = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "Mercedes-benz");
+            //    var volvo = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "Volvo");
+            //    var bmw = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "BMW");
+            //    var vw = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "Volkswagen");
 
-                var location = _ctx.Locations.FirstOrDefault(x => x.City == "Jönköping");
+            //    var location = _ctx.Locations.FirstOrDefault(x => x.City == "Jönköping");
 
-                var cars = new List<Car>
-                {
-                    new Car{Location = location, LicenseNumber="ABC123", CarBrand = volvo, CarType=CarType.Kombi, Color="Black", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description="<insert description here>", HorsePower=154, Gearbox = Gearbox.Automat, FuelType= FuelType.Bensin, IsLeaseable = false, ModelYear = 2013, Used = true, Milage=13000, Model="v70", Price=55000},
-                    new Car{Location = location, LicenseNumber="CDS123", CarBrand = bmw, CarType=CarType.Coupé, Color="Black", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description="<insert description here>", HorsePower=154, Gearbox = Gearbox.Automat, FuelType= FuelType.Bensin, IsLeaseable = false, ModelYear = 2013, Used = true, Milage=13000, Model="v70", Price=55000},
-                    new Car{Location = location, LicenseNumber ="DFG545", CarBrand = mercedes, CarType=CarType.Cab, Color="Red", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description="<insert description here>", HorsePower=354, Gearbox = Gearbox.Automat, FuelType= FuelType.Diesel, IsLeaseable = false, ModelYear = 2013, Used = true, Milage=13000, Model="C400", Price=550000},
-                    new Car{Location = location, LicenseNumber="LUL404", CarBrand = vw, CarType=CarType.Småbil, Color="Red", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description="<insert description here>", HorsePower=354, Gearbox = Gearbox.Automat, FuelType= FuelType.Bensin, IsLeaseable = false, ModelYear = 2016, Used = true, Milage=5000, Model="Golf GTI", Price=95000},
+            //    var cars = new List<Car>
+            //    {
+            //        new Car{Location = location, LicenseNumber="ABC123", CarBrand = volvo, CarType=CarType.Kombi, Color="Black", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description="<insert description here>", HorsePower=154, Gearbox = Gearbox.Automat, FuelType= FuelType.Bensin, IsLeaseable = false, ModelYear = 2013, Used = true, Milage=13000, Model="v70", Price=55000},
+            //        new Car{Location = location, LicenseNumber="CDS123", CarBrand = bmw, CarType=CarType.Coupé, Color="Black", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description="<insert description here>", HorsePower=154, Gearbox = Gearbox.Automat, FuelType= FuelType.Bensin, IsLeaseable = false, ModelYear = 2013, Used = true, Milage=13000, Model="v70", Price=55000},
+            //        new Car{Location = location, LicenseNumber ="DFG545", CarBrand = mercedes, CarType=CarType.Cab, Color="Red", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description="<insert description here>", HorsePower=354, Gearbox = Gearbox.Automat, FuelType= FuelType.Diesel, IsLeaseable = false, ModelYear = 2013, Used = true, Milage=13000, Model="C400", Price=550000},
+            //        new Car{Location = location, LicenseNumber="LUL404", CarBrand = vw, CarType=CarType.Småbil, Color="Red", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description="<insert description here>", HorsePower=354, Gearbox = Gearbox.Automat, FuelType= FuelType.Bensin, IsLeaseable = false, ModelYear = 2016, Used = true, Milage=5000, Model="Golf GTI", Price=95000},
 
-                };
-                _ctx.AddRange(cars);
-                _ctx.SaveChanges();
-            }*/
+            //    };
+            //    _ctx.AddRange(cars);
+            //    _ctx.SaveChanges();
+            //}
 
-            //// similar car
-            //var vw2 = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "Volkswagen");
-            //var location2 = _ctx.Locations.FirstOrDefault(x => x.City == "Jönköping");
-            //_ctx.Cars.Add(new Car { Location = location2, LicenseNumber = "L0L404", CarBrand = vw2, CarType = CarType.Småbil, Color = "Red", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description = "<insert description here>", HorsePower = 354, Gearbox = Gearbox.Automat, FuelType = FuelType.Bensin, IsLeaseable = false, ModelYear = 2014, Used = true, Milage = 5000, Model = "Golf GTI", Price = 95000 });
-            //_ctx.SaveChanges();
+            Seeder<Car>.SeedDbContext(_ctx, 1000, SeedDbContextSettings.ReplaceExisting);
         }
     }
 }
