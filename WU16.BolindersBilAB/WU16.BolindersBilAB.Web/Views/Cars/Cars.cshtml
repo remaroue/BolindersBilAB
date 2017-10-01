@@ -126,14 +126,18 @@
             @foreach (var car in Model.Cars)
                 {
                 <div class="col-lg-6 mt-2">
-                    <div role="button" class="card car-list-item">
-                        <img src="http://via.placeholder.com/250x250" />
+                    <div role="button" data-id="@car.LicenseNumber" class="card car-list-item">
+                        @if(car.CarImages.Count > 0)
+                        {
+                            <img src="/images/upload/@car.CarImages.First().FileName" alt="@car.CarBrand" />
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/300x300" alt="ingen bild" />
+                        }
                         <div class="card-body">
                             <h5 class="card-title">@car.CarBrand.BrandName @car.Model -@car.ModelYear.ToString().Substring(2)</h5>
-                            <div class="float-left pt-1"><span class="car-details car-price">@car.Price kr</span></div>
-                            <div class="text-right">
-                                <a asp-action="Details" asp-route-licenseNumber="@car.LicenseNumber" class="btn btn-primary">Detaljer</a>
-                            </div>
+                            <div class="float-right pt-1"><span class="car-details car-price">@car.Price kr</span></div>
                         </div>
                     </div>
                 </div>
