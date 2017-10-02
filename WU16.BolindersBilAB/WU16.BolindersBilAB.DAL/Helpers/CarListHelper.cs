@@ -63,9 +63,6 @@ namespace WU16.BolindersBilAB.DAL.Helpers
             if (query.YearTo > 0)
                 cars = cars.Where(x => x.ModelYear <= query.YearTo);
 
-            
-
-            // TODO: Free Search match
             if (query.Search != null)
             {
 

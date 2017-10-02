@@ -31,5 +31,10 @@ namespace WU16.BolindersBilAB.DAL.Services
             _repo.Edit(carbrand);
             _repo.Save();
         }
+
+        public CarBrand Add(CarBrand carBrand)
+        {
+            return _repo.Insert(carBrand);
+        }
     }
 }

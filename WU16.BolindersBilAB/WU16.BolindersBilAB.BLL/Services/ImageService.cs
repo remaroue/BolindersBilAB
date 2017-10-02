@@ -85,7 +85,7 @@ namespace WU16.BolindersBilAB.BLL.Services
             }
             catch (Exception e)
             {
-                // TODO: LOGGING
+                // TODO: LOGGING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
         }
 
