@@ -25,8 +25,9 @@ namespace WU16.BolindersBilAB.BLL.Services
         private IRepository<Car> _carRepo;
         private ImageService _imageService;
         private LocationService _locationService;
+        private EmailService _emailService;
 
-        public FtpService(IOptions<FtpServiceConfiguration> config, CarListService carService, IRepository<Car> carRepo, ImageService imageService, CarBrandService carBrandService, LocationService locationService)
+        public FtpService(IOptions<FtpServiceConfiguration> config, CarListService carService, IRepository<Car> carRepo, ImageService imageService, CarBrandService carBrandService, LocationService locationService, EmailService emailService)
         {
             _config = config.Value;
             _brandService = carBrandService;
@@ -34,6 +35,7 @@ namespace WU16.BolindersBilAB.BLL.Services
             _carRepo = carRepo;
             _imageService = imageService;
             _locationService = locationService;
+            _emailService = emailService;
         }
 
         private CarXmlDeserializer DeserializeStrem(Stream xml)
@@ -122,8 +124,6 @@ namespace WU16.BolindersBilAB.BLL.Services
         {
             var locations = _locationService.Get();
 
-            var messeges = new Dictionary<string, StringBuilder>();
-
             foreach (var location in locations)
             {
                 var sb = new StringBuilder();
@@ -131,7 +131,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                 var locAdded = addedCars.Where(x => x.LocationId == location.Id);
                 var locUpdated = updatedCars.Where(x => x.LocationId == location.Id);
 
-                sb.Append($"<h2>Import av bilar Körd {DateTime.Now.ToShortDateString()}.</h2><p>Tillagda: {locAdded.Count()}st<p>");
+                sb.Append($"<h2>Import av bilar Körd {DateTime.Now.ToShortDateString()}.</h2><p>Tillagda Annonser: {locAdded.Count()}st<p>");
 
                 if (locAdded.Count() > 0)
                 {
@@ -141,7 +141,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                     sb.Append("</ul>");
                 }
 
-                sb.Append($"</ul><br><p>Uppdaterade: {locUpdated.Count()}</p><ul>");
+                sb.Append($"<p>Uppdaterade Annonser: {locUpdated.Count()}st</p>");
                 if (locUpdated.Count() > 0)
                 {
                     sb.Append("<ul>");
@@ -150,9 +150,17 @@ namespace WU16.BolindersBilAB.BLL.Services
                     sb.Append("</ul>");
                 }
 
+                if(addedCarBrands.Count() > 0)
+                {
+                    sb.Append($"<p>Tillagda bilmärken: {addedCarBrands.Count()}st</p>");
+                    foreach (var brand in addedCarBrands)
+                        sb.Append($"<li>{brand.BrandName}</li>");
+                    sb.Append("</ul><p style='color:#f00;'>Bilmärkena behöver bilder.</p>");
+                }
+
                 if(failedCars.Count() > 0)
                 {
-                    sb.Append("<h2 style='color:#f00'>något gick fel under importen</h2><p>Kunde inte importera dessa bilar:</p>");
+                    sb.Append("<h2 style='color:#f00;'>något gick fel under importen</h2><p>Kunde inte importera dessa bilar:</p>");
                     sb.Append("<table><thead>");
                     sb.Append("<th>Registrerings Nummer</th>");
                     sb.Append("<th>Import Id</th>");
@@ -164,6 +172,8 @@ namespace WU16.BolindersBilAB.BLL.Services
 
                     sb.Append("</tbody></table>");
                 }
+
+                _emailService.SendTo(location.Email, $"Import av bilar Körd {DateTime.Now.ToShortDateString()}.", sb.ToString(), isBodyHtml: true);
             }
         }
 

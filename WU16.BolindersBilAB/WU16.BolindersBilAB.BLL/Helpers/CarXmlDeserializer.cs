@@ -20,6 +20,7 @@ namespace WU16.BolindersBilAB.BLL.Helpers
         public CarXmlDeserializer()
         {
             Cars = new List<Car>();
+            FailedCars = new List<FailedCar>();
         }
 
         #region helpers
@@ -34,36 +35,35 @@ namespace WU16.BolindersBilAB.BLL.Helpers
         private string PrepareNumeric(string value) => string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value) ? "0" : value.Replace(".", "");
         private bool GetBoolean(string value) => string.IsNullOrEmpty(value) ? false : true;
 
-
         private Car ApplyValueToProperty(string name, string value, Car car)
         {
 
             switch (name)
             {
                 // pure strings
-                case "id": car.FtpId = value; break;
-                case "regno": car.LicenseNumber = value; break;
-                case "model": car.Model = value; break;
+                case "id":               car.FtpId = value; break;
+                case "regno":            car.LicenseNumber = value; break;
+                case "model":            car.Model = value; break;
                 case "modeldescription": car.ModelDescription = value; break;
-                case "info": car.Equipment = value; break;
-                case "color": car.Color = value; break;
-                case "brand": car.CarBrandId = value; break;
-                case "station": car.LocationId = value; break;
+                case "info":             car.Equipment = value; break;
+                case "color":            car.Color = value; break;
+                case "brand":            car.CarBrandId = value; break;
+                case "station":          car.LocationId = value; break;
 
                 // numeric
-                case "yearmodel": car.ModelYear = int.Parse(PrepareNumeric(value)); break;
-                case "horsepower": car.HorsePower = int.Parse(PrepareNumeric(value)); break;
-                case "miles": car.Milage = int.Parse(PrepareNumeric(value)); break;
-                case "price": car.Price = decimal.Parse(PrepareNumeric(value)); break;
-                case "exkl_moms": car.ModelYear = int.Parse(PrepareNumeric(value)); break;
+                case "yearmodel":        car.ModelYear = int.Parse(PrepareNumeric(value)); break;
+                case "horsepower":       car.HorsePower = int.Parse(PrepareNumeric(value)); break;
+                case "miles":            car.Milage = int.Parse(PrepareNumeric(value)); break;
+                case "price":            car.Price = decimal.Parse(PrepareNumeric(value)); break;
+                case "exkl_moms":        car.IsLeaseable = GetBoolean(value); break;
 
                 // enums
-                case "fueltype": car.FuelType = ParseEnum<FuelType>(value); break;
-                case "gearboxtype": car.Gearbox = ParseEnum<Gearbox>(value); break;
-                case "bodytype": car.CarType = ParseEnum<CarType>(value); break;
+                case "fueltype":         car.FuelType = ParseEnum<FuelType>(value); break;
+                case "gearboxtype":      car.Gearbox = ParseEnum<Gearbox>(value); break;
+                case "bodytype":         car.CarType = ParseEnum<CarType>(value); break;
 
                 // datetime
-                case "updated": car.LastUpdated = ConvertFromUnixTime(value); break;
+                case "updated":          car.LastUpdated = ConvertFromUnixTime(value); break;
 
                 // other
                 case "image":

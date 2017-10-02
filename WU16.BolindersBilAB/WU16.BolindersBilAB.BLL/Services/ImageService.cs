@@ -95,31 +95,39 @@ namespace WU16.BolindersBilAB.BLL.Services
 
             foreach (var url in urls)
             {
-                var request = WebRequest.CreateHttp(url);
-                request.Method = "GET";
-
-                var response = request.GetResponse();
-                using (var imgStream = response.GetResponseStream())
+                try
                 {
-                    var fileType = "";
-                    switch (response.Headers[HeaderNames.ContentType])
+                    var request = WebRequest.CreateHttp(url);
+                    request.Method = "GET";
+
+                    var response = request.GetResponse();
+
+                    using (var imgStream = response.GetResponseStream())
                     {
-                        case "image/png":
-                            fileType = "png";
-                            break;
-                        case "image/jpg":
-                            fileType = "jpg";
-                            break;
-                        case "image/jpeg":
-                            fileType = "jpeg";
-                            break;
+                        var fileType = "";
+                        switch (response.Headers[HeaderNames.ContentType])
+                        {
+                            case "image/png":
+                                fileType = "png";
+                                break;
+                            case "image/jpg":
+                                fileType = "jpg";
+                                break;
+                            case "image/jpeg":
+                                fileType = "jpeg";
+                                break;
+                        }
+
+                        var fileName = $"{Guid.NewGuid()}.{fileType}";
+
+                        OptimizeAndSaveImage(imgStream, fileName);
+
+                        fileNames.Add(fileName);
                     }
-
-                    var fileName = $"{Guid.NewGuid()}.{fileType}";
-
-                    OptimizeAndSaveImage(imgStream, fileName);
-
-                    fileNames.Add(fileName);
+                }
+                catch (Exception e)
+                {
+                    // TODO Logging or something
                 }
             }
 

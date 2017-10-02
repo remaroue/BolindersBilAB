@@ -19,13 +19,19 @@ namespace WU16.BolindersBilAB.BLL.Services
         {
             if (string.IsNullOrEmpty(sender)) sender = _config.SenderEmail;
 
-            var credentials = new NetworkCredential(_config.SenderEmail, _config.SmtpPassword);
+            var useDefaultCredentials = true;
+            NetworkCredential credentials = null;
+            if (_config.Host != "localhost")
+            {
+                credentials = new NetworkCredential(_config.SenderEmail, _config.SmtpPassword);
+                useDefaultCredentials = false;
+            }
 
             using (var client = new SmtpClient(_config.Host, _config.Port)
             {
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                EnableSsl = true,
+                UseDefaultCredentials = useDefaultCredentials,
+                EnableSsl = _config.EnableSsl,
                 Credentials = credentials
             })
             {

@@ -5,7 +5,8 @@
       "wwwroot/lib/jquery/dist/jquery.js",
       "wwwroot/lib/popper.js/dist/umd/popper.js",
       "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
-      "wwwroot/lib/select2/dist/js/select2.js"
+      "wwwroot/lib/select2/dist/js/select2.js",
+      "wwwroot/lib/masonry/masonry.js"
     ]
   },
   {

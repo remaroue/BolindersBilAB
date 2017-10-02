@@ -38,6 +38,8 @@
 
 $(document).ready(function () {
 
+    $(".equipment").masonry();
+
     if ($(".no-images").length === 0) {
         const currentImg = "#cars-details-container .current-image img";
 
