@@ -50,14 +50,14 @@ namespace WU16.BolindersBilAB.Web
             services.AddScoped<CarSearchService>();
             services.AddScoped<ImageService>();
 
-            services.AddSingleton<FtpService>();
+            services.AddScoped<FtpService>();
 
             services.AddDNTScheduler(options =>
             {
                 options.AddScheduledTask<FtpScheduledTask>(
                     runAt: utcNow =>
                     {
-                        return false;
+                        return utcNow.Second == 1;
                     },
                     order: 1);
             });
@@ -189,7 +189,7 @@ namespace WU16.BolindersBilAB.Web
             //    _ctx.SaveChanges();
             //}
 
-            Seeder<Car>.SeedDbContext(_ctx, 1000, SeedDbContextSettings.ReplaceExisting);
+            //Seeder<Car>.SeedDbContext(_ctx, 1000, SeedDbContextSettings.ReplaceExisting);
         }
     }
 }

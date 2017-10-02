@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,6 +8,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
 using WU16.BolindersBilAB.BLL.Configuration;
 using WU16.BolindersBilAB.DAL.Models;
 
@@ -83,10 +85,46 @@ namespace WU16.BolindersBilAB.BLL.Services
             }
             catch (Exception e)
             {
-
+                // TODO: LOGGING
             }
         }
 
+        public IEnumerable<string> DownloadImages(params string[] urls)
+        {
+            var fileNames = new List<string>();
+
+            foreach (var url in urls)
+            {
+                var request = WebRequest.CreateHttp(url);
+                request.Method = "GET";
+
+                var response = request.GetResponse();
+                using (var imgStream = response.GetResponseStream())
+                {
+                    var fileType = "";
+                    switch (response.Headers[HeaderNames.ContentType])
+                    {
+                        case "image/png":
+                            fileType = "png";
+                            break;
+                        case "image/jpg":
+                            fileType = "jpg";
+                            break;
+                        case "image/jpeg":
+                            fileType = "jpeg";
+                            break;
+                    }
+
+                    var fileName = $"{Guid.NewGuid()}.{fileType}";
+
+                    OptimizeAndSaveImage(imgStream, fileName);
+
+                    fileNames.Add(fileName);
+                }
+            }
+
+            return fileNames;
+        }
 
         public IEnumerable<string> UploadImages(params IFormFile[] images)
         {
