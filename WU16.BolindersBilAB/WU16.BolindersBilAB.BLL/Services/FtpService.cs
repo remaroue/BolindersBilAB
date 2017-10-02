@@ -131,7 +131,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                 var locAdded = addedCars.Where(x => x.LocationId == location.Id);
                 var locUpdated = updatedCars.Where(x => x.LocationId == location.Id);
 
-                sb.Append($"<h2>Import av bilar Körd {DateTime.Now.ToShortDateString()}.</h2><p>Tillagda Annonser: {locAdded.Count()}st<p>");
+                sb.Append($"<p>Tillagda Annonser: {locAdded.Count()}st<p>");
 
                 if (locAdded.Count() > 0)
                 {
@@ -173,7 +173,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                     sb.Append("</tbody></table>");
                 }
 
-                _emailService.SendTo(location.Email, $"Import av bilar Körd {DateTime.Now.ToShortDateString()}.", sb.ToString(), isBodyHtml: true);
+                _emailService.SendTo(location.Email, $"Import av bilar Körd för {DateTime.Now.ToShortDateString()}.", sb.ToString(), isBodyHtml: true);
             }
         }
 
@@ -210,7 +210,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                         dbCar.CreationDate = DateTime.Now;
                     }
 
-                    if (dbCar.LastUpdated != car.LastUpdated)
+                    if (car.LastUpdated > (dbCar.LastUpdated ?? DateTime.MinValue))
                     {
                         MapUpdates(dbCar, car, addedCarBrands);
 
