@@ -9,7 +9,7 @@ namespace WU16.BolindersBilAB.DAL.Models
     {
         [Key]
         public string BrandName { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageName { get; set; }
         public virtual ICollection<Car> Cars { get; set; }
 
     }

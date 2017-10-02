@@ -4,23 +4,52 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WU16.BolindersBilAB.Web.Models;
+using WU16.BolindersBilAB.DAL.DataAccess;
+using WU16.BolindersBilAB.DAL.Services;
+using WU16.BolindersBilAB.DAL.Models;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private CarBrandService _brandService;
+        private CarListService _carListService;
+
+        public HomeController(CarBrandService brandService, CarListService carListService)
         {
-            return View();
+            _brandService = brandService;
+            _carListService = carListService;
         }
 
-        [HttpPost]
-        public IActionResult Index(HomeViewModel query, string returnUrl)
+        public IActionResult Index()
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            //query.SearchQuery; //Holds the searchquery
+            //var sortedBrands = _carListService.Get().GroupBy(i => i.CarBrand);
 
-            //Redirect to a search result view
+            //List<HomeViewModel> brandCount = new List<HomeViewModel>();
+            //foreach (var brand in sortedBrands)
+            //{
+            //    string imgUrl = "";
+            //    foreach(var item in _brandService.Get())
+            //    {
+            //        if(item.BrandName == brand.Key.BrandName)
+            //        {
+            //            imgUrl = "/images/upload/" + item.ImageName;
+            //        }
+            //    }
+
+            //    brandCount.Add(new HomeViewModel()
+            //    {
+            //        CarBrand = brand.Key.BrandName,
+            //        CarCount = brand.Count(),
+            //        CarImage = imgUrl
+            //    });
+            //}
+
+            ViewBag.CarCount = _brandService.Get().Select(x => new HomeViewModel() {
+                CarBrand = x.BrandName,
+                CarCount = x.Cars.Count,
+                CarImage = x.ImageName
+            });
             return View();
         }
     }

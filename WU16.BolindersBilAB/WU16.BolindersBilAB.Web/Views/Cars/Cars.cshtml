@@ -1,79 +1,160 @@
 ﻿@model CarListViewModel
 @{
-    ViewData["Title"] = "Cars";
+    if (ViewBag.Parameter == "nya")
+    {
+        ViewData["Title"] = "Nya bilar";
+    }
+    else if (ViewBag.Parameter == "begagnade")
+    {
+        ViewData["Title"] = "Begagnade bilar";
+    }
+    else
+    {
+        ViewData["Title"] = "Bilar";
+    }
 }
 
-<h2>Cars</h2>
+<div id="cars-cars-container" class="container mt-2">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="text-center">@ViewData["Title"]</h2>
+            <form asp-action="Cars" method="get">
+                <input hidden="hidden" name="search" asp-for="Query.Search" />
+                <div class="form-row">
+                    <div class="form-group col-lg-2 col-sm-6 col-6">
+                        <label class="col-form-label">Årsmodell från</label>
+                        <select name="min-year" asp-for="Query.YearFrom" class="form-control">
+                            <option value="0">-</option>
+                            @foreach (var row in ViewBag.Years)
+                            {
+                                <option value="@row.Key">@row.Value</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-2 col-sm-6 col-6">
+                        <label for="inputEmail4" class="col-form-label">Årsmodell till</label>
+                        <select name="max-year" asp-for="Query.YearTo" class="form-control">
+                            <option value="0">-</option>
+                            @foreach (var row in ViewBag.Years)
+                            {
+                                <option value="@row.Key">@row.Value</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-2 col-sm-6 col-6">
+                        <label for="inputEmail4" class="col-form-label">Pris från</label>
+                        <select name="min-price" asp-for="Query.PriceFrom" class="form-control">
+                            <option value="0">-</option>
+                            @foreach (var row in ViewBag.Prices)
+                            {
+                                <option value="@row.Key">@row.Value</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-2 col-sm-6 col-6">
+                        <label for="inputEmail4" class="col-form-label">Pris till</label>
+                        <select name="max-price" asp-for="Query.PriceTo" class="form-control">
+                            <option value="0">-</option>
+                            @foreach (var row in ViewBag.Prices)
+                            {
+                                <option value="@row.Key">@row.Value</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-2 col-sm-6 col-6">
+                        <label for="inputEmail4" class="col-form-label">Mil från</label>
+                        <select name="min-milage" asp-for="Query.MilageFrom" class="form-control">
+                            <option value="0">-</option>
+                            @foreach (var row in ViewBag.Milages)
+                            {
+                                <option value="@row.Key">@row.Value</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-2 col-sm-6 col-6">
+                        <label for="inputEmail4" class="col-form-label">Mil till</label>
+                        <select name="max-milage" asp-for="Query.MilageTo" class="form-control">
+                            <option value="0">-</option>
+                            @foreach (var row in ViewBag.Milages)
+                            {
+                                <option value="@row.Key">@row.Value</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label>Karosstyp</label>
+                        <select style="width:99%; display:none;" name="type" id="carType" asp-for="Query.CarType" class="form-control" multiple="multiple">
+                            @foreach (var type in Enum.GetNames(typeof(CarType)))
+                            {
+                                <option>@type</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Drivmedel</label>
+                        <select style="width:99%; display:none;" name="fuel" id="fuelType" asp-for="Query.FuelType" class="form-control" multiple="multiple">
+                            @foreach (var type in Enum.GetNames(typeof(FuelType)))
+                            {
+                                <option>@type</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Växellåda</label>
+                        <select style="width:100%; display:none;" name="gearbox" id="gearbox" asp-for="Query.Gearbox" class="form-control" multiple="multiple">
+                            @foreach (var type in Enum.GetNames(typeof(Gearbox)))
+                            {
+                                <option>@type</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group ml-auto mr-1">
+                        <button type="submit" class="btn btn-primary">Sök</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr class="w-100" />
+    <div class="row">
+        @if (Model.Cars.Count > 0)
+        {
+            @foreach (var car in Model.Cars)
+                {
+                <div class="col-lg-6 mt-2">
+                    <div role="button" data-id="@car.LicenseNumber" class="card car-list-item">
+                        @if(car.CarImages.Count > 0)
+                        {
+                            <img src="/images/upload/@car.CarImages.First().FileName" alt="@car.CarBrand" />
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/300x300" alt="ingen bild" />
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@car.CarBrand.BrandName @car.Model -@car.ModelYear.ToString().Substring(2)</h5>
+                            <div class="float-right pt-1"><span class="car-details car-price">@car.Price kr</span></div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <hr class="w-100" />
+            <div class="mx-auto mt-3 mb-3" id="pager" page-query="@ViewBag.Query" data-page="@Model.Pager.CurrentPage" page-action="Cars" page-model="@Model.Pager"></div>
 
-<div class="row">
-    <div class="col-lg-12">
-        <form asp-action="Cars" method="post">
-            <div class="form-row">
-                <div class="form-group col-lg-2">
-                    <label for="inputEmail4" class="col-form-label">Årsmodell från</label>
-                    <select asp-for="Query.YearFrom" class="form-control">
-                        <option>Årsmodell från</option>
-                    </select>
-                </div>
-                <div class="form-group col-lg-2">
-                    <label for="inputEmail4" class="col-form-label">Årsmodell till</label>
-                    <select asp-for="Query.YearTo" class="form-control">
-                        <option>Årsmodell till</option>
-                    </select>
-                </div>
-                <div class="form-group col-lg-2">
-                    <label for="inputEmail4" class="col-form-label">Pris från</label>
-                    <select asp-for="Query.PriceFrom" class="form-control">                   
-
-                    </select>                
-                </div>
-                <div class="form-group col-lg-2">
-                    <label for="inputEmail4" class="col-form-label">Pris till</label>
-                    <select asp-for="Query.PriceTo" class="form-control">
-                       
-                    </select>
-                </div>
-                <div class="form-group col-lg-2">
-                    <label for="inputEmail4" class="col-form-label">Mil från</label>
-                    <select asp-for="Query.MilageFrom" class="form-control"></select>
-                </div>
-                <div class="form-group col-lg-2">
-                    <label for="inputEmail4" class="col-form-label">Mil till</label>
-                    <select asp-for="Query.MilageTo" class="form-control"></select>
-                </div>
+        }
+        else
+        {
+            <div class="col-lg-12 text-center">
+                <h5>Inga bilar hittades.</h5>
             </div>
-            <div class="form-row">
-                <div class="form-group col-lg-4">
-                    <label>Karosstyp</label>
-                    <select asp-for="Query.CarType" class="form-control" multiple="multiple">
-                        @foreach (var type in Enum.GetNames(typeof(CarType)))
-                        {
-                            <option>@type</option>
-                        }
-                    </select>
-                </div>
-                <div class="form-group col-lg-4">
-                    <label>Drivmedel</label>
-                    <select asp-for="Query.FuelType" class="form-control" multiple="multiple">
-                        @foreach (var type in Enum.GetNames(typeof(FuelType)))
-                        {
-                            <option>@type</option>
-                        }
-                    </select>
-                </div>
-                <div class="form-group col-lg-4">
-                    <label>Växellåda</label>
-                    <select asp-for="Query.Gearbox" class="form-control" multiple="multiple">
-                        @foreach (var type in Enum.GetNames(typeof(Gearbox)))
-                        {
-                            <option>@type</option>
-                        }
-                    </select>
-                </div>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Sök</button>
-        </form>
+        }
     </div>
 </div>
+@section Scripts {
+    <script src="~/js/_cars-cars.js" asp-append-version="true"></script>
+}
 

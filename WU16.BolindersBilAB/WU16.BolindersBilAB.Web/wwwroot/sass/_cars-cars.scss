@@ -1,0 +1,28 @@
+﻿
+#cars-cars-container {
+    .card {
+        border: 1px solid #ffffff;
+    }
+
+    .card-body {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 5px;
+    }
+
+    .car-price {
+        font-size: 1.20em;
+        color: $green;
+    }
+
+    .card:hover {
+        border: 1px solid #d8d8d8;
+        transform: scale(1.02);
+        cursor: pointer;
+    }
+
+    .select2-selection__choice {
+        color: $white;
+        background-color: $blue !important;
+    }
+}
