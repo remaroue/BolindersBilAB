@@ -57,7 +57,7 @@ namespace WU16.BolindersBilAB.Web
                 options.AddScheduledTask<FtpScheduledTask>(
                     runAt: utcNow =>
                     {
-                        return utcNow.Second == 1;
+                        return false;
                     },
                     order: 1);
             });
