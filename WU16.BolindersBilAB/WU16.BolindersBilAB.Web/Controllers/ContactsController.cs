@@ -7,6 +7,8 @@ using WU16.BolindersBilAB.DAL.DataAccess;
 using WU16.BolindersBilAB.Web.Models;
 using WU16.BolindersBilAB.DAL.Services;
 using WU16.BolindersBilAB.DAL.Models;
+using System.Text;
+using System.Web;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -14,38 +16,56 @@ namespace WU16.BolindersBilAB.Web.Controllers
     {
         private ApplicationDbContext _ctx;
         private EmailService _emailService;
+        private LocationService _locServ;
 
-        public ContactsController(ApplicationDbContext context, EmailService emailService)
+        public ContactsController(ApplicationDbContext context, EmailService emailService, LocationService locationService)
         {
             _ctx = context;
             _emailService = emailService;
+            _locServ = locationService;
+
         }
 
         //Returns persons to contact.
         [HttpGet]
-        public IActionResult Index()
+
+        [Route("/kontakt")]
+
+        public IActionResult Index(bool sent = false)
         {
 
-            return View(new ContactsViewModel() {
-                Locations = new List<Location>()
-                {
-                    new Location() {City = "Värnamo"}
-                }
-
+            return View(new ContactsViewModel()
+            {
+                Locations = _locServ.Get(),
+                Sent = sent
             });
         }
-        
-        
+
+
+        private string ConstructMessage(ContactMailViewModel model)
+        {
+            var sb = new StringBuilder();
+
+            sb.Append($"<b>Förnamn:</b> {HttpUtility.HtmlEncode(model.FirstName)}<br>");
+            sb.Append($"<b>Efternamn:</b> {HttpUtility.HtmlEncode(model.LastName)}<br>");
+            sb.Append($"<b>Email:</b> <a href='mailto:{HttpUtility.HtmlEncode(model.Email)}?subject=Svar Från kontaktformulär'>{HttpUtility.HtmlEncode(model.Email)}</a><br>");
+            sb.Append($"<br><br><b>Ämne</b>: {HttpUtility.HtmlEncode(model.Subject)}<br>");
+            sb.Append($"<b>Meddelande:</b><br> {HttpUtility.HtmlEncode(model.Message)}");
+
+            return sb.ToString();
+        }
+
         //Posts mail to corresponding location of place of sales.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Contacts(ContactMailViewModel model)
+        [Route("/kontakt")]
+
+        public IActionResult Index(ContactMailViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 
-            _emailService.SendTo("johanwallenba@hotmail.com", model.Subject, model.Message, model.Email);
-
-            return View();
+            _emailService.SendTo("varnamo@bolindersbil.se", "Skickat Fråm Kontaktformulär", ConstructMessage(model), model.Email, isBodyHtml: true);
+            
+            return Index(true);
         }
 
     }

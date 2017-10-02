@@ -42,19 +42,22 @@ namespace WU16.BolindersBilAB.DAL.Services
             using (var client = new SmtpClient(_host, _port)
             {
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                EnableSsl = true,
-                Credentials = credentials
+                UseDefaultCredentials = true,
+                EnableSsl = false
+                //Credentials = credentials
             })
             {
                 try
                 {
-                    var mail = new MailMessage(new MailAddress(sender.Trim()), new MailAddress(recipient.Trim()))
+                    var mail = new MailMessage()
                     {
                         Subject = subject,
+                        From = new MailAddress(sender.Trim()),
                         Body = message,
                         IsBodyHtml = isBodyHtml
                     };
+
+                    mail.To.Add(new MailAddress(recipient.Trim()));
 
                     client.Send(mail);
                     return true;

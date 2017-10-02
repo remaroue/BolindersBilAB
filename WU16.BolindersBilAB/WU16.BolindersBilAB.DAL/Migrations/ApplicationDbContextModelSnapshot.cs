@@ -199,9 +199,7 @@ namespace WU16.BolindersBilAB.DAL.Migrations
 
                     b.Property<string>("Description");
 
-
                     b.Property<string>("Equipment");
-
 
                     b.Property<int>("FuelType");
 
@@ -211,7 +209,7 @@ namespace WU16.BolindersBilAB.DAL.Migrations
 
                     b.Property<bool>("IsLeaseable");
 
-                    b.Property<DateTime>("LastUpdated");
+                    b.Property<DateTime?>("LastUpdated");
 
                     b.Property<string>("LocationId");
 
@@ -239,7 +237,7 @@ namespace WU16.BolindersBilAB.DAL.Migrations
                     b.Property<string>("BrandName")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ImageUrl");
+                    b.Property<string>("ImageName");
 
                     b.HasKey("BrandName");
 
@@ -248,14 +246,14 @@ namespace WU16.BolindersBilAB.DAL.Migrations
 
             modelBuilder.Entity("WU16.BolindersBilAB.DAL.Models.CarImage", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("FileName")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("CarId");
 
                     b.Property<int>("Priority");
 
-                    b.HasKey("Id");
+                    b.HasKey("FileName");
 
                     b.HasIndex("CarId");
 

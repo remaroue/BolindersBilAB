@@ -1,11 +1,56 @@
 ﻿@model ContactsViewModel
-<h2>Contacts</h2>
-<h4>ContactsViewModel</h4>
-<hr />
-<form asp-action="Index" asp-controller="ContactMailViewModel" method="post">
-    <div class="form-group">
-        <label asp-for="FirstName">First Name: </label>
-        <input asp--for="FirstName" class="form-control" />
+
+
+<div class="container">
+
+    <div class="row">
+        <div style="background-color:#ccc" class="col-6">
+            <h2>Våra Anläggningar</h2>
+            @foreach (var item in Model.Locations)
+            {
+                <div>
+                    <h4>@item.Name </h4>
+                    <p>Adress: @item.Address, @item.Zip, @item.City</p>
+                    <p>E-Mail: @item.Email</p>
+                </div>
+            }
+
+        </div>
+        <div style="background-color:#fc0" class="col-6">
+            @if (Model.Sent)
+            {
+                <div class="alert alert-success">Email skickat</div>
+            }
+            <h2>Kontakt forumulär</h2>
+            <form asp-action="Index">
+                <div>
+
+                    <select name="Reciever">
+                        @foreach (var item in Model.Locations)
+                        {
+                            <option value="@item.Email">@item.City</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input name="FirstName" type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input name="LastName" type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input name="email" type="email" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input name="subject" type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <textarea name="Message" class="form-control"></textarea>
+                </div>
+                <input type="submit" />
+            </form>
+
+        </div>
     </div>
 
-</form>
+</div>

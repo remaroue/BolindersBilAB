@@ -8,6 +8,7 @@ namespace WU16.BolindersBilAB.Web.Models
 {
     public class ContactMailViewModel
     {
+        public string Reciever { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
