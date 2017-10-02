@@ -13,9 +13,97 @@ using WU16.BolindersBilAB.BLL.Configuration;
 using WU16.BolindersBilAB.DAL.Models;
 using WU16.BolindersBilAB.DAL.Repository;
 using WU16.BolindersBilAB.DAL.Services;
+using System.Xml;
+using System.Xml.Schema;
 
 namespace WU16.BolindersBilAB.BLL.Services
 {
+    public class CarFtpDeserializer : IXmlSerializable
+    {
+        public XmlSchema GetSchema() => null;
+        public void WriteXml(XmlWriter writer) => throw new NotImplementedException();
+
+        public List<Car> Cars { get; set; }
+        public List<Car> FailedCars { get; set; }
+        public bool AnyFailed { get; set; }
+
+        private Car _currentCar { get; set; }
+        private bool _currentCarFailed { get; set; }
+
+        public CarFtpDeserializer()
+        {
+            Cars = new List<Car>();
+            _currentCarFailed = false;
+        }
+
+        #region helpers
+        private T ParseEnum<T>(string name)
+        {
+            var n = Enum.GetNames(typeof(T)).FirstOrDefault(x => x.ToLower() == name.ToLower());
+            return (T)Enum.Parse(typeof(T), n);
+        }
+
+
+        private string PrepareNumeric(string value) => string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value) ? "0" : value.Replace(".", "");
+        private bool GetBoolean(string value) => string.IsNullOrEmpty(value) ? false : true;
+        #endregion
+
+        public void ReadXml(XmlReader reader)
+        {
+            while (reader.Read())
+            {
+                if (reader.Name == "cars") continue;
+
+                if (reader.Name == "car")
+                {
+                    if (_currentCar != null && !_currentCarFailed)
+                        Cars.Add(_currentCar);
+                    else if (_currentCar != null && _currentCarFailed)
+                        FailedCars.Add(_currentCar);
+
+                    _currentCar = new Car();
+                    _currentCarFailed = false;
+                }
+
+                var name = reader.Name;
+                if (reader.IsEmptyElement) reader.Read();
+
+                try
+                {
+                    switch (name)
+                    {
+                        // pure strings
+                        case "id": _currentCar.FtpId = reader.Value; break;
+                        case "regno": _currentCar.LicenseNumber = reader.Value; break;
+                        case "model": _currentCar.Model = reader.Value; break;
+                        case "modeldescription": _currentCar.ModelDescription = reader.Value; break;
+                        case "info": _currentCar.Equipment = reader.Value; break;
+                        case "color": _currentCar.Color = reader.Value; break;
+                        case "brand": _currentCar.CarBrandId = reader.Value; break;
+                        case "station": _currentCar.LocationId = reader.Value; break;
+
+                        // numeric
+                        case "yearmodel": _currentCar.ModelYear = int.Parse(PrepareNumeric(reader.Value)); break;
+                        case "horsepower": _currentCar.HorsePower = int.Parse(PrepareNumeric(reader.Value)); break;
+                        case "miles": _currentCar.Milage = int.Parse(PrepareNumeric(reader.Value)); break;
+                        case "price": _currentCar.Price = decimal.Parse(PrepareNumeric(reader.Value)); break;
+                        case "exkl_moms": _currentCar.ModelYear = int.Parse(PrepareNumeric(reader.Value)); break;
+
+                        // enums
+                        case "fueltype": _currentCar.FuelType = ParseEnum<FuelType>(reader.Value); break;
+                        case "gearboxtype": _currentCar.Gearbox = ParseEnum<Gearbox>(reader.Value); break;
+                        case "bodytype": _currentCar.CarType = ParseEnum<CarType>(reader.Value); break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    _currentCarFailed = true;
+                    AnyFailed = true;
+                }
+            }
+        }
+    }
+
     public class FtpService
     {
         private FtpServiceConfiguration _config;
@@ -33,58 +121,18 @@ namespace WU16.BolindersBilAB.BLL.Services
             _imageService = imageService;
         }
 
-        private T ParseEnum<T>(string name)
-        {
-            var n = Enum.GetNames(typeof(T)).FirstOrDefault(x => x.ToLower() == name.ToLower());
-            return (T)Enum.Parse(typeof(T), n);
-        }
 
         private DateTime GetDateTimeFromUnixTime(string timestamp)
         {
             return new DateTime(1970, 1, 1).AddSeconds(int.Parse(timestamp));
         }
 
-        private void HandleStream(Stream xml)
+        private IEnumerable<Car> HandleStream(Stream xml)
         {
-            var document = XDocument.Load(xml);
-            var list = new List<CarXML>();
+            var ds = new XmlSerializer(typeof(CarFtpDeserializer), new XmlRootAttribute("cars"));
+            var carDs = (CarFtpDeserializer)ds.Deserialize(xml);
 
-            foreach (var x in document.Element("cars").Elements("car"))
-            {
-                try
-                {
-                    var car = new CarXML()
-                    {
-                        LicenseNumber = x.Element("regno").Value,
-                        Id = x.Element("id").Value,
-                        CarBrandId = x.Element("brand").Value,
-                        LocationId = x.Element("station").Value,
-                        LastUpdated = GetDateTimeFromUnixTime(x.Element("updated").Value),
-
-                        IsLeaseable = x.Element("exkl_moms").Value == "" ? false : true,
-                        HorsePower = int.Parse(x.Element("horsepower").Value == "" ? "0" : x.Element("horsepower").Value),
-                        Price = decimal.Parse((x.Element("price").Value == "" ? "0" : x.Element("price").Value).Replace(".", ""), System.Globalization.NumberStyles.AllowDecimalPoint),
-                        Color = x.Element("color").Value,
-                        FuelType = ParseEnum<FuelType>(x.Element("fueltype").Value),
-                        CarType = ParseEnum<CarType>(x.Element("bodytype").Value),
-                        Gearbox = ParseEnum<Gearbox>(x.Element("gearboxtype").Value),
-                        Equipment = x.Element("info").Value,
-                        CarImages = x.Attributes("images").Select(y => y.Value).ToArray(),
-                        Milage = int.Parse(x.Element("miles").Value == "" ? "0" : x.Element("miles").Value),
-                        Model = x.Element("model").Value,
-                        ModelDescription = x.Element("modeldescription").Value,
-                        ModelYear = int.Parse(x.Element("yearmodel").Value)
-                    };
-
-                    list.Add(car);
-                }
-                catch (Exception e)
-                {
-                    // TODO: log car that could not be added in some way.
-                }
-            }
-
-            return list;
+            return carDs.Cars;
         }
 
         public void Run()
