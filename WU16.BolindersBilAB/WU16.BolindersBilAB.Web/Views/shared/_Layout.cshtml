@@ -41,10 +41,19 @@
 
     @RenderBody()
 
-    <footer class="bg-dark" style="height:200px;"></footer>
+    <div class="cookie-note">
+        <button onclick="acceptCookie()" type="button" class="btn btn-dark">X</button>
+        <p>Den här webbplatsen använder cookies. En cookie är en liten textfil som lagras på besökarens dator (eller annan enhet) och som används för att förbättra webbplatsens funktionalitet, 
+        <a href="https://www.pts.se/sv/Privat/Internet/Skydd-av-uppgifter/Fragor-och-svar-om-kakor-for-anvandare1/">läs mer...</a></p>
+    </div>
+
+    <footer class="bg-dark" style="height:200px;">
+    </footer>
 
     <script src="/dist/js/vendor.min.js"></script>
 
     @RenderSection("Scripts", false)
+
+    <script src="~/js/_cookie.js"></script>
 </body>
 </html>
