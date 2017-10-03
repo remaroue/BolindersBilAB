@@ -61,9 +61,12 @@ namespace WU16.BolindersBilAB.DAL.Seeding
                         if (!Attribute.IsDefined(property, typeof(SeedAttribute)))
                             continue;
 
-                    if (property.PropertyType.IsPrimitive)
+                    if (property.PropertyType.IsPrimitive || (Nullable.GetUnderlyingType(property.PropertyType)?.IsPrimitive ?? false))
                     {
-                        if (Type.GetTypeCode(property.PropertyType) == TypeCode.Boolean)
+                        var type = property.PropertyType;
+                        if (Nullable.GetUnderlyingType(type) != null) type = Nullable.GetUnderlyingType(type);
+
+                        if (Type.GetTypeCode(type) == TypeCode.Boolean)
                         {
                             var rand = new Random();
                             for (int i = 0; i < numberOfRows; i++)
