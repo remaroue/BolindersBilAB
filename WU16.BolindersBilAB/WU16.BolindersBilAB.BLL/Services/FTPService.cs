@@ -85,7 +85,6 @@ namespace WU16.BolindersBilAB.BLL.Services
             var carBrand = _brandService.GetBrand(to.CarBrandId);
             if (carBrand == null)
             {
-
                 var addedBrand = _brandService.Add(new CarBrand()
                 {
                     BrandName = to.CarBrandId
@@ -113,6 +112,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                     Priority = ++i
                 }).ToList();
 
+            // location
             to.LocationId = from.LocationId;
             if (!_locationService.Get().Select(x => x.Id.ToLower()).Contains(to.LocationId.ToLower()))
                 throw new Exception($"LocationId {to.LocationId} does not exist.");
@@ -179,13 +179,10 @@ namespace WU16.BolindersBilAB.BLL.Services
 
         public void Run()
         {
-            var email = new StringBuilder();
-
             CarXmlDeserializer result = null;
             using (var s = DownloadFile())
                 result = DeserializeStrem(s);
 
-            // handle succesful cars
             var addedCars = new List<Car>();
             var updatedCars = new List<Car>();
             var failedCars = result.FailedCars;

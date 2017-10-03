@@ -15,7 +15,6 @@ namespace WU16.BolindersBilAB.BLL.Helpers
 
         public List<Car> Cars { get; set; }
         public List<FailedCar> FailedCars { get; set; }
-        public bool AnyFailed { get; set; }
 
         public CarXmlDeserializer()
         {
@@ -35,7 +34,7 @@ namespace WU16.BolindersBilAB.BLL.Helpers
         private string PrepareNumeric(string value) => string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value) ? "0" : value.Replace(".", "");
         private bool GetBoolean(string value) => string.IsNullOrEmpty(value) ? false : true;
 
-        private Car ApplyValueToProperty(string name, string value, Car car)
+        private void ApplyValueToProperty(string name, string value, Car car)
         {
 
             switch (name)
@@ -73,8 +72,6 @@ namespace WU16.BolindersBilAB.BLL.Helpers
                     });
                     break;
             }
-
-            return car;
         }
         #endregion
 
@@ -120,7 +117,6 @@ namespace WU16.BolindersBilAB.BLL.Helpers
                     {
                         failureException = e;
                         currentCarHasFailed = true;
-                        AnyFailed = true;
                     }
                 }
             }
