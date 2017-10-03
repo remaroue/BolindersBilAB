@@ -11,7 +11,7 @@
     string[] imageUrls = null;
     if (anyImages)
     {
-        imageUrls = car.CarImages.Select(x => $"/images/upload{x.FileName}").ToArray();
+        imageUrls = car.CarImages.Select(x => $"/images/upload/{x.FileName}").ToArray();
     }
 
     var condition = car.Used ? "Begagnad" : "Ny";
@@ -60,10 +60,11 @@
                 @car.Description
             </p>
 
-            <div>
+            <div class="equipment">
                 @if (!string.IsNullOrEmpty(car.Equipment))
                 {
-                    foreach (var e in car.Equipment.Split("|"))
+                    
+                    foreach (var e in car.Equipment.Split(new char[] { '|', ',' }))
                     {
                         <span class="badge badge-success">@e</span>
                     }
@@ -92,11 +93,15 @@
                         <td>@car.CarBrand.BrandName</td>
                     </tr>
                     <tr>
-                        <td>car</td>
+                        <td>Model</td>
                         <td>@car.Model</td>
                     </tr>
                     <tr>
-                        <td>Årscarl</td>
+                        <td>Model beskrivning</td>
+                        <td>@car.ModelDescription</td>
+                    </tr>
+                    <tr>
+                        <td>Årsmodel</td>
                         <td>@car.ModelYear</td>
                     </tr>
                     <tr>

@@ -63,7 +63,7 @@ namespace WU16.BolindersBilAB.DAL.Seeding
 
                     if (property.PropertyType.IsPrimitive)
                     {
-                        if (Convert.GetTypeCode(property.PropertyType) != TypeCode.Boolean)
+                        if (Type.GetTypeCode(property.PropertyType) == TypeCode.Boolean)
                         {
                             var rand = new Random();
                             for (int i = 0; i < numberOfRows; i++)
@@ -79,6 +79,11 @@ namespace WU16.BolindersBilAB.DAL.Seeding
                         for (int i = 0; i < numberOfRows; i++)
                             property.SetValue(rows[i], enums[rand.Next(0, enums.Length)]);
                     }
+                    else if(property.PropertyType.Equals(typeof(Guid)))
+                    {
+                        for (int i = 0; i < numberOfRows; i++)
+                            property.SetValue(rows[i], Guid.NewGuid());
+                    }
                 }
             }
 
@@ -90,13 +95,13 @@ namespace WU16.BolindersBilAB.DAL.Seeding
             switch (settings)
             {
                 case SeedDbContextSettings.ReplaceExisting:
-                    dbContext.Database.ExecuteSqlCommand($"TRUNCATE TABLE {dbContext.GetTableName<T>()}");
+                    var name = dbContext.GetTableName<T>();
+                    var sql = new RawSqlString($" DELETE FROM {name}");
+                    dbContext.Database.ExecuteSqlCommand(sql);
                     break;
                 case SeedDbContextSettings.LeaveIfExists:
                     if (dbContext.Set<T>().Any())
                         return;
-                    break;
-                default:
                     break;
             }
 
