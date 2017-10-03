@@ -44,6 +44,7 @@ namespace WU16.BolindersBilAB.BLL.Services
 
             return (CarXmlDeserializer)ds.Deserialize(xml);
         }
+
         private Stream DownloadFile()
         {
             var request = WebRequest.CreateDefault(new Uri($"ftp://{_config.Host}{_config.FilePath}"));

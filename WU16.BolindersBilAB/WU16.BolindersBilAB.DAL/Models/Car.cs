@@ -46,23 +46,19 @@ namespace WU16.BolindersBilAB.DAL.Models
         [SeedDataType(SeederDataType.Year)]
         public int ModelYear { get; set; }
 
-        //[XmlElement("exkl_moms")]
-        
         public bool IsLeaseable { get; set; }
 
         [SeedNumericValue(100, 20000)]
-        //[XmlElement("milage")]
-        
-        public int Milage { get; set; }
+        public int? Milage { get; set; }
 
         [SeedNumericValue(30000, 150000)]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
 
         [SeedChooseFrom("grå", "grön", "mörkblå", "rengbåge")]
         public string Color { get; set; }
 
         [SeedNumericValue(80, 200)]
-        public int HorsePower { get; set; }
+        public int? HorsePower { get; set; }
 
         
 

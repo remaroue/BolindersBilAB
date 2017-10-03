@@ -94,7 +94,7 @@ namespace WU16.BolindersBilAB.DAL.Helpers
         {
             return new CarListQuery()
             {
-                PriceFrom = car.Price,
+                PriceFrom = car.Price ?? 0m,
                 CarBrand = new List<CarBrand>() { car.CarBrand },
                 Take = 4
             };
