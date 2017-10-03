@@ -3,7 +3,7 @@
     $('#carType').select2();
     $('#gearbox').select2();
 
-    $('.car-list-item').on('click', function () {
+    $('.card').on('click', function () {
         var licenseNumber = $(this).data('id');
         location.href = '/bil/' + licenseNumber
     });
