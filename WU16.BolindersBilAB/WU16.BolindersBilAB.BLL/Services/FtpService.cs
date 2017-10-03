@@ -45,7 +45,7 @@ namespace WU16.BolindersBilAB.BLL.Services
             return (CarXmlDeserializer)ds.Deserialize(xml);
         }
 
-        private Stream DownloadFile()
+        private Stream GetXmlStream()
         {
             var request = WebRequest.CreateDefault(new Uri($"ftp://{_config.Host}{_config.FilePath}"));
 
@@ -165,7 +165,7 @@ namespace WU16.BolindersBilAB.BLL.Services
 
                 if(failedCars.Count() > 0)
                 {
-                    sb.Append("<h2 style='color:#f00;'>något gick fel under importen</h2><p>Kunde inte importera dessa bilar:</p>");
+                    sb.Append("<h2 style='color:#f00;'>Något gick fel under importen</h2><p>Kunde inte importera dessa bilar:</p>");
                     sb.Append("<table><thead>");
                     sb.Append("<th>Registrerings Nummer</th>");
                     sb.Append("<th>Import Id</th>");
@@ -185,7 +185,7 @@ namespace WU16.BolindersBilAB.BLL.Services
         public void Run()
         {
             CarXmlDeserializer result = null;
-            using (var s = DownloadFile())
+            using (var s = GetXmlStream())
                 result = DeserializeStrem(s);
 
             var addedCars = new List<Car>();
