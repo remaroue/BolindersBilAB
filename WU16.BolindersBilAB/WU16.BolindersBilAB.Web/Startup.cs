@@ -176,7 +176,10 @@ namespace WU16.BolindersBilAB.Web
                 _ctx.SaveChanges();
             }
 
-            Seeder<Car>.SeedDbContext(_ctx, 1000, SeedDbContextSettings.ReplaceExisting);
+            if(_ctx.Cars.Any())
+            {
+               // Seeder<Car>.SeedDbContext(_ctx, 1000, SeedDbContextSettings.ReplaceExisting);
+            }
         }
     }
 }

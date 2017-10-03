@@ -137,7 +137,8 @@
                         }
                         <div class="card-body">
                             <h5 class="card-title">@car.CarBrand.BrandName @car.Model -@car.ModelYear.ToString().Substring(2)</h5>
-                            <div class="float-right pt-1"><span class="car-details car-price">@car.Price kr</span></div>
+                            @{ var price = car.Price == null ? "Inget Pris Än" : $"{car.Price} kr"; }
+                            <div class="float-right pt-1"><span class="car-details car-price">@price</span></div>
                         </div>
                     </div>
                 </div>

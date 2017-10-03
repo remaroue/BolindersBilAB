@@ -32,8 +32,8 @@ namespace WU16.BolindersBilAB.BLL.Helpers
 
         private DateTime ConvertFromUnixTime(string unixTimestamp) => new DateTime(1970, 1, 1).AddSeconds(int.Parse(unixTimestamp));
 
-        private int? ParseInt(string value) => int.TryParse(value, out int result) ? (int?)null : result;
-        private decimal? ParseDecimal(string value) => decimal.TryParse(value, NumberStyles.AllowThousands | NumberStyles.AllowDecimalPoint, CultureInfo.CreateSpecificCulture("sv-SE"), out decimal result) ? (decimal?)null : result;
+        private int? ParseInt(string value) => int.TryParse(value, out int result) ? result : (int?)null; 
+        private decimal? ParseDecimal(string value) => decimal.TryParse(value, NumberStyles.Any, CultureInfo.GetCultureInfo("sv-SE"), out decimal result) ? result : (decimal?)null;
         private bool ParseBool(string value) => string.IsNullOrEmpty(value) ? false : true;
 
         private void ApplyValueToProperty(string name, string value, Car car)

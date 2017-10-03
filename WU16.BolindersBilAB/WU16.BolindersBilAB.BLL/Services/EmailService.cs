@@ -31,12 +31,13 @@ namespace WU16.BolindersBilAB.BLL.Services
             {
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = useDefaultCredentials,
-                EnableSsl = _config.EnableSsl,
-                Credentials = credentials
+                EnableSsl = _config.EnableSsl
             })
             {
                 try
                 {
+                    if (credentials != null) client.Credentials = credentials;
+
                     var mail = new MailMessage(new MailAddress(sender.Trim()), new MailAddress(recipient.Trim()))
                     {
                         Subject = subject,

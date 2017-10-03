@@ -52,7 +52,11 @@ namespace WU16.BolindersBilAB.BLL.Services
             request.Method = WebRequestMethods.Ftp.DownloadFile;
             request.Credentials = new NetworkCredential(_config.UserName, _config.Password);
 
-            return request.GetResponse().GetResponseStream();
+            var ms = new MemoryStream();
+            request.GetResponse().GetResponseStream().CopyTo(ms);
+            ms.Position = 0;
+            
+            return ms;
         }
 
         private void MapUpdates(Car to, Car from, List<CarBrand> addedCarBrands)
@@ -153,7 +157,7 @@ namespace WU16.BolindersBilAB.BLL.Services
 
                 if(addedCarBrands.Count() > 0)
                 {
-                    sb.Append($"<p>Tillagda bilmärken: {addedCarBrands.Count()}st</p>");
+                    sb.Append($"<p>Tillagda bilmärken: {addedCarBrands.Count()}st</p><ul>");
                     foreach (var brand in addedCarBrands)
                         sb.Append($"<li>{brand.BrandName}</li>");
                     sb.Append("</ul><p style='color:#f00;'>Bilmärkena behöver bilder.</p>");
