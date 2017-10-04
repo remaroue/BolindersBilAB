@@ -20,9 +20,6 @@
             <h1 class="text-center">@ViewData["Title"]</h1>
             <form class="mt-4" asp-action="Cars" method="get">
                 <div class="form-row">
-                    <div class="form-group col-lg-12 col-sm-12 col-12">
-                        <input type="text" class="form-control" name="search" asp-for="Query.Search" />
-                    </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-lg-2 col-sm-6 col-6">
@@ -87,7 +84,11 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-lg-4">
+                    <div class="form-group col-lg-3">
+                        <label>Sök</label>
+                        <input type="text" class="form-control" name="search" asp-for="Query.Search" />
+                    </div>
+                    <div class="form-group col-lg-3">
                         <label>Karosstyp</label>
                         <select style="width:100%; display:none;" name="type" id="carType" asp-for="Query.CarType" class="form-control" multiple="multiple">
                             @foreach (var type in Enum.GetNames(typeof(CarType)))
@@ -96,7 +97,7 @@
                             }
                         </select>
                     </div>
-                    <div class="form-group col-lg-4">
+                    <div class="form-group col-lg-3">
                         <label>Drivmedel</label>
                         <select style="width:100%; display:none;" name="fuel" id="fuelType" asp-for="Query.FuelType" class="form-control" multiple="multiple">
                             @foreach (var type in Enum.GetNames(typeof(FuelType)))
@@ -105,7 +106,7 @@
                             }
                         </select>
                     </div>
-                    <div class="form-group col-lg-4">
+                    <div class="form-group col-lg-3">
                         <label>Växellåda</label>
                         <select style="width:100%; display:none;" name="gearbox" id="gearbox" asp-for="Query.Gearbox" class="form-control" multiple="multiple">
                             @foreach (var type in Enum.GetNames(typeof(Gearbox)))
@@ -132,7 +133,15 @@
                 {
                         <div class="col-lg-6 mb-2">
                             <div class="card" data-id="@car.LicenseNumber">
+                                @if(car.CarImages.Count == 0)
+                                {
                                 <img class="card-img-top" src="https://via.placeholder.com/500x250" alt="Card image cap">
+                                }
+                                else
+                                {
+                                    <img class="card-img-top" src="~/Images/Uploads/@car.CarImages.First().FileName" alt="@car.LicenseNumber"/>
+
+                                }
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-xl-12">
