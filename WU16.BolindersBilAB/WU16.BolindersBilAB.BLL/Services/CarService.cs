@@ -1,20 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using WU16.BolindersBilAB.DAL.Helpers;
+using WU16.BolindersBilAB.BLL.Helpers;
+using WU16.BolindersBilAB.BLL.Models;
 using WU16.BolindersBilAB.DAL.Models;
 using WU16.BolindersBilAB.DAL.Repository;
 
-namespace WU16.BolindersBilAB.DAL.Services
+namespace WU16.BolindersBilAB.BLL.Services
 {
-    public class CarListService
+    public class CarService
     {
         private IRepository<Car> _repo;
 
-        public CarListService(IRepository<Car> Repo)
+        public CarService(IRepository<Car> Repo)
         {
             _repo = Repo;
         }
@@ -34,7 +32,7 @@ namespace WU16.BolindersBilAB.DAL.Services
 
         public Car GetCar(string licenseNumber)
         {
-            licenseNumber = CarListHelper.NormalizeLicenseNumber(licenseNumber);
+            licenseNumber = CarHelper.NormalizeLicenseNumber(licenseNumber);
 
             return _repo.Get()
                 .Include(x => x.CarBrand)
@@ -60,5 +58,19 @@ namespace WU16.BolindersBilAB.DAL.Services
                     ImageName = x.CarImages.FirstOrDefault().FileName ?? null
                 }).ToArray();
         }
+
+        public void SaveCar(Car car)
+        {
+            _repo.Insert(car);
+            _repo.Save();
+        }
+
+        public Car DeleteCar(Car car)
+        {
+            _repo.Delete(car);
+            _repo.Save();
+            return car;
+        }
+
     }
 }

@@ -6,6 +6,7 @@ using WU16.BolindersBilAB.DAL.Models;
 using System.Xml;
 using System.Xml.Schema;
 using System.Globalization;
+using WU16.BolindersBilAB.BLL.Models;
 
 namespace WU16.BolindersBilAB.BLL.Helpers
 {

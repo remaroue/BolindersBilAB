@@ -9,21 +9,14 @@ using WU16.BolindersBilAB.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using WU16.BolindersBilAB.DAL.Repository;
-using WU16.BolindersBilAB.DAL.Services;
 using Microsoft.AspNetCore.Routing;
 using WU16.BolindersBilAB.BLL.Configuration;
 using WU16.BolindersBilAB.BLL.Services;
 using DNTScheduler.Core;
-using WU16.BolindersBilAB.Web.Infrastructure;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WU16.BolindersBilAB.DAL.Seeding;
 using WU16.BolindersBilAB.BLL.ScheduledTasks;
-using WU16.BolindersBilAB.DAL.Seeding.Enums;
-using System.Collections.Generic;
-using System.Linq;
-using WU16.BolindersBilAB.Web.Infrastructure;
 
 namespace WU16.BolindersBilAB.Web
 {
@@ -102,7 +95,7 @@ namespace WU16.BolindersBilAB.Web
             services.AddMvc();
 
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
-            services.AddScoped<CarListService>();
+            services.AddScoped<CarService>();
             services.AddScoped<CarBrandService>();
             services.AddScoped<LocationService>();
             services.AddScoped<CarService>();

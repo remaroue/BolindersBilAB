@@ -11,9 +11,9 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using WU16.BolindersBilAB.BLL.Configuration;
 using WU16.BolindersBilAB.BLL.Helpers;
+using WU16.BolindersBilAB.BLL.Models;
 using WU16.BolindersBilAB.DAL.Models;
 using WU16.BolindersBilAB.DAL.Repository;
-using WU16.BolindersBilAB.DAL.Services;
 
 namespace WU16.BolindersBilAB.BLL.Services
 {
@@ -21,13 +21,13 @@ namespace WU16.BolindersBilAB.BLL.Services
     {
         private FtpServiceConfiguration _config;
         private CarBrandService _brandService;
-        private CarListService _carService;
+        private CarService _carService;
         private IRepository<Car> _carRepo;
         private ImageService _imageService;
         private LocationService _locationService;
         private EmailService _emailService;
 
-        public FtpService(IOptions<FtpServiceConfiguration> config, CarListService carService, IRepository<Car> carRepo, ImageService imageService, CarBrandService carBrandService, LocationService locationService, EmailService emailService)
+        public FtpService(IOptions<FtpServiceConfiguration> config, CarService carService, IRepository<Car> carRepo, ImageService imageService, CarBrandService carBrandService, LocationService locationService, EmailService emailService)
         {
             _config = config.Value;
             _brandService = carBrandService;

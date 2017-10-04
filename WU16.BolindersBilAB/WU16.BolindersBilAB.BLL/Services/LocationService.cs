@@ -4,7 +4,7 @@ using System.Text;
 using WU16.BolindersBilAB.DAL.Models;
 using WU16.BolindersBilAB.DAL.Repository;
 
-namespace WU16.BolindersBilAB.DAL.Services
+namespace WU16.BolindersBilAB.BLL.Services
 {
    public class LocationService
     {

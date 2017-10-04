@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WU16.BolindersBilAB.DAL.Models;
-using WU16.BolindersBilAB.DAL.Services;
 using WU16.BolindersBilAB.Web.Models;
-using WU16.BolindersBilAB.DAL.Helpers;
-using WU16.BolindersBilAB.DAL.DataAccess;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Encodings.Web;
-using System.IO;
-using System.Text;
 using WU16.BolindersBilAB.Web.ModelBinder;
 using WU16.BolindersBilAB.BLL.Services;
+using WU16.BolindersBilAB.BLL.Helpers;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -22,12 +15,12 @@ namespace WU16.BolindersBilAB.Web.Controllers
     {
         private CarSearchService _carSearchService;
         private EmailService _emailService;
-        private CarListService _carlistService;
+        private CarService _carlistService;
         private CarBrandService _brandService;
         private LocationService _locationService;
         private CarService _carService;
 
-        public CarsController(CarSearchService carSearchService, EmailService emailService, CarListService carListService, CarBrandService carBrandService, LocationService locationService, CarService carService)
+        public CarsController(CarSearchService carSearchService, EmailService emailService, CarService carListService, CarBrandService carBrandService, LocationService locationService, CarService carService)
         {
             _carSearchService = carSearchService;
             _emailService = emailService;
@@ -115,9 +108,9 @@ namespace WU16.BolindersBilAB.Web.Controllers
             var totalItems = cars.ToList().Count;
 
             ViewBag.Query = Request.QueryString;
-            ViewBag.Prices = CarListHelper.GetPriceRange();
-            ViewBag.Years = CarListHelper.GetModelYears();
-            ViewBag.Milages = CarListHelper.GetMilageRange();
+            ViewBag.Prices = CarHelper.GetPriceRange();
+            ViewBag.Years = CarHelper.GetModelYears();
+            ViewBag.Milages = CarHelper.GetMilageRange();
             ViewBag.Parameter = parameter;
 
             return View(new CarListViewModel()
