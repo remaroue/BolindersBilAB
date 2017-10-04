@@ -20,6 +20,7 @@ using WU16.BolindersBilAB.DAL.Seeding;
 using WU16.BolindersBilAB.DAL.Seeding.Enums;
 using System.Collections.Generic;
 using System.Linq;
+using WU16.BolindersBilAB.Web.Infrastructure;
 
 namespace WU16.BolindersBilAB.Web
 {
