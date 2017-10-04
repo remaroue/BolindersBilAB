@@ -10,15 +10,15 @@
     }
     else
     {
-        ViewData["Title"] = "Bilar";
+        ViewData["Title"] = "Alla bilar";
     }
 }
 
-<div id="cars-cars-container" class="container mt-2">
-    <div class="row">
-        <div class="col-lg-12">
-            <h2 class="text-center">@ViewData["Title"]</h2>
-            <form asp-action="Cars" method="get">
+<div id="cars-cars-container" class="container-fluid">
+    <div class="row justify-content-center car-filter">
+        <div class="col-lg-8 mt-3">
+            <h1 class="text-center">@ViewData["Title"]</h1>
+            <form class="mt-4" asp-action="Cars" method="get">
                 <input hidden="hidden" name="search" asp-for="Query.Search" />
                 <div class="form-row">
                     <div class="form-group col-lg-2 col-sm-6 col-6">
@@ -85,7 +85,7 @@
                 <div class="form-row">
                     <div class="form-group col-lg-4">
                         <label>Karosstyp</label>
-                        <select style="width:99%; display:none;" name="type" id="carType" asp-for="Query.CarType" class="form-control" multiple="multiple">
+                        <select style="width:100%; display:none;" name="type" id="carType" asp-for="Query.CarType" class="form-control" multiple="multiple">
                             @foreach (var type in Enum.GetNames(typeof(CarType)))
                             {
                                 <option>@type</option>
@@ -94,7 +94,7 @@
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Drivmedel</label>
-                        <select style="width:99%; display:none;" name="fuel" id="fuelType" asp-for="Query.FuelType" class="form-control" multiple="multiple">
+                        <select style="width:100%; display:none;" name="fuel" id="fuelType" asp-for="Query.FuelType" class="form-control" multiple="multiple">
                             @foreach (var type in Enum.GetNames(typeof(FuelType)))
                             {
                                 <option>@type</option>
@@ -113,49 +113,66 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group ml-auto mr-1">
-                        <button type="submit" class="btn btn-primary">Sök</button>
+                        <button type="submit" class="btn btn-primary btn-lg">Sök</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <hr class="w-100" />
-    <div class="row">
-        @if (Model.Cars.Count > 0)
-        {
-            @foreach (var car in Model.Cars)
+    <div class="row justify-content-center">
+        <div class="col-lg-8 mt-2">
+            <div class="row">
+                @if (Model.Cars.Count > 0)
+            {
+                    @foreach (var car in Model.Cars)
                 {
-                <div class="col-lg-6 mt-2">
-                    <div role="button" data-id="@car.LicenseNumber" class="card car-list-item">
-                        @if(car.CarImages.Count > 0)
-                        {
-                            <img src="/images/upload/@car.CarImages.First().FileName" alt="@car.CarBrand" />
-                        }
-                        else
-                        {
-                            <img src="https://via.placeholder.com/300x300" alt="ingen bild" />
-                        }
-                        <div class="card-body">
-                            <h5 class="card-title">@car.CarBrand.BrandName @car.Model -@car.ModelYear.ToString().Substring(2)</h5>
-                            @{ var price = car.Price == null ? "Inget Pris Än" : $"{car.Price} kr"; }
-                            <div class="float-right pt-1"><span class="car-details car-price">@price</span></div>
+                        <div class="col-lg-6 mb-2">
+                            <div class="card" data-id="@car.LicenseNumber">
+                                <img class="card-img-top" src="https://via.placeholder.com/500x250" alt="Card image cap">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-xl-12">
+                                            <h4 class="card-title">@car.CarBrand.BrandName @car.Model -@car.ModelYear.ToString().Substring(2)</h4>
+                                        </div>
+                                        <div class="col-xl-12">
+                                            @{ var price = car.Price == null ? "Inget Pris Satt" : $"{car.Price} kr"; }
+                                            <h4 class="card-text col-md-12"><span class="badge badge-primary">@price</span></h4>
+                                        </div>
+                                    </div>
+                                    <hr class="w-100" />
+                                    <div class="row spec-items">
+                                        <div class="col-lg-4 col-4">
+                                            <label>Mätarställning</label>
+                                            <p>@car.Milage mil</p>
+                                        </div>
+                                        <div class="col-lg-4 col-4">
+                                            <label>Bränsle</label>
+                                            <p>@car.FuelType</p>
+                                        </div>
+                                        <div class="col-lg-4 col-4">
+                                            <label>Växellåda</label>
+                                            <p>@car.Gearbox</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            }
-            <hr class="w-100" />
-            <div class="mx-auto mt-3 mb-3" id="pager" page-query="@ViewBag.Query" data-page="@Model.Pager.CurrentPage" page-action="Cars" page-model="@Model.Pager"></div>
 
-        }
-        else
-        {
-            <div class="col-lg-12 text-center">
-                <h5>Inga bilar hittades.</h5>
+                    }
+                    <div class="mx-auto mt-3 mb-3" id="pager" page-query="@ViewBag.Query" data-page="@Model.Pager.CurrentPage" page-action="Cars" page-model="@Model.Pager"></div>
+                }
+                else
+                {
+                    <div class="col-lg-12 text-center">
+                        <h5>Inga bilar hittades.</h5>
+                    </div>
+                }
             </div>
-        }
+            </div>
+
+        </div>
     </div>
-</div>
-@section Scripts {
-    <script src="~/js/_cars-cars.js" asp-append-version="true"></script>
-}
+    @section Scripts {
+        <script src="~/js/_cars-cars.js" asp-append-version="true"></script>
+    }
 
