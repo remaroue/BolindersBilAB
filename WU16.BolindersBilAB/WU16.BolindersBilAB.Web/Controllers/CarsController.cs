@@ -70,6 +70,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
 
+        [HttpGet]
         [Route("/bil/ny")]
         public IActionResult AddCar()
         {
@@ -82,26 +83,21 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Route("/bil/ny")]
         public IActionResult AddCar(Car car)
         {
-            var location = _locationService.Get();
-
-            //car.Location.Id = car.LocationId;
             //car.CarBrand.BrandName = car.CarBrandId;
             if (!ModelState.IsValid)
             {
                 return BadRequest(); // Todo return to view.
             }
-            else
-            {
-
-                car.CreationDate = DateTime.Now;
-                car.LastUpdated = DateTime.Now;
-
-                _carService.SaveCar(car);
+            car.CreationDate = DateTime.Now;
+            car.LastUpdated = DateTime.Now;
+           
+            _carService.SaveCar(car);
                 return Redirect("/"); // Todo Return to view.
 
-            }
+            
         }
 
+    
         [HttpGet]
         [Route("/bilar/{parameter?}")]
         public IActionResult Cars([ModelBinder(BinderType = typeof(QueryModelBinder))]CarListQuery query, string parameter = "", int page = 1)
