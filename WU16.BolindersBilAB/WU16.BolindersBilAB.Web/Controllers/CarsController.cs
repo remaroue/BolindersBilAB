@@ -19,8 +19,9 @@ namespace WU16.BolindersBilAB.Web.Controllers
         private CarBrandService _brandService;
         private LocationService _locationService;
         private CarService _carService;
+        private ImageService _imageService;
 
-        public CarsController(CarSearchService carSearchService, EmailService emailService, CarService carListService, CarBrandService carBrandService, LocationService locationService, CarService carService)
+        public CarsController(CarSearchService carSearchService, EmailService emailService, CarService carListService, CarBrandService carBrandService, LocationService locationService, CarService carService, ImageService imageService)
         {
             _carSearchService = carSearchService;
             _emailService = emailService;
@@ -28,6 +29,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             _brandService = carBrandService;
             _locationService = locationService;
             _carService = carService;
+            _imageService = imageService;
         }
 
         [HttpGet]
@@ -63,6 +65,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
 
+        [HttpGet]
         [Route("/bil/ny")]
         public IActionResult AddCar()
         {
@@ -73,28 +76,68 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         [HttpPost]
         [Route("/bil/ny")]
-        public IActionResult AddCar(Car car)
+        public IActionResult AddCar(AddCarViewModel car)
         {
-            var location = _locationService.Get();
-
-            //car.Location.Id = car.LocationId;
-            //car.CarBrand.BrandName = car.CarBrandId;
             if (!ModelState.IsValid)
             {
-                return BadRequest(); // Todo return to view.
+                return View(car);
             }
-            else
+            car.CreationDate = DateTime.Now;
+            car.LastUpdated = DateTime.Now;
+            if (car == null)
             {
-
-                car.CreationDate = DateTime.Now;
-                car.LastUpdated = DateTime.Now;
-
-                _carService.SaveCar(car);
-                return Redirect("/"); // Todo Return to view.
-
+                return BadRequest();
             }
+
+            var newCar = new Car
+            {
+                LicenseNumber = car.LicenseNumber,
+                Model = car.Model,
+                Description = car.Description,
+                ModelYear = car.ModelYear,
+                IsLeaseable = car.IsLeaseable,
+                Milage = car.Milage,
+                Price = car.Price,
+                Color = car.Color,
+                HorsePower = car.HorsePower,
+                Used = car.Used,
+                LocationId = car.LocationId,
+                CarBrand = car.CarBrand,
+                CarBrandId = car.CarBrandId,
+                Equipment = car.Equipment,
+                CarType = car.CarType,
+                FuelType = car.FuelType,
+                Gearbox = car.Gearbox,
+                CreationDate = DateTime.Now,
+                LastUpdated = DateTime.Now
+
+            };
+
+            newCar = _imageService.AddImageToCar(newCar, car.Images.ToArray());
+            _carService.SaveCar(newCar);
+            return View("/");
         }
 
+        [Route("/bil/nybrand")]
+        public IActionResult AddCarBrand()
+        {
+            return View();
+        }
+        [HttpPost]
+        [Route("/bil/nybrand")]
+        public IActionResult AddCarBrand(AddBrandViewModel carBrand)
+        {
+            var newCarBrand = new CarBrand
+            {
+                BrandName = carBrand.BrandName
+            };
+            _brandService.Add(newCarBrand);
+            newCarBrand = _imageService.ChangeImageOnCarBrand(newCarBrand, carBrand.Image);     
+            
+            
+            return View("/");
+        }
+    
         [HttpGet]
         [Route("/bilar/{parameter?}")]
         public IActionResult Cars([ModelBinder(BinderType = typeof(QueryModelBinder))]CarListQuery query, string parameter = "", int page = 1)
