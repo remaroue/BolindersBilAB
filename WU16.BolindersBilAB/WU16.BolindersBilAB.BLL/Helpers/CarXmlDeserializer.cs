@@ -27,14 +27,18 @@ namespace WU16.BolindersBilAB.BLL.Helpers
         private T ParseEnum<T>(string name)
         {
             var n = Enum.GetNames(typeof(T)).FirstOrDefault(x => x.ToLower() == name.ToLower());
+
+            if (n == null)
+                throw new Exception($"Value:{name} could not be parsed into Enum:{nameof(T)}");
+
             return (T)Enum.Parse(typeof(T), n);
         }
 
         private DateTime ConvertFromUnixTime(string unixTimestamp) => new DateTime(1970, 1, 1).AddSeconds(int.Parse(unixTimestamp));
 
         private int? ParseInt(string value) => int.TryParse(value, out int result) ? result : (int?)null; 
-        private decimal? ParseDecimal(string value) => decimal.TryParse(value, NumberStyles.Any, CultureInfo.GetCultureInfo("sv-SE"), out decimal result) ? result : (decimal?)null;
-        private bool ParseBool(string value) => string.IsNullOrEmpty(value) ? false : true;
+        private decimal? ParseDecimal(string value) => decimal.TryParse(value, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.GetCultureInfo("sv-SE"), out decimal result) ? result : (decimal?)null;
+        private bool ParseBool(string value) => string.IsNullOrEmpty(value) || value == "0" ? false : true;
 
         private void ApplyValueToProperty(string name, string value, Car car)
         {

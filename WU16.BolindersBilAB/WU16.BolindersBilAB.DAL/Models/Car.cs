@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Xml.Serialization;
 using WU16.BolindersBilAB.DAL.Seeding.Attributes;
 using WU16.BolindersBilAB.DAL.Seeding.Enums;
 
 namespace WU16.BolindersBilAB.DAL.Models
 {
-    [XmlType("car")]
     public class Car
     {
-        // [XmlElement("updated")]string lastUpdated, [XmlElement("exkl_moms")]string isLeasable, [XmlElement("price")]string price, [XmlElement("miles")]string milage, [XmlElement("horsepower")]string horsepower
         [Key]
         [Display(Name = "Registreringsnummer")]
         [SeedPatternCreateString(CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine)]
