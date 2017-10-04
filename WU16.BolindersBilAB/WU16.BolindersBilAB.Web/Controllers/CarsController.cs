@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WU16.BolindersBilAB.DAL.Models;
-using WU16.BolindersBilAB.DAL.Services;
 using WU16.BolindersBilAB.Web.Models;
-using WU16.BolindersBilAB.DAL.Helpers;
-using WU16.BolindersBilAB.DAL.DataAccess;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Encodings.Web;
-using System.IO;
-using System.Text;
 using WU16.BolindersBilAB.Web.ModelBinder;
 using WU16.BolindersBilAB.BLL.Services;
+using WU16.BolindersBilAB.BLL.Helpers;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -22,12 +15,13 @@ namespace WU16.BolindersBilAB.Web.Controllers
     {
         private CarSearchService _carSearchService;
         private EmailService _emailService;
-        private CarListService _carlistService;
+        private CarService _carlistService;
         private CarBrandService _brandService;
         private LocationService _locationService;
         private CarService _carService;
+        private ImageService _imageService;
 
-        public CarsController(CarSearchService carSearchService, EmailService emailService, CarListService carListService, CarBrandService carBrandService, LocationService locationService, CarService carService)
+        public CarsController(CarSearchService carSearchService, EmailService emailService, CarService carListService, CarBrandService carBrandService, LocationService locationService, CarService carService, ImageService imageService)
         {
             _carSearchService = carSearchService;
             _emailService = emailService;
@@ -35,6 +29,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             _brandService = carBrandService;
             _locationService = locationService;
             _carService = carService;
+            _imageService = imageService;
         }
 
         [HttpGet]
@@ -81,22 +76,67 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         [HttpPost]
         [Route("/bil/ny")]
-        public IActionResult AddCar(Car car)
+        public IActionResult AddCar(AddCarViewModel car)
         {
-            //car.CarBrand.BrandName = car.CarBrandId;
             if (!ModelState.IsValid)
             {
-                return BadRequest(); // Todo return to view.
+                return View(car);
             }
             car.CreationDate = DateTime.Now;
             car.LastUpdated = DateTime.Now;
-           
-            _carService.SaveCar(car);
-                return Redirect("/"); // Todo Return to view.
+            if (car == null)
+            {
+                return BadRequest();
+            }
 
-            
+            var newCar = new Car
+            {
+                LicenseNumber = car.LicenseNumber,
+                Model = car.Model,
+                Description = car.Description,
+                ModelYear = car.ModelYear,
+                IsLeaseable = car.IsLeaseable,
+                Milage = car.Milage,
+                Price = car.Price,
+                Color = car.Color,
+                HorsePower = car.HorsePower,
+                Used = car.Used,
+                LocationId = car.LocationId,
+                CarBrand = car.CarBrand,
+                CarBrandId = car.CarBrandId,
+                Equipment = car.Equipment,
+                CarType = car.CarType,
+                FuelType = car.FuelType,
+                Gearbox = car.Gearbox,
+                CreationDate = DateTime.Now,
+                LastUpdated = DateTime.Now
+
+            };
+
+            newCar = _imageService.AddImageToCar(newCar, car.Images.ToArray());
+            _carService.SaveCar(newCar);
+            return View("/");
         }
 
+        [Route("/bil/nybrand")]
+        public IActionResult AddCarBrand()
+        {
+            return View();
+        }
+        [HttpPost]
+        [Route("/bil/nybrand")]
+        public IActionResult AddCarBrand(AddBrandViewModel carBrand)
+        {
+            var newCarBrand = new CarBrand
+            {
+                BrandName = carBrand.BrandName
+            };
+            _brandService.Add(newCarBrand);
+            newCarBrand = _imageService.ChangeImageOnCarBrand(newCarBrand, carBrand.Image);     
+            
+            
+            return View("/");
+        }
     
         [HttpGet]
         [Route("/bilar/{parameter?}")]
@@ -111,9 +151,9 @@ namespace WU16.BolindersBilAB.Web.Controllers
             var totalItems = cars.ToList().Count;
 
             ViewBag.Query = Request.QueryString;
-            ViewBag.Prices = CarListHelper.GetPriceRange();
-            ViewBag.Years = CarListHelper.GetModelYears();
-            ViewBag.Milages = CarListHelper.GetMilageRange();
+            ViewBag.Prices = CarHelper.GetPriceRange();
+            ViewBag.Years = CarHelper.GetModelYears();
+            ViewBag.Milages = CarHelper.GetMilageRange();
             ViewBag.Parameter = parameter;
 
             return View(new CarListViewModel()

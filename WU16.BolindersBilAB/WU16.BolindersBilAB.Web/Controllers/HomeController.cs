@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using WU16.BolindersBilAB.Web.Models;
-using WU16.BolindersBilAB.DAL.DataAccess;
-using WU16.BolindersBilAB.DAL.Services;
-using WU16.BolindersBilAB.DAL.Models;
+using WU16.BolindersBilAB.BLL.Services;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
     public class HomeController : Controller
     {
         private CarBrandService _brandService;
-        private CarListService _carListService;
+        private CarService _carListService;
 
-        public HomeController(CarBrandService brandService, CarListService carListService)
+        public HomeController(CarBrandService brandService, CarService carListService)
         {
             _brandService = brandService;
             _carListService = carListService;

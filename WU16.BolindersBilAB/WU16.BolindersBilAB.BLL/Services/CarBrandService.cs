@@ -5,7 +5,7 @@ using System.Text;
 using WU16.BolindersBilAB.DAL.Models;
 using WU16.BolindersBilAB.DAL.Repository;
 
-namespace WU16.BolindersBilAB.DAL.Services
+namespace WU16.BolindersBilAB.BLL.Services
 {
     public class CarBrandService
     {
@@ -32,7 +32,7 @@ namespace WU16.BolindersBilAB.DAL.Services
             _repo.Save();
         }
 
-        public CarBrand Add(CarBrand carBrand)
+      public CarBrand Add(CarBrand carBrand)
         {
             return _repo.Insert(carBrand);
         }

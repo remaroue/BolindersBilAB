@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using WU16.BolindersBilAB.DAL.Services;
 using WU16.BolindersBilAB.BLL.Services;
 
 namespace WU16.BolindersBilAB.Web.Controllers
@@ -13,11 +10,13 @@ namespace WU16.BolindersBilAB.Web.Controllers
     {
         private CarBrandService _bs;
         private ImageService _imageService;
+        private FtpService _ftpService;
 
-        public ImageController(ImageService imageService, CarBrandService bs)
+        public ImageController(ImageService imageService, CarBrandService bs, FtpService ftpService)
         {
             _bs = bs;
             _imageService = imageService;
+            _ftpService = ftpService;
         }
 
         public IActionResult Index()
@@ -31,6 +30,21 @@ namespace WU16.BolindersBilAB.Web.Controllers
             var carbrand = _imageService.ChangeImageOnCarBrand(_bs.GetBrand(id), images.First());
             _bs.Update(carbrand);
             return View();
+        }
+
+        [Route("/ftptest")]
+        public IActionResult FtpTester()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("/ftptestpost")]
+        public IActionResult FtpTesterPost()
+        {
+            _ftpService.Run();
+
+            return Redirect("/ftptest");
         }
     }
 }

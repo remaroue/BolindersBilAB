@@ -5,9 +5,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using WU16.BolindersBilAB.DAL.Models;
 
-namespace WU16.BolindersBilAB.DAL.Helpers
+namespace WU16.BolindersBilAB.BLL.Helpers
 {
-    public static class CarListHelper
+    public static class CarHelper
     {
         private static readonly Regex _pattern = new Regex("[^a-z,å,ä,ö,0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         public static string NormalizeLicenseNumber(string input)
@@ -94,7 +94,7 @@ namespace WU16.BolindersBilAB.DAL.Helpers
         {
             return new CarListQuery()
             {
-                PriceFrom = car.Price,
+                PriceFrom = car.Price ?? 0m,
                 CarBrand = new List<CarBrand>() { car.CarBrand },
                 Take = 4
             };

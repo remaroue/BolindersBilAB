@@ -4,7 +4,7 @@
 
     ViewData["Title"] = $"{car.CarBrand.BrandName} {car.Model} {car.ModelYear}";
 
-    var taxedPrice = Math.Round(car.Price * 1.25m, 2);
+    var taxedPrice = Math.Round((decimal)car.Price * 1.25m, 2);
     var cashPayment = Math.Round(taxedPrice * 0.2m, 2).ToString(new System.Globalization.CultureInfo("en-US"));
 
     var anyImages = car.CarImages != null ? car.CarImages.Any() : false;

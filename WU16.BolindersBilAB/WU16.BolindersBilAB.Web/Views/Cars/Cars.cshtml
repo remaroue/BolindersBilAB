@@ -135,7 +135,8 @@
                                             <h4 class="card-title">@car.CarBrand.BrandName @car.Model -@car.ModelYear.ToString().Substring(2)</h4>
                                         </div>
                                         <div class="col-xl-12">
-                                            <h4 class="card-text col-md-12"><span class="badge badge-primary">@car.Price kr</span></h4>
+                                            @{ var price = car.Price == null ? "Inget Pris Satt" : $"{car.Price} kr"; }
+                                            <h4 class="card-text col-md-12"><span class="badge badge-primary">@price</span></h4>
                                         </div>
                                     </div>
                                     <hr class="w-100" />

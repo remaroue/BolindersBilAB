@@ -1,4 +1,4 @@
-﻿@model WU16.BolindersBilAB.DAL.Models.Car
+﻿@model AddCarViewModel
 
 @{
     ViewData["Title"] = "AddCar";
@@ -10,7 +10,7 @@
 <hr />
 <div class="container">
     <div class="col-md-4">
-        <form asp-action="AddCar">
+        <form asp-action="AddCar" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="LicenseNumber" class="control-label"></label>
@@ -71,7 +71,7 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
+                <label asp-for="LocationId" class="control-label"></label>
                 <select class="form-control" asp-for="LocationId">
                     @foreach (var type in ViewBag.Locations)
                     {
@@ -127,6 +127,9 @@
                     }
 
                 </select>
+            </div>
+            <div class="form-group">
+                <input type="file" asp-for="Images" class="form-control" multiple />
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

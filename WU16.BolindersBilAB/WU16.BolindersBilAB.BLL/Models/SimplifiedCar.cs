@@ -1,4 +1,4 @@
-﻿namespace WU16.BolindersBilAB.DAL.Services
+﻿namespace WU16.BolindersBilAB.BLL.Models
 {
     public class SimplifiedCar
     {

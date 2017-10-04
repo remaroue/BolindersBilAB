@@ -11,9 +11,9 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using WU16.BolindersBilAB.BLL.Configuration;
 using WU16.BolindersBilAB.BLL.Helpers;
+using WU16.BolindersBilAB.BLL.Models;
 using WU16.BolindersBilAB.DAL.Models;
 using WU16.BolindersBilAB.DAL.Repository;
-using WU16.BolindersBilAB.DAL.Services;
 
 namespace WU16.BolindersBilAB.BLL.Services
 {
@@ -21,13 +21,13 @@ namespace WU16.BolindersBilAB.BLL.Services
     {
         private FtpServiceConfiguration _config;
         private CarBrandService _brandService;
-        private CarListService _carService;
+        private CarService _carService;
         private IRepository<Car> _carRepo;
         private ImageService _imageService;
         private LocationService _locationService;
         private EmailService _emailService;
 
-        public FtpService(IOptions<FtpServiceConfiguration> config, CarListService carService, IRepository<Car> carRepo, ImageService imageService, CarBrandService carBrandService, LocationService locationService, EmailService emailService)
+        public FtpService(IOptions<FtpServiceConfiguration> config, CarService carService, IRepository<Car> carRepo, ImageService imageService, CarBrandService carBrandService, LocationService locationService, EmailService emailService)
         {
             _config = config.Value;
             _brandService = carBrandService;
@@ -44,14 +44,19 @@ namespace WU16.BolindersBilAB.BLL.Services
 
             return (CarXmlDeserializer)ds.Deserialize(xml);
         }
-        private Stream DownloadFile()
+
+        private Stream GetXmlStream()
         {
             var request = WebRequest.CreateDefault(new Uri($"ftp://{_config.Host}{_config.FilePath}"));
 
             request.Method = WebRequestMethods.Ftp.DownloadFile;
             request.Credentials = new NetworkCredential(_config.UserName, _config.Password);
 
-            return request.GetResponse().GetResponseStream();
+            var ms = new MemoryStream();
+            request.GetResponse().GetResponseStream().CopyTo(ms);
+            ms.Position = 0;
+            
+            return ms;
         }
 
         private void MapUpdates(Car to, Car from, List<CarBrand> addedCarBrands)
@@ -152,7 +157,7 @@ namespace WU16.BolindersBilAB.BLL.Services
 
                 if(addedCarBrands.Count() > 0)
                 {
-                    sb.Append($"<p>Tillagda bilmärken: {addedCarBrands.Count()}st</p>");
+                    sb.Append($"<p>Tillagda bilmärken: {addedCarBrands.Count()}st</p><ul>");
                     foreach (var brand in addedCarBrands)
                         sb.Append($"<li>{brand.BrandName}</li>");
                     sb.Append("</ul><p style='color:#f00;'>Bilmärkena behöver bilder.</p>");
@@ -160,7 +165,7 @@ namespace WU16.BolindersBilAB.BLL.Services
 
                 if(failedCars.Count() > 0)
                 {
-                    sb.Append("<h2 style='color:#f00;'>något gick fel under importen</h2><p>Kunde inte importera dessa bilar:</p>");
+                    sb.Append("<h2 style='color:#f00;'>Något gick fel under importen</h2><p>Kunde inte importera dessa bilar:</p>");
                     sb.Append("<table><thead>");
                     sb.Append("<th>Registrerings Nummer</th>");
                     sb.Append("<th>Import Id</th>");
@@ -180,7 +185,7 @@ namespace WU16.BolindersBilAB.BLL.Services
         public void Run()
         {
             CarXmlDeserializer result = null;
-            using (var s = DownloadFile())
+            using (var s = GetXmlStream())
                 result = DeserializeStrem(s);
 
             var addedCars = new List<Car>();
