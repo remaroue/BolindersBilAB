@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Xml.Serialization;
 using WU16.BolindersBilAB.DAL.Seeding.Attributes;
 using WU16.BolindersBilAB.DAL.Seeding.Enums;
 
 namespace WU16.BolindersBilAB.DAL.Models
 {
-    [XmlType("car")]
     public class Car
     {
-        // [XmlElement("updated")]string lastUpdated, [XmlElement("exkl_moms")]string isLeasable, [XmlElement("price")]string price, [XmlElement("miles")]string milage, [XmlElement("horsepower")]string horsepower
         [Key]
         [Display(Name = "Registreringsnummer")]
         [SeedPatternCreateString(CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.AToZ, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine, CharacterDescription.ZeroToNine)]
@@ -46,23 +41,19 @@ namespace WU16.BolindersBilAB.DAL.Models
         [SeedDataType(SeederDataType.Year)]
         public int ModelYear { get; set; }
 
-        //[XmlElement("exkl_moms")]
-        
         public bool IsLeaseable { get; set; }
 
         [SeedNumericValue(100, 20000)]
-        //[XmlElement("milage")]
-        
-        public int Milage { get; set; }
+        public int? Milage { get; set; }
 
         [SeedNumericValue(30000, 150000)]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
 
         [SeedChooseFrom("grå", "grön", "mörkblå", "rengbåge")]
         public string Color { get; set; }
 
         [SeedNumericValue(80, 200)]
-        public int HorsePower { get; set; }
+        public int? HorsePower { get; set; }
 
         
 

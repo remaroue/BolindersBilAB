@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 using WU16.BolindersBilAB.DAL.Models;
 using System.Xml;
 using System.Xml.Schema;
+using System.Globalization;
 
 namespace WU16.BolindersBilAB.BLL.Helpers
 {
@@ -26,17 +27,21 @@ namespace WU16.BolindersBilAB.BLL.Helpers
         private T ParseEnum<T>(string name)
         {
             var n = Enum.GetNames(typeof(T)).FirstOrDefault(x => x.ToLower() == name.ToLower());
+
+            if (n == null)
+                throw new Exception($"Value:{name} could not be parsed into Enum:{nameof(T)}");
+
             return (T)Enum.Parse(typeof(T), n);
         }
 
         private DateTime ConvertFromUnixTime(string unixTimestamp) => new DateTime(1970, 1, 1).AddSeconds(int.Parse(unixTimestamp));
 
-        private string PrepareNumeric(string value) => string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value) ? "0" : value.Replace(".", "");
-        private bool GetBoolean(string value) => string.IsNullOrEmpty(value) ? false : true;
+        private int? ParseInt(string value) => int.TryParse(value, out int result) ? result : (int?)null; 
+        private decimal? ParseDecimal(string value) => decimal.TryParse(value, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.GetCultureInfo("sv-SE"), out decimal result) ? result : (decimal?)null;
+        private bool ParseBool(string value) => string.IsNullOrEmpty(value) || value == "0" ? false : true;
 
         private void ApplyValueToProperty(string name, string value, Car car)
         {
-
             switch (name)
             {
                 // pure strings
@@ -50,11 +55,11 @@ namespace WU16.BolindersBilAB.BLL.Helpers
                 case "station":          car.LocationId = value; break;
 
                 // numeric
-                case "yearmodel":        car.ModelYear = int.Parse(PrepareNumeric(value)); break;
-                case "horsepower":       car.HorsePower = int.Parse(PrepareNumeric(value)); break;
-                case "miles":            car.Milage = int.Parse(PrepareNumeric(value)); break;
-                case "price":            car.Price = decimal.Parse(PrepareNumeric(value)); break;
-                case "exkl_moms":        car.IsLeaseable = GetBoolean(value); break;
+                case "yearmodel":        car.ModelYear = (int)ParseInt(value); break;
+                case "horsepower":       car.HorsePower = ParseInt(value); break;
+                case "miles":            car.Milage = ParseInt(value); break;
+                case "price":            car.Price = ParseDecimal(value); break;
+                case "exkl_moms":        car.IsLeaseable = ParseBool(value); break;
 
                 // enums
                 case "fueltype":         car.FuelType = ParseEnum<FuelType>(value); break;

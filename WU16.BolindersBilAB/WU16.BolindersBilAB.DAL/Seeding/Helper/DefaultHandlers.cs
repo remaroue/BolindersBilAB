@@ -13,9 +13,12 @@ namespace WU16.BolindersBilAB.DAL.Seeding.Helper
         {
             var attr = Attribute.GetCustomAttribute(property, typeof(SeedNumericValueAttribute)) as SeedNumericValueAttribute;
 
-            if (property.PropertyType.IsPrimitive)
+            var type = property.PropertyType;
+            if (Nullable.GetUnderlyingType(type) != null) type = Nullable.GetUnderlyingType(type);
+
+            if (type.IsPrimitive)
             {
-                var typecode = Type.GetTypeCode(property.PropertyType);
+                var typecode = Type.GetTypeCode(type);
 
                 if (typecode == TypeCode.Int32)
                 {
@@ -36,7 +39,7 @@ namespace WU16.BolindersBilAB.DAL.Seeding.Helper
                         property.SetValue(rows[i], Convert.ToDouble(min + rand.NextDouble() * (max - min)));
                 }
             }
-            else if (property.PropertyType.Equals(typeof(decimal)))
+            else if (type.Equals(typeof(decimal)))
             {
                 var rand = new Random();
                 for (int i = 0; i < rows.Length; i++)
