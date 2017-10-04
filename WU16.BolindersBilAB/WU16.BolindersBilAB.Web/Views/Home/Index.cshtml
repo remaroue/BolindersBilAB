@@ -7,7 +7,12 @@
         <form asp-controller="Cars" asp-action="Cars" method="GET" class="search-form col-md-6 container">
             <h1 class="text-center">Bolinders Bil AB</h1>
             <div class="input-group">
-                <input name="search" type="text" class="form-control col-md-12" placeholder="Sök på..." aria-label="Sök på...">
+                <input name="search" type="text" class="form-control col-9" placeholder="Sök på..." aria-label="Sök på...">
+                <select name="parameter" class="form-control col-3">
+                    <option value="">Alla fordon</option>
+                    <option value="nya">Nya</option>
+                    <option value="begagnade">Begagnade</option>
+                </select>
                 
                 <span class="input-group-btn">
                     <button type="submit" class="btn btn-secondary">Sök!</button>
