@@ -34,6 +34,8 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Route("/bil/{licenseNumber}")]
         public IActionResult Details(string licenseNumber)
         {
+            throw new Exception("test");
+
             var car = _carlistService.GetCar(licenseNumber);
             if (car == null) return BadRequest();
 

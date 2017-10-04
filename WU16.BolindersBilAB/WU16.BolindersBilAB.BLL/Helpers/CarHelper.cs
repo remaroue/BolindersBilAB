@@ -49,37 +49,38 @@ namespace WU16.BolindersBilAB.BLL.Helpers
 
 
             if (query.MilageFrom > 0)
-                cars = cars.Where(x => x.Milage >= query.MilageFrom);
+                cars = cars.Where(x => (x.Milage ?? int.MinValue) >= query.MilageFrom);
             if (query.MilageTo > 0)
-                cars = cars.Where(x => x.Milage <= query.MilageTo);
+                cars = cars.Where(x => (x.Milage ?? int.MaxValue) <= query.MilageTo);
 
             if (query.PriceFrom > 0)
-                cars = cars.Where(x => x.Price >= query.PriceFrom);
+                cars = cars.Where(x => (x.Price ?? decimal.MinValue) >= query.PriceFrom);
             if (query.PriceTo > 0)
-                cars = cars.Where(x => x.Price <= query.PriceTo);
+                cars = cars.Where(x => (x.Price ?? decimal.MaxValue) <= query.PriceTo);
 
-            if (query.YearFrom > 0)
+            if (query.YearFrom > 0 && !(query.YearFrom < 1940))
                 cars = cars.Where(x => x.ModelYear >= query.YearFrom);
+            if(query.YearFrom < 1940)
+                cars = cars.Where(x => x.ModelYear >= 0);
             if (query.YearTo > 0)
                 cars = cars.Where(x => x.ModelYear <= query.YearTo);
 
             if (query.Search != null)
             {
-
-                if (cars.Where(x => x.Description.Contains(query.Search)) != null)
+                if (cars.Any(x => x.Description.Contains(query.Search)))
                     cars = cars.Where(x => x.Description.Contains(query.Search));
 
-                if (cars.Where(x => x.Equipment.Contains(query.Search)) != null)
+                if (cars.Any(x => x.Equipment.Contains(query.Search)))
                     cars = cars.Where(x => x.Equipment.Contains(query.Search));
 
+                if (cars.Any(x => query.Search.Contains(x.ModelYear.ToString())))
+                    cars = cars.Where(x => query.Search.Contains(x.ModelYear.ToString()));
 
-                if (cars.Where(x => x.ModelYear.Equals(int.Parse(query.Search))) != null)
+                if (cars.Any(x => query.Search.Contains(x.Model)))
+                    cars = cars.Where(x => query.Search.Contains(x.Model));
 
-                    cars = cars.Where(x => x.ModelYear.Equals(int.Parse(query.Search)));
-
-
-                if (cars.Where(x => x.Model.Contains(query.Search)) != null)
-                    cars = cars.Where(x => x.Model.Contains(query.Search));
+                if (cars.Any(x => query.Search.Contains(x.ModelDescription)))
+                    cars = cars.Where(x => query.Search.Contains(x.ModelDescription));
             }
 
             if (query.Skip > 0)

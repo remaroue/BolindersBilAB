@@ -19,7 +19,11 @@
         <div class="col-lg-8 mt-3">
             <h1 class="text-center">@ViewData["Title"]</h1>
             <form class="mt-4" asp-action="Cars" method="get">
-                <input hidden="hidden" name="search" asp-for="Query.Search" />
+                <div class="form-row">
+                    <div class="form-group col-lg-12 col-sm-12 col-12">
+                        <input type="text" class="form-control" name="search" asp-for="Query.Search" />
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="form-group col-lg-2 col-sm-6 col-6">
                         <label class="col-form-label">Årsmodell från</label>
