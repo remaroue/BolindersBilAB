@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using WU16.BolindersBilAB.Web.Models;
 using WU16.BolindersBilAB.BLL.Services;
+using WU16.BolindersBilAB.BLL.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -36,7 +38,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 {
                     CarBrand = x.BrandName,
                     CarCount = x.Cars.Count,
-                    CarImage = x.ImageName
+                    CarImage = $"images/upload/{x.ImageName}"
                 });
             return View();
         }

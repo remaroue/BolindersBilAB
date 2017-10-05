@@ -62,6 +62,8 @@ namespace WU16.BolindersBilAB.BLL.Services
 
         public void SaveCar(Car car)
         {
+            car.LicenseNumber = CarHelper.NormalizeLicenseNumber(car.LicenseNumber);
+
             _repo.Insert(car);
             _repo.Save();
         }

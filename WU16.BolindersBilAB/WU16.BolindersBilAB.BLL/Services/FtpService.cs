@@ -218,8 +218,7 @@ namespace WU16.BolindersBilAB.BLL.Services
 
                         if (added)
                         {
-                            _carRepo.Insert(dbCar);
-                            _carRepo.Save();
+                            _carService.SaveCar(dbCar);
                             addedCars.Add(dbCar);
                         }
                         else

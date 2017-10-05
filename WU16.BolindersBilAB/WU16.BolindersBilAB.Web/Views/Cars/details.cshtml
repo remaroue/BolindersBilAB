@@ -202,32 +202,30 @@
 
     @* Similar Cars *@
     @if (Model.SimilarCars != null)
-            {
-                if (Model.SimilarCars.Any())
-                {
+    {
+        if (Model.SimilarCars.Any())
+        {
             <div class="row">
-                <div class="card-group mx-auto">
-                    @foreach (var sc in Model.SimilarCars)
+                @foreach (var sc in Model.SimilarCars)
                     {
-                        <a href="/bil/@sc.LicenseNumber" class="card similar-car col-3">
-                            <div class="card-deck">
-                                @if (!string.IsNullOrEmpty(sc.ImageName))
-                                {
-                                    <img class="card-img-top" src="~/Images/Upload/@sc.ImageName" alt="@sc.Title" />
-                                }
-                                else
-                                {
-                                    <div class="card-img-top no-image">
-                                        <p><i class="fa fa-file-image-o"></i></p>
-                                    </div>
-                                }
-                            </div>
-                            <div class="card-block">
-                                <h5>@sc.Title</h5>
-                            </div>
-                        </a>
-                    }
-                </div>
+                    <a href="/bil/@sc.LicenseNumber" class="card float-left similar-car col-3 mx-auto">
+                        <div class="card-deck">
+                            @if (!string.IsNullOrEmpty(sc.ImageName))
+                            {
+                                <img class="card-img-top" src="~/Images/Upload/@sc.ImageName" alt="@sc.Title" />
+                            }
+                            else
+                            {
+                                <div class="card-img-top no-image">
+                                    <p><i class="fa fa-file-image-o"></i></p>
+                                </div>
+                            }
+                        </div>
+                        <div class="card-block">
+                            <h5>@sc.Title</h5>
+                        </div>
+                    </a>
+                }
             </div>
         }
     }

@@ -60,7 +60,7 @@ namespace WU16.BolindersBilAB.BLL.Helpers
 
             if (query.YearFrom > 0 && !(query.YearFrom < 1940))
                 cars = cars.Where(x => x.ModelYear >= query.YearFrom);
-            if(query.YearFrom < 1940 && query.YearFrom > 0)
+            if(query.YearFrom < 1940 && query.YearFrom != 0)
                 cars = cars.Where(x => x.ModelYear >= 0);
             if (query.YearTo > 0)
                 cars = cars.Where(x => x.ModelYear <= query.YearTo);

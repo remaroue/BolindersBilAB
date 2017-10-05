@@ -135,12 +135,11 @@
                             <div class="card" data-id="@car.LicenseNumber">
                                 @if(car.CarImages.Count == 0)
                                 {
-                                <img class="card-img-top" src="https://via.placeholder.com/500x250" alt="Card image cap">
+                                    <img class="card-img-top" src="https://via.placeholder.com/500x250" alt="Card image cap">
                                 }
                                 else
                                 {
                                     <img class="card-img-top" src="~/Images/Uploads/@car.CarImages.First().FileName" alt="@car.LicenseNumber"/>
-
                                 }
                                 <div class="card-body">
                                     <div class="row">
