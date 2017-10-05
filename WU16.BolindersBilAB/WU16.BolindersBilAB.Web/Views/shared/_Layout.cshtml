@@ -6,9 +6,14 @@
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
 
-    <link href="~/dist/css/main.css" rel="stylesheet" />
-    <link href="~/dist/css/vendor.css" rel="stylesheet" />
-
+    <environment include="Development">
+        <link href="~/dist/css/main.css" rel="stylesheet" />
+        <link href="~/dist/css/vendor.css" rel="stylesheet" />
+    </environment>
+    <environment include="Production">
+        <link href="~/dist/css/main.min.css" rel="stylesheet" />
+        <link href="~/dist/css/vendor.min.css" rel="stylesheet" />
+    </environment>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -34,6 +39,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Kontakt</a>
                     </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Account/logout">Logga ut</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
