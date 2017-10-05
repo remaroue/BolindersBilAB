@@ -82,6 +82,7 @@ $(document).ready(function () {
         $("#cars-details-container .price-result > p.month").text(montlyPayment + "Kr per månad");
         $("#cars-details-container .price-result > p.total").text("Total pris: " + totalCost + "Kr");
     }
+
     $("#cars-details-container form").on("submit", function (e) {
         e.preventDefault();
         calculatePrice();
@@ -106,7 +107,7 @@ $(document).ready(function () {
 
             $.ajax({
                 method: "POST",
-                url: "/bil/dela",
+                url: "/api/bil/dela",
                 contentType: "application/json; charset=utf-8",
                 data: json,
                 success: CustomModal.close

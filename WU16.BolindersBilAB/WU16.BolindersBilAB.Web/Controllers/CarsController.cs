@@ -34,7 +34,6 @@ namespace WU16.BolindersBilAB.Web.Controllers
         }
 
         #region public 
-
         [HttpGet]
         [Route("/bil/{licenseNumber}")]
         public IActionResult Details(string licenseNumber)
@@ -50,6 +49,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 SimilarCars = similarCars
             });
         }
+
         [HttpGet]
         [Route("/bilar/{parameter?}")]
         public IActionResult Cars([ModelBinder(BinderType = typeof(QueryModelBinder))]CarListQuery query, string parameter = "", int page = 1)
@@ -97,6 +97,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
+
         [HttpGet]
         [Route("/admin/bilar")]
         public IActionResult CarList(AllCarListViewModel car)
@@ -104,9 +105,10 @@ namespace WU16.BolindersBilAB.Web.Controllers
             var cars = _carService.GetCars().ToList();
             return View(cars);
         }
+        #endregion  
 
         #region admin
-       	[Authorize]
+        [Authorize]
         [HttpGet]
         [Route("/admin/bil/skapa")]
         public IActionResult AddCar()
@@ -177,7 +179,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 };
                 _brandService.Add(newCarBrand);
                 newCarBrand = _imageService.ChangeImageOnCarBrand(newCarBrand, carBrand.Image);
-                return View("/"); 
+                return View("/");
             }
             else
             {
