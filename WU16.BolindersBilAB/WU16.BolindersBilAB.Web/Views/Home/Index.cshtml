@@ -4,18 +4,18 @@
 
 <div id="home-index-container" class="container-fluid">
     <div class="search-wrapper row">
-        <form asp-action="Search" method="GET" class="search-form col-md-6 container">
+        <form asp-action="Search" method="GET" class="search-form col-md-6 col-sm-10 container">
             <h1 class="text-center">Bolinders Bil AB</h1>
             <div class="input-group">
-                <input name="search" type="text" class="search-input form-control col-9 no-gutters" placeholder="Sök på..." aria-label="Sök på...">
-                <select name="parameter" class="form-control col-2 no-gutters">
+                <input name="search" type="text" class="search-input form-control col-8 no-gutters" placeholder="Sök på..." aria-label="Sök på...">
+                <select name="parameter" class="form-control col-3 no-gutters">
                     <option value="">Alla fordon</option>
                     <option value="nya">Nya</option>
                     <option value="begagnade">Begagnade</option>
                 </select>
-                <span class="input-group-btn">
+                <div class="input-group-btn">
                     <button type="submit" class="btn btn-secondary">Sök!</button>
-                </span>
+                </div>
             </div>
 
             <span class="slogan container">Din lokala bilåterförsäljare...</span>

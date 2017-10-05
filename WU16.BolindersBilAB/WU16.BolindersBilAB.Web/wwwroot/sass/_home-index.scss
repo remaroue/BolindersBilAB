@@ -5,23 +5,22 @@
 
     button[type=submit] {
         padding-top: 1px;
-        line-height: 1.25rem;
+        text-align: center;
         padding: 0.45rem 1.4rem;
         cursor: pointer;
+
+        @media screen and (max-width: 768px) {
+            padding: 0.45rem 0.8rem;
+        }
     }
 
     select.form-control {
-        //simulate line-height: 1.25  for selects
         box-sizing: content-box;
         height: calc(1.3rem - 1px);
         border: 0;
         margin: 0;
         margin-top: 1px;
         border-left: 1px solid #CCC;
-
-        @media screen and (max-width: 1000px) {
-            height: 1.3rem;
-        }
     }
 
     .main-nav {
