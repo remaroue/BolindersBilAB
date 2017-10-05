@@ -54,8 +54,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                 inputQuery.FuelType = inputQuery.FuelType.Union(query.FuelType).ToList();
                 inputQuery.Gearbox = inputQuery.Gearbox.Union(query.Gearbox).ToList();
 
-                inputQuery.CarBrand = inputQuery.CarBrand ?? new List<CarBrand>();
-                inputQuery.CarBrand = inputQuery.CarBrand.Union(query.CarBrand).ToList();
+                inputQuery.CarBrand = (inputQuery.CarBrand ?? new List<CarBrand>()).Union(query.CarBrand).ToList();
 
                 inputQuery.Search = input;
 
