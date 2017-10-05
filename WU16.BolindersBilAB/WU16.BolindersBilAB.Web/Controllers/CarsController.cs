@@ -35,10 +35,10 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         #region public 
         [HttpGet]
-        [Route("/bil/{licenseNumber}")]
-        public IActionResult Details(string licenseNumber)
+        [Route("/bil/{brand}/{model}/{modelDescription}/{unique}")]
+        public IActionResult Details(string brand, string model, string modelDescription, string unique)
         {
-            var car = _carlistService.GetCar(licenseNumber);
+            var car = _carlistService.GetCar(brand, model, modelDescription, unique);
             if (car == null) return BadRequest();
 
             var similarCars = _carlistService.GetSimilarCars(car);

@@ -55,8 +55,6 @@ namespace WU16.BolindersBilAB.DAL.Models
         [SeedNumericValue(80, 200)]
         public int? HorsePower { get; set; }
 
-        
-
         public bool Used { get; set; }
 
         [SeedDataType(SeederDataType.Now)]
@@ -68,13 +66,9 @@ namespace WU16.BolindersBilAB.DAL.Models
         [SeedIgnore]
         public virtual ICollection<CarImage> CarImages { get; set; }
 
-        
-
         public CarType CarType { get; set; }
-        
 
         public FuelType FuelType { get; set; }
-        
 
         public Gearbox Gearbox { get; set; }
 

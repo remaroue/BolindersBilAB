@@ -15,6 +15,9 @@ namespace WU16.BolindersBilAB.BLL.Helpers
             return _pattern.Replace(input.ToUpper(), string.Empty);
         }
 
+        public static string GetUrl(this Car car) => $"/bil/{car.CarBrandId}/{car.Model}/{car.ModelDescription}/{car.GetUnique()}";
+        public static string GetUnique(this Car car) => $"{(int)car.CarType}{(int)car.FuelType}{(int)car.Gearbox}{(int)car.CreationDate.DayOfWeek}{car.LicenseNumber.First()}";
+
         public static IQueryable<Car> FilterByParameter(this IQueryable<Car> cars, string parameter)
         {
             bool isUsed = true;
@@ -60,7 +63,7 @@ namespace WU16.BolindersBilAB.BLL.Helpers
 
             if (query.YearFrom > 0 && !(query.YearFrom < 1940))
                 cars = cars.Where(x => x.ModelYear >= query.YearFrom);
-            if(query.YearFrom < 1940 && query.YearFrom != 0)
+            if (query.YearFrom < 1940 && query.YearFrom != 0)
                 cars = cars.Where(x => x.ModelYear >= 0);
             if (query.YearTo > 0)
                 cars = cars.Where(x => x.ModelYear <= query.YearTo);

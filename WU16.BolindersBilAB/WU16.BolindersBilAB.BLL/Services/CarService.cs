@@ -41,6 +41,15 @@ namespace WU16.BolindersBilAB.BLL.Services
                 .FirstOrDefault(x => x.LicenseNumber == licenseNumber);
         }
 
+        public Car GetCar(string brand, string model, string modelDescription, string unique)
+        {
+            return _repo.Get()
+                .Include(x => x.CarBrand)
+                .Include(x => x.Location)
+                .Include(x => x.CarImages)
+                .FirstOrDefault(x => x.GetUrl() == $"/bil/{brand}/{model}/{modelDescription}/{unique}");
+        }
+
         public IEnumerable<SimplifiedCar> GetSimilarCars(Car car)
         {
             var query = car.GetSimilarCarsQuery();

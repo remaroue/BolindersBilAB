@@ -98,13 +98,21 @@
         }
 
         .price-result {
-            padding: 25px;
-
             p {
-                display: block;
-                font-size: 1.2em;
-                text-align: center;
+                margin-bottom: 15px;
             }
+        }
+    }
+
+    .price-result {
+        background-color: $grey;
+        padding: 25px;
+
+        p {
+            display: block;
+            font-size: 1.2em;
+            text-align: center;
+            margin: 0;
         }
     }
 
