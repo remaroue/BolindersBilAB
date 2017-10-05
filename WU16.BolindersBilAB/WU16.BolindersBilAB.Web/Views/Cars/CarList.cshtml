@@ -1,4 +1,4 @@
-﻿@model List<Car>
+﻿@model CarListViewModel
 
 @{
     ViewData["Title"] = "Admin | Bilar";
@@ -10,37 +10,54 @@
     <a asp-action="Create">Create New</a>
 </p>*@
 <div class="container-fluid">
-    <h2 class="text-center mt-2">Bilar</h2>
-    <div class="row flex-column">
-        <div class="col-lg-12">
-            <div class="d-flex justify-content-end">
-                <button class="btn btn-primary mr-auto">Skapa bil</button>
+    <div class="row justify-content-center mt-2">
+        <div class="col-lg-10">
+            <h1 class="text-center"> Adminpanel</h1>
+            <hr />
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="d-flex justify-content-center">
                 <div class="btn-group">
-                    <button class="btn btn-info">Uppdatera</button>
-                    <button class="btn btn-danger">Ta bort</button>
+                    <a asp-action="AddCar" class="btn btn-primary">Skapa bil</a>
+                    <a asp-action="AddCarBrand" class="btn btn-primary">Skapa bilmärke</a>
                 </div>
             </div>
         </div>
     </div>
-    <hr />
-    <div class="row">
-        <div class="col-lg-12 d-flex justify-content-center">
-            <table id="ListAllCarsTable" class="table table-striped table-bordered" cellspacing="0">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="d-flex mb-2">
+                <form asp-action="CarList" method="get">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Sök..." asp-for="@Model.Query.Search" />
+                        <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">Sök</button>
+                        </span>
+                    </div>
+                </form>
+                    <button class="btn btn-danger ml-auto">Ta bort markerade</button>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-10 d-flex">
+            <table id="ListAllCarsTable" class="table border table-striped table-hover">
                 <thead>
                     <tr>
                         <th>Bilmärke</th>
                         <th>Modell</th>
                         <th>Registreringsnummer</th>
                         <th>Plats</th>
-                        <th colspan="2"></th>
-
-
-
+                        <th>Skapad</th>
+                        <th>Senast uppdaterad</th>
+                        <th colspan="2"><span class="fa fa-cogs"></span></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var car in Model)
-            {
+                    @foreach (var car in Model.Cars)
+                    {
                         <tr>
                             <td>
                                 @car.CarBrand.BrandName
@@ -56,15 +73,25 @@
                                 @car.Location.Name
                             </td>
                             <td>
-                                <a class="btn btn-primary"><span class="fa fa-edit"></span></a>
+                                @car.CreationDate.ToShortDateString();
+                            </td>
+                            <td>
+                               @if(car.LastUpdated.HasValue)
+                                {
+                                   @car.LastUpdated.Value.ToShortDateString()
+                                }
+                            </td>
+                            <td width="50px">
+                                <a asp-route-licensenumber="@car.LicenseNumber" asp-action="EditCar" class="btn btn-primary"><span class="fa fa-edit text-white"></span></a>
                             </td>
                             <td width="25px" class="pt-4" colspan="1">
-                                <input type="checkbox" class="custom-checkbox float-right" value="@car.LicenseNumber" />
+                                <input type="checkbox" class="float-right" value="@car.LicenseNumber" />
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
+            </div>
+            <pagination class="col-lg-10 d-flex justify-content-end mb-2" page-model="@Model.Pager" page-query="@ViewBag.Query" page-action="CarList"></pagination>
         </div>
     </div>
-</div>
