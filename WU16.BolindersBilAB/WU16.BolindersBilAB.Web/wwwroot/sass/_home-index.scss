@@ -6,7 +6,7 @@
     button[type=submit] {
         padding-top: 1px;
         line-height: 1.25rem;
-        padding: 0.45rem;
+        padding: 0.45rem 1.4rem;
         cursor: pointer;
     }
 
@@ -63,6 +63,10 @@
     .available-logo img {
         max-height: 200px;
         /*height: 100%;*/
+    }
+
+    .news-feed {
+        padding-top: 150px;
     }
 
     .news-feed a {
