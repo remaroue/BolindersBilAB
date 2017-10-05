@@ -97,7 +97,13 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
-        #endregion
+        [HttpGet]
+        [Route("/admin/bilar")]
+        public IActionResult CarList(AllCarListViewModel car)
+        {
+            var cars = _carService.GetCars().ToList();
+            return View(cars);
+        }
 
         #region admin
        	[Authorize]
@@ -111,7 +117,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         }
         [Authorize]
         [HttpPost]
-        [Route("/admin/bil/skapa")]
+        [Route("/bil/ny")]
         public IActionResult AddCar(AddCarViewModel car)
         {
             if (!ModelState.IsValid)
