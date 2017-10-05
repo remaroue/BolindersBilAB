@@ -50,7 +50,7 @@ namespace WU16.BolindersBilAB.Web
             services.AddScoped<CarSearchService>();
             services.AddScoped<ImageService>();
 
-            services.AddSingleton<FtpService>();
+            services.AddScoped<FtpService>();
 
             services.AddDNTScheduler(options =>
             {

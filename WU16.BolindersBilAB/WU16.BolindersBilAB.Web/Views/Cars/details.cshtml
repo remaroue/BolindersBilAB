@@ -63,7 +63,7 @@
             <div class="equipment">
                 @if (!string.IsNullOrEmpty(car.Equipment))
                 {
-                    
+
                     foreach (var e in car.Equipment.Split(new char[] { '|', ',' }))
                     {
                         <span class="badge badge-success">@e</span>
@@ -151,51 +151,60 @@
     @* /Main Content *@
 
     @* Price Calculator *@
-    <div class="row price-calculator">
-        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
-            <form class="form">
-                <input type="hidden" value="@taxedPrice" />
+    @if (Model.Car.Price != null)
+    {
+        <div class="row price-calculator">
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                <form class="form">
+                    <input type="hidden" value="@taxedPrice" />
 
-                <div class="col-12 form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Kontant</div>
-                        <input type="number" value="@cashPayment" class="form-control" />
-                        <div class="input-group-addon">Kr</div>
+                    <div class="col-12 form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Kontant</div>
+                            <input type="number" value="@cashPayment" class="form-control" />
+                            <div class="input-group-addon">Kr</div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-12 form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Avbetalnigs längd</div>
-                        <select class="custom-select form-control">
-                            <option value="12">12 månader</option>
-                            <option value="24">24 månader</option>
-                            <option selected="selected" value="36">36 månader</option>
-                            <option value="48">48 månader</option>
-                            <option value="48">48 månader</option>
-                            <option value="72">72 månader</option>
-                        </select>
+                    <div class="col-12 form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Avbetalnigs längd</div>
+                            <select class="custom-select form-control">
+                                <option value="12">12 månader</option>
+                                <option value="24">24 månader</option>
+                                <option selected="selected" value="36">36 månader</option>
+                                <option value="48">48 månader</option>
+                                <option value="48">48 månader</option>
+                                <option value="72">72 månader</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-12 form-group">
-                    <button class="btn btn-block btn-primary">Räkna ut</button>
-                </div>
-            </form>
+                    <div class="col-12 form-group">
+                        <button class="btn btn-block btn-primary">Räkna ut</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4 col-sm-12 price-result justify-content-sm-start">
+                <p class="month"></p>
+                <p class="total"></p>
+                <p>Kontakta säljare: <a href="tel:@car.Location.PhoneNumber">@car.Location.PhoneNumber</a></p>
+            </div>
         </div>
-        <div class="col-md-4 col-sm-12 price-result justify-content-sm-start">
-            <p class="month"></p>
-            <p class="total"></p>
+    }
+    else
+    {
+        <div class="col-12 price-result justify-content-sm-start">
             <p>Kontakta säljare: <a href="tel:@car.Location.PhoneNumber">@car.Location.PhoneNumber</a></p>
         </div>
-    </div>
+    }
     @* /Price Calculator *@
 
     @* Similar Cars *@
     @if (Model.SimilarCars != null)
-    {
-        if (Model.SimilarCars.Any())
-        {
+            {
+                if (Model.SimilarCars.Any())
+                {
             <div class="row">
                 <div class="card-group mx-auto">
                     @foreach (var sc in Model.SimilarCars)

@@ -65,7 +65,7 @@ namespace WU16.BolindersBilAB.BLL.Helpers
             if (query.YearTo > 0)
                 cars = cars.Where(x => x.ModelYear <= query.YearTo);
 
-            if (query.Search != null)
+            if (string.IsNullOrEmpty(query.Search))
             {
                 if (cars.Any(x => x.Description.Contains(query.Search)))
                     cars = cars.Where(x => x.Description.Contains(query.Search));
