@@ -64,6 +64,13 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
+        [HttpGet]
+        [Route("/admin/bilar")]
+        public IActionResult CarList(AllCarListViewModel car)
+        {
+            var cars = _carService.GetCars().ToList();
+            return View(cars);
+        }
 
         [HttpGet]
         [Route("/bil/ny")]
@@ -75,7 +82,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         }
 
         [HttpPost]
-        [Route("/bil/ny")]
+        [Route("/admin/bil/ny")]
         public IActionResult AddCar(AddCarViewModel car)
         {
             if (!ModelState.IsValid)
