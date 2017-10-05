@@ -97,10 +97,16 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
+        [HttpGet]
+        [Route("/admin/bilar")]
+        public IActionResult CarList(AllCarListViewModel car)
+        {
+            var cars = _carService.GetCars().ToList();
+            return View(cars);
+        }
 
-        #endregion
         #region admin
-        [Authorize]
+       	[Authorize]
         [HttpGet]
         [Route("/admin/bil/skapa")]
         public IActionResult AddCar()
@@ -109,27 +115,9 @@ namespace WU16.BolindersBilAB.Web.Controllers
             ViewBag.Locations = _locationService.Get();
             return View();
         }
-
-        [Authorize]
-        [HttpGet]
-        [Route("/admin/bil/{licenseNumber}")]
-        public IActionResult EditCar(string licenseNumber)
-        {
-            var car = _carService.GetCar(licenseNumber);
-           
-            if(car == null)
-            {
-                return Redirect("/404");
-            }
-            else
-            {
-                return View(car);
-            }
-            
-        }
         [Authorize]
         [HttpPost]
-        [Route("/admin/bil/skapa")]
+        [Route("/bil/ny")]
         public IActionResult AddCar(AddCarViewModel car)
         {
             if (!ModelState.IsValid)
@@ -172,14 +160,6 @@ namespace WU16.BolindersBilAB.Web.Controllers
             return View("/");
         }
 
-        [HttpGet]
-        [Route("/admin/bilar")]
-        public IActionResult CarList()
-        {
-            var cars = _carService.GetCars().ToList();
-            return View(cars);
-        }
-
         [Route("/admin/bilmarke/skapa")]
         public IActionResult AddCarBrand()
         {
@@ -197,7 +177,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 };
                 _brandService.Add(newCarBrand);
                 newCarBrand = _imageService.ChangeImageOnCarBrand(newCarBrand, carBrand.Image);
-                return View("/");
+                return View("/"); 
             }
             else
             {
