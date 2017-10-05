@@ -4,16 +4,15 @@
 
 <div id="home-index-container" class="container-fluid">
     <div class="search-wrapper row">
-        <form asp-controller="Cars" asp-action="Cars" method="GET" class="search-form col-md-6 container">
+        <form asp-action="Search" method="GET" class="search-form col-md-6 container">
             <h1 class="text-center">Bolinders Bil AB</h1>
             <div class="input-group">
-                <input name="search" type="text" class="form-control col-9" placeholder="Sök på..." aria-label="Sök på...">
-                <select name="parameter" class="form-control col-3">
+                <input name="search" type="text" class="search-input form-control col-9 no-gutters" placeholder="Sök på..." aria-label="Sök på...">
+                <select name="parameter" class="form-control col-2 no-gutters">
                     <option value="">Alla fordon</option>
                     <option value="nya">Nya</option>
                     <option value="begagnade">Begagnade</option>
                 </select>
-                
                 <span class="input-group-btn">
                     <button type="submit" class="btn btn-secondary">Sök!</button>
                 </span>
@@ -21,6 +20,13 @@
 
             <span class="slogan container">Din lokala bilåterförsäljare...</span>
         </form>
+    </div>
+
+
+    <div class="news-feed col-md-10 container">
+        <div class="row">
+
+        </div>
     </div>
 
     <div class="available-logo col-md-10 container">
@@ -36,13 +42,6 @@
             }
         </div>
     </div>
-
-    <div class="news-feed col-md-10 container">
-        <div class="row">
-
-        </div>
-    </div>
-
 </div>
 @section Scripts {
     <script src="~/js/_home-index.js" asp-append-version="true"></script>

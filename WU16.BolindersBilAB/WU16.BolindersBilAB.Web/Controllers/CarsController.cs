@@ -8,6 +8,7 @@ using System.Text.Encodings.Web;
 using WU16.BolindersBilAB.Web.ModelBinder;
 using WU16.BolindersBilAB.BLL.Services;
 using WU16.BolindersBilAB.BLL.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -32,6 +33,8 @@ namespace WU16.BolindersBilAB.Web.Controllers
             _imageService = imageService;
         }
 
+        #region public 
+
         [HttpGet]
         [Route("/bil/{licenseNumber}")]
         public IActionResult Details(string licenseNumber)
@@ -47,9 +50,39 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 SimilarCars = similarCars
             });
         }
+        [HttpGet]
+        [Route("/bilar/{parameter?}")]
+        public IActionResult Cars([ModelBinder(BinderType = typeof(QueryModelBinder))]CarListQuery query, string parameter = "", int page = 1)
+        {
+            query = _carSearchService.GetCarListQuery(query.Search, query);
+
+            var cars = _carlistService
+                .GetCars(query)
+                .FilterByParameter(parameter);
+
+            var totalItems = cars.ToList().Count;
+
+            ViewBag.Query = Request.QueryString;
+            ViewBag.Prices = CarHelper.GetPriceRange();
+            ViewBag.Years = CarHelper.GetModelYears();
+            ViewBag.Milages = CarHelper.GetMilageRange();
+            ViewBag.Parameter = parameter;
+
+            return View(new CarListViewModel()
+            {
+                Cars = cars.PaginateCars(page).ToList(),
+                Query = query,
+                Pager = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = 8,
+                    TotalItems = totalItems
+                }
+            });
+        }
 
         [HttpPost]
-        [Route("/bil/dela")]
+        [Route("api/bil/dela")]
         public bool Share([FromBody]ShareViewModel model)
         {
             var subject = "Någon Har delat en bil med dig.";
@@ -64,16 +97,25 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
-
         [HttpGet]
-        [Route("/bil/ny")]
+        [Route("/admin/bilar")]
+        public IActionResult CarList(AllCarListViewModel car)
+        {
+            var cars = _carService.GetCars().ToList();
+            return View(cars);
+        }
+
+        #region admin
+       	[Authorize]
+        [HttpGet]
+        [Route("/admin/bil/skapa")]
         public IActionResult AddCar()
         {
             ViewBag.CarBrands = _brandService.Get();
             ViewBag.Locations = _locationService.Get();
             return View();
         }
-
+        [Authorize]
         [HttpPost]
         [Route("/bil/ny")]
         public IActionResult AddCar(AddCarViewModel car)
@@ -118,55 +160,30 @@ namespace WU16.BolindersBilAB.Web.Controllers
             return View("/");
         }
 
-        [Route("/bil/nybrand")]
+        [Route("/admin/bilmarke/skapa")]
         public IActionResult AddCarBrand()
         {
             return View();
         }
         [HttpPost]
-        [Route("/bil/nybrand")]
+        [Route("/admin/bilmarke/skapa")]
         public IActionResult AddCarBrand(AddBrandViewModel carBrand)
         {
-            var newCarBrand = new CarBrand
+            if (ModelState.IsValid)
             {
-                BrandName = carBrand.BrandName
-            };
-            _brandService.Add(newCarBrand);
-            newCarBrand = _imageService.ChangeImageOnCarBrand(newCarBrand, carBrand.Image);     
-            
-            
-            return View("/");
-        }
-    
-        [HttpGet]
-        [Route("/bilar/{parameter?}")]
-        public IActionResult Cars([ModelBinder(BinderType = typeof(QueryModelBinder))]CarListQuery query, string parameter = "", int page = 1)
-        {
-            query = _carSearchService.GetCarListQuery(query.Search, query);
-
-            var cars = _carlistService
-                .GetCars(query)
-                .FilterByParameter(parameter);
-
-            var totalItems = cars.ToList().Count;
-
-            ViewBag.Query = Request.QueryString;
-            ViewBag.Prices = CarHelper.GetPriceRange();
-            ViewBag.Years = CarHelper.GetModelYears();
-            ViewBag.Milages = CarHelper.GetMilageRange();
-            ViewBag.Parameter = parameter;
-
-            return View(new CarListViewModel()
-            {
-                Cars = cars.PaginateCars(page).ToList(),
-                Query = query,
-                Pager = new PagingInfo
+                var newCarBrand = new CarBrand
                 {
-                    CurrentPage = page,
-                    ItemsPerPage = 8,
-                    TotalItems = totalItems
-                }
-            });
+                    BrandName = carBrand.BrandName
+                };
+                _brandService.Add(newCarBrand);
+                newCarBrand = _imageService.ChangeImageOnCarBrand(newCarBrand, carBrand.Image);
+                return View("/"); 
+            }
+            else
+            {
+                return View(carBrand);
+            }
         }
+        #endregion
     }
 }
