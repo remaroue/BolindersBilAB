@@ -8,6 +8,7 @@ using System.Text.Encodings.Web;
 using WU16.BolindersBilAB.Web.ModelBinder;
 using WU16.BolindersBilAB.BLL.Services;
 using WU16.BolindersBilAB.BLL.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -64,7 +65,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
-
+        [Authorize]
         [HttpGet]
         [Route("/bil/ny")]
         public IActionResult AddCar()
@@ -73,7 +74,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             ViewBag.Locations = _locationService.Get();
             return View();
         }
-
+        [Authorize]
         [HttpPost]
         [Route("/bil/ny")]
         public IActionResult AddCar(AddCarViewModel car)
@@ -127,15 +128,20 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Route("/bil/nybrand")]
         public IActionResult AddCarBrand(AddBrandViewModel carBrand)
         {
-            var newCarBrand = new CarBrand
+            if (ModelState.IsValid)
             {
-                BrandName = carBrand.BrandName
-            };
-            _brandService.Add(newCarBrand);
-            newCarBrand = _imageService.ChangeImageOnCarBrand(newCarBrand, carBrand.Image);     
-            
-            
-            return View("/");
+                var newCarBrand = new CarBrand
+                {
+                    BrandName = carBrand.BrandName
+                };
+                _brandService.Add(newCarBrand);
+                newCarBrand = _imageService.ChangeImageOnCarBrand(newCarBrand, carBrand.Image);
+                return View("/"); 
+            }
+            else
+            {
+                return View(carBrand);
+            }
         }
     
         [HttpGet]

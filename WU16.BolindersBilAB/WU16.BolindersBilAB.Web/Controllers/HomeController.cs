@@ -16,6 +16,18 @@ namespace WU16.BolindersBilAB.Web.Controllers
             _carListService = carListService;
         }
 
+        public IActionResult Search(string parameter, string search)
+        {
+            if(parameter != null)
+            {
+                return Redirect($"/bilar/{parameter}?search={search}");
+            }
+            else
+            {
+                return Redirect($"/bilar/?search={search}");
+            }
+        }
+
         public IActionResult Index()
         {
             //var sortedBrands = _carListService.Get().GroupBy(i => i.CarBrand);

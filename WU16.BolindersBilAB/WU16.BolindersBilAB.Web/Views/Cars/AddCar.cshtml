@@ -1,144 +1,143 @@
 ﻿@model AddCarViewModel
 
 @{
-    ViewData["Title"] = "AddCar";
+    ViewData["Title"] = "Ny bil";
 }
 
-<h2>AddCar</h2>
+<div class="container-fluid">
+    <h2 class="text-center mt-2">Ny bil</h2>
+    <hr />
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+                <form asp-action="AddCar" enctype="multipart/form-data">
+                    <div class="d-flex">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="LicenseNumber" class="control-label"></label>
+                                <input asp-for="LicenseNumber" class="form-control" />
+                                <span asp-validation-for="LicenseNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CarBrand" class="control-label"></label>
+                                <select class="form-control" asp-for="CarBrandId">
+                                    @foreach (var type in ViewBag.CarBrands)
+                                    {
+                                        <option value="@type.BrandName">@type.BrandName</option>
+                                    }
 
-<h4>Car</h4>
-<hr />
-<div class="container">
-    <div class="col-md-4">
-        <form asp-action="AddCar" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="LicenseNumber" class="control-label"></label>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Model" class="control-label"></label>
+                                <input asp-for="Model" class="form-control" />
+                                <span asp-validation-for="Model" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CarType" class="control-label"></label>
+                                <select class="form-control" asp-for="CarType">
+                                    @foreach (var type in Enum.GetNames(typeof(CarType)))
+                                    {
+                                        <option>@type</option>
+                                    }
 
-                <input asp-for="LicenseNumber" class="form-control" />
-                
-                <span asp-validation-for="LicenseNumber" class="text-danger"></span>
-            </div>
-       
-            <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ModelYear" class="control-label"></label>
-                <input asp-for="ModelYear" class="form-control" />
-                <span asp-validation-for="ModelYear" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="IsLeaseable" /> @Html.DisplayNameFor(model => model.IsLeaseable)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Milage" class="control-label"></label>
-                <input asp-for="Milage" class="form-control" />
-                <span asp-validation-for="Milage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Color" class="control-label"></label>
-                <input asp-for="Color" class="form-control" />
-                <span asp-validation-for="Color" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HorsePower" class="control-label"></label>
-                <input asp-for="HorsePower" class="form-control" />
-                <span asp-validation-for="HorsePower" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="Used" /> @Html.DisplayNameFor(model => model.Used)
-                    </label>
-                </div>
-            </div>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ModelYear" class="control-label"></label>
+                                <input asp-for="ModelYear" class="form-control" />
+                                <span asp-validation-for="ModelYear" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="LocationId" class="control-label"></label>
+                                <select class="form-control" asp-for="LocationId">
+                                    @foreach (var type in ViewBag.Locations)
+                                    {
+                                        <option value="@type.Id">@type.Name</option>
+                                    }
 
-            <div class="form-group">
-                <label asp-for="LocationId" class="control-label"></label>
-                <select class="form-control" asp-for="LocationId">
-                    @foreach (var type in ViewBag.Locations)
-                    {
-                        <option value="@type.Id">@type.Name</option>
-                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input asp-for="Used" /> @Html.DisplayNameFor(model => model.Used)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="Milage" class="control-label"></label>
+                                <input asp-for="Milage" class="form-control" />
+                                <span asp-validation-for="Milage" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Price" class="control-label"></label>
+                                <input asp-for="Price" class="form-control" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Color" class="control-label"></label>
+                                <input asp-for="Color" class="form-control" />
+                                <span asp-validation-for="Color" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="HorsePower" class="control-label"></label>
+                                <input asp-for="HorsePower" class="form-control" />
+                                <span asp-validation-for="HorsePower" class="text-danger"></span>
+                            </div>
+                                <div class="form-group">
+                                    <label asp-for="FuelType" class="control-label"></label>
+                                    <select class="form-control" asp-for="FuelType">
+                                        @foreach (var type in Enum.GetNames(typeof(FuelType)))
+                                        {
+                                            <option>@type</option>
+                                        }
 
-                </select>
-            </div>
+                                    </select>
+                                </div>
 
-            <div class="form-group">
-                <label asp-for="CarBrand" class="control-label"></label>
-                <select class="form-control" asp-for="CarBrandId">
-                    @foreach (var type in ViewBag.CarBrands)
-                    {
-                        <option value="@type.BrandName">@type.BrandName</option>
-                    }
+                                <div class="form-group">
+                                    <label asp-for="Gearbox" class="control-label"></label>
+                                    <select class="form-control" asp-for="Gearbox">
+                                        @foreach (var type in Enum.GetNames(typeof(Gearbox)))
+                                        {
+                                            <option>@type</option>
+                                        }
 
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Equipment" class="control-label"></label>
-                <textarea asp-for="Equipment" class="form-control" rows="5"></textarea>
-                <span asp-validation-for="Equipment" class="text-danger"></span>
-            </div>
-         
-            <div class="form-group">
-                <label asp-for="CarType" class="control-label"></label>
-                <select class="form-control" asp-for="CarType">
-                    @foreach (var type in Enum.GetNames(typeof(CarType)))
-                    {
-                        <option>@type</option>
-                    }
-                 
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="FuelType" class="control-label"></label>
-                <select class="form-control" asp-for="FuelType">
-                    @foreach (var type in Enum.GetNames(typeof(FuelType)))
-                    {
-                        <option>@type</option>
-                    }
-
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="Gearbox" class="control-label"></label>
-                <select class="form-control" asp-for="Gearbox">
-                    @foreach (var type in Enum.GetNames(typeof(Gearbox)))
-                    {
-                        <option>@type</option>
-                    }
-
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="file" asp-for="Images" class="form-control" multiple />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+                                    </select>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input asp-for="IsLeaseable" /> @Html.DisplayNameFor(model => model.IsLeaseable)
+                                    </label>
+                                </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="Equipment" class="control-label"></label>
+                                <textarea style="resize:none;" rows="3" asp-for="Equipment" class="form-control" rows="5"></textarea>
+                                <span asp-validation-for="Equipment" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <textarea style="resize:none;" rows="3" asp-for="Description" class="form-control" rows="5"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="images">Bilder</label>
+                                <input type="file" asp-for="Images" class="form-control-file" multiple />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-lg-12 text-center">
+                            <button type="submit" class="btn btn-primary">Skapa</button>
+                        </div>
+                    </div>
+                </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 

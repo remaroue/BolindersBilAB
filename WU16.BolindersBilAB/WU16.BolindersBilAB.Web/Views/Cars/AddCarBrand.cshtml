@@ -1,28 +1,32 @@
 ﻿@model AddBrandViewModel
 
 @{
-    ViewData["Title"] = "AddBrand";
+    ViewData["Title"] = "Nytt bilmärke";
 }
 
-<h2>Skapa ny bilmärke</h2>
-<hr />
 <div class="container" >
-    <div class="col-md-4">
-        <form asp-action="AddCarBrand"enctype="multipart/form-data" >
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="file" asp-for="Image" class="form-control" multiple />
-            </div>
-            <div class="form-group">
-                <label asp-for="BrandName" class="control-label"></label>
-                <input asp-for="BrandName" class="form-control" />
-                <span asp-validation-for="BrandName" class="text-danger"></span>
-                
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+    <h2 class="text-center mt-2">Nytt bilmärke</h2>
+    <hr class="w-100" />
+    <div class="row justify-content-center">
+        <div class="col-lg-4">
+            <form asp-action="AddCarBrand" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="BrandName"></label>
+                    <input asp-for="BrandName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Logga</label>
+                    <input type="file" class="form-control-file" asp-for="Image" />
+                </div>
+
+                <div class="form-group text-center">
+                    <input type="submit" value="Skapa" class="btn btn-primary" />
+                </div>
+                <div asp-validation-summary="All">
+
+                </div>
+            </form>
+        </div>
     </div>
     </div>
     <div>
