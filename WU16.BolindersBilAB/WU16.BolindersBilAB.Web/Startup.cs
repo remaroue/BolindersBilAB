@@ -17,6 +17,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WU16.BolindersBilAB.BLL.ScheduledTasks;
+using WU16.BolindersBilAB.Web.Infrastructure;
 
 namespace WU16.BolindersBilAB.Web
 {
@@ -116,6 +117,8 @@ namespace WU16.BolindersBilAB.Web
             }
             else
             {
+                //app.UseExceptionHandler("/error.html");
+                //app.UseMiddleware<ErrorHandlerMiddleWare>();
                 app.UseStaticFiles(new StaticFileOptions()
                 {
                     OnPrepareResponse = x =>

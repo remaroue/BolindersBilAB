@@ -1,4 +1,29 @@
 ﻿#home-index-container {
+    .search-input {
+        border-right: 0;
+    }
+
+    button[type=submit] {
+        padding-top: 1px;
+        line-height: 1.25rem;
+        padding: 0.45rem;
+        cursor: pointer;
+    }
+
+    select.form-control {
+        //simulate line-height: 1.25  for selects
+        box-sizing: content-box;
+        height: calc(1.3rem - 1px);
+        border: 0;
+        margin: 0;
+        margin-top: 1px;
+        border-left: 1px solid #f0f0f0;
+
+        @media screen and (max-width: 1000px) {
+            height: 1.3rem;
+        }
+    }
+
     .main-nav {
         width: 100%;
     }
