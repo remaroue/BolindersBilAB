@@ -84,6 +84,9 @@ namespace WU16.BolindersBilAB.BLL.Helpers
 
                 if (cars.Any(x => query.Search.Contains(x.ModelDescription)))
                     cars = cars.Where(x => query.Search.Contains(x.ModelDescription));
+                if (cars.Any(x => query.Search.Contains(x.LicenseNumber)))
+                    cars = cars.Where(x => x.LicenseNumber == query.Search);
+
             }
 
             if(!string.IsNullOrEmpty(query.LocationId))

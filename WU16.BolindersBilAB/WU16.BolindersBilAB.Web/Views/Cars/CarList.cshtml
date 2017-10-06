@@ -60,26 +60,26 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <form id="carListTable" class="col-lg-10 d-flex" asp-action="DeleteCars" method="post">
-            <table id="ListAllCarsTable" class="table border table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>Bilmärke</th>
-                        <th>Modell</th>
-                        <th>Registreringsnummer</th>
-                        <th>Plats</th>
-                        <th>Skapad</th>
-                        <th>Senast uppdaterad</th>
-                        <th colspan="2"><span class="fa fa-cogs"></span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var car in Model.Cars)
-                    {
+            <form id="carListTable" class="col-lg-10 d-flex" asp-action="DeleteCars" method="post">
+                <table id="ListAllCarsTable" class="table border table-striped table-hover">
+                    <thead>
                         <tr>
-                            <td>
-                                @car.CarBrand.BrandName
-                            </td>
+                            <th>Bilmärke</th>
+                            <th>Modell</th>
+                            <th>Registreringsnummer</th>
+                            <th>Plats</th>
+                            <th>Skapad</th>
+                            <th>Senast uppdaterad</th>
+                            <th colspan="2" class="text-right"><span class="fa fa-cogs"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var car in Model.Cars)
+                        {
+                            <tr>
+                                <td>
+                                    @car.CarBrand.BrandName
+                                </td>
 
                             <td>
                                 @car.Model
