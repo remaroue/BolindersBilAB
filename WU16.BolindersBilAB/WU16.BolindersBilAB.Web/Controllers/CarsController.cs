@@ -80,6 +80,39 @@ namespace WU16.BolindersBilAB.Web.Controllers
             });
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("/admin/bilmarke/uppdatera/{brandName}")]
+        public IActionResult EditCarBrand(string brandName)
+        {
+            var brand = _brandService.GetBrand(brandName);
+
+            if (brand == null) return BadRequest();
+
+
+
+            return View(new AddBrandViewModel() {
+                BrandName = brandName
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("/admin/bilmarke/uppdatera/{brandName}")]
+        public IActionResult EditCarBrand(AddBrandViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var carBrand = _brandService.GetBrand(model.BrandName);
+            if (carBrand == null) return BadRequest();
+
+
+            carBrand = _imageService.ChangeImageOnCarBrand(carBrand, model.Image);
+            _brandService.Update(carBrand);
+
+            return RedirectToAction(nameof(CarList));
+        }
+
         [HttpPost]
         [Route("api/bil/dela")]
         public bool Share([FromBody]ShareViewModel model)
@@ -108,9 +141,10 @@ namespace WU16.BolindersBilAB.Web.Controllers
             ViewBag.Locations = _locationService.Get();
 
             return View(
-                new CarListViewModel {
+                new CarAdminListViewModel {
                     Cars = cars.PaginateCars(page, 20, true).ToList(),
                     Query = query,
+                    Carbrands = _brandService.Get(),
                     Pager = new PagingInfo
                     {
                         CurrentPage = page,

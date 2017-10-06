@@ -6,4 +6,8 @@
             $('#carListTable').submit();
         }
     });
+
+    $("#editBrand").on("change", function (e) {
+        location.href = $("#editBrand").val();
+    });
 });
