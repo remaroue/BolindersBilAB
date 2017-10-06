@@ -19,7 +19,8 @@
     <div class="row justify-content-center car-filter">
         <div class="col-lg-8 mt-3">
             <h1 class="text-center">@ViewData["Title"]</h1>
-            <form class="mt-4" asp-action="Cars" method="get">
+            <button class="btn btn-sm btn-primary hide-lg mb-2" data-toggle="collapse" data-target="#collapseFilter"><i class="fa fa-filter"></i> Filter</button>
+            <form class="mt-4 collapse" id="collapseFilter" asp-action="Cars" method="get">
                 <div class="form-row">
                 </div>
                 <div class="form-row">
@@ -119,7 +120,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group ml-auto mr-1">
-                        <button type="submit" class="btn btn-primary btn-lg">Sök</button>
+                        <button type="submit" class="btn btn-primary">Sök</button>
                     </div>
                 </div>
             </form>
