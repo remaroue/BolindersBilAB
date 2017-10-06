@@ -166,9 +166,10 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 CarType = car.CarType,
                 FuelType = car.FuelType,
                 Gearbox = car.Gearbox,
+                ModelDescription = car.ModelDescription,
                 CreationDate = DateTime.Now
             };
-            if(car.Images.Count > 0)
+            if(car.Images?.Count > 0)
             {
                 newCar = _imageService.AddImageToCar(newCar, car.Images.ToArray());
             }

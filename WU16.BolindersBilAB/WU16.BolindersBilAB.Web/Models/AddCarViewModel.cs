@@ -18,6 +18,9 @@ namespace WU16.BolindersBilAB.Web.Models
         [Display(Name = "Modell")]
         public string Model { get; set; }
         [Required]
+        [Display(Name = "Modell Beskrivning")]
+        public string ModelDescription { get; set; }
+        [Required]
         [Display(Name ="Beskrivning")]
         public string Description { get; set; }
         [Required]
