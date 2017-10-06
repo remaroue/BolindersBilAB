@@ -71,7 +71,17 @@
         text-align: center;
     }
 
-    .card-img-top{
-        max-height:340px;
+    .card-img-top {
+        max-height: 340px;
+    }
+
+    @media (min-width: 991px) {
+        .hide-lg {
+            display:none;
+        }
+
+        .collapse {
+            display:block;
+        }
     }
 }
