@@ -70,8 +70,8 @@ namespace WU16.BolindersBilAB.BLL.Helpers
 
             if (!string.IsNullOrEmpty(query.Search))
             {
-                if (cars.Any(x => query.Search.Split(' ', ',', '|').Contains(x.LicenseNumber)))
-                    cars = cars.Where(x => query.Search.Split(' ', ',', '|').Contains(x.LicenseNumber));
+                if (cars.Any(x => query.Search.Contains(x.LicenseNumber)))
+                    cars = cars.Where(x => query.Search.Contains(x.LicenseNumber));
 
                 if (cars.Any(x => x.Description.Contains(query.Search)))
                     cars = cars.Where(x => x.Description.Contains(query.Search));
