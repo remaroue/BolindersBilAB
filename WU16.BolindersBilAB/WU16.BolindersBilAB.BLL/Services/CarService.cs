@@ -5,6 +5,7 @@ using WU16.BolindersBilAB.BLL.Helpers;
 using WU16.BolindersBilAB.BLL.Models;
 using WU16.BolindersBilAB.DAL.Models;
 using WU16.BolindersBilAB.DAL.Repository;
+using System;
 
 namespace WU16.BolindersBilAB.BLL.Services
 {
@@ -23,7 +24,8 @@ namespace WU16.BolindersBilAB.BLL.Services
                 .Include(x => x.CarBrand)
                 .Include(x => x.Location)
                 .Include(x => x.CarImages)
-                .OrderBy(x => x.LastUpdated != null ? x.LastUpdated : x.CreationDate)
+                .OrderByDescending(x => x.LastUpdated)
+                .ThenByDescending(x => x.CreationDate)
                 .AsQueryable()
                 .FilterByQuery(query);
 
@@ -84,5 +86,12 @@ namespace WU16.BolindersBilAB.BLL.Services
             return car;
         }
 
+        public void UpdateCar(Car car)
+        {
+            car.LastUpdated = DateTime.Now;
+
+            _repo.Edit(car);
+            _repo.Save();
+        }
     }
 }
