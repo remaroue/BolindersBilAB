@@ -101,9 +101,16 @@ namespace WU16.BolindersBilAB.BLL.Helpers
             };
         }
 
-        public static IEnumerable<Car> PaginateCars(this IEnumerable<Car> cars, int page, int take, int skip=0)
+        public static IEnumerable<Car> PaginateCars(this IEnumerable<Car> cars, int page, int take, bool skip)
         {
-            return cars.Take((take * page)).Skip((page -1) * take).AsEnumerable();
+            if(!skip)
+            {
+            return cars.Take((take * page)).AsEnumerable();
+            }
+            else
+            {
+                return cars.Take((take * page)).Skip((page - 1) * take).AsEnumerable();
+            }
         }
 
         public static Dictionary<int, string> GetModelYears()

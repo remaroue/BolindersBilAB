@@ -27,4 +27,17 @@ body {
 
 footer {
     width:100%;
+    height:150px;
+    bottom:0;
+    position:static;
+}
+
+.validation-summary-errors {
+   ul {
+       list-style:none;
+       padding-left:0;
+       li {
+           color:red;
+       }
+   }
 }
