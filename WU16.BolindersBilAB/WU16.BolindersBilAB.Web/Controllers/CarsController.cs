@@ -168,7 +168,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 Gearbox = car.Gearbox,
                 CreationDate = DateTime.Now
             };
-            if(car.Images.Count > 0)
+            if(car.Images != null)
             {
                 newCar = _imageService.AddImageToCar(newCar, car.Images.ToArray());
             }
