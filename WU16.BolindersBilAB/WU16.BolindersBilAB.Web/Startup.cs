@@ -118,8 +118,8 @@ namespace WU16.BolindersBilAB.Web
             }
             else
             {
-                //app.UseExceptionHandler("/error.html");
-                //app.UseMiddleware<ErrorHandlerMiddleWare>();
+                app.UseExceptionHandler("/error.html");
+                app.UseMiddleware<ErrorHandlerMiddleWare>();
                 app.UseStaticFiles(new StaticFileOptions()
                 {
                     OnPrepareResponse = x =>
