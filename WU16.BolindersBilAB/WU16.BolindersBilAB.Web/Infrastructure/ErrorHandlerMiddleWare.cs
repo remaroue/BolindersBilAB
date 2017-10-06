@@ -17,6 +17,7 @@ namespace WU16.BolindersBilAB.Web.Infrastructure
 
         public async Task Invoke(HttpContext context)
         {
+            await next.Invoke(context);
            if (context.Response.StatusCode == 404)
             {
                 context.Response.Redirect("/404");
