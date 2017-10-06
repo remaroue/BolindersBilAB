@@ -106,6 +106,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             var carBrand = _brandService.GetBrand(model.BrandName);
             if (carBrand == null) return BadRequest();
 
+            if (!string.IsNullOrEmpty(carBrand.ImageName)) _imageService.RemoveImage(carBrand.ImageName);
 
             carBrand = _imageService.ChangeImageOnCarBrand(carBrand, model.Image);
             _brandService.Update(carBrand);
@@ -274,8 +275,6 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return RedirectToAction(nameof(CarList));
         }
-
-
         #endregion
     }
 }

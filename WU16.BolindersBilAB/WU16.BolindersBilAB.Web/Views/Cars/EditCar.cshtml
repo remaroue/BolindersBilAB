@@ -4,7 +4,7 @@
     ViewData["Title"] = "Ändra bil";
 }
 
-<div class="container-fluid">
+<div class="container-fluid h-100">
     <h2 class="text-center mt-2">Ändra bil</h2>
     <hr />
     <div class="row justify-content-center">
@@ -131,9 +131,9 @@
                     </div>
                 </div>
                 <div class="d-flex">
-                    <div class="col-lg-12 text-center">
-                        <button type="submit" class="btn btn-primary">Spara</button>
-                        <a class="btn btn-light" asp-action="CarList">Avbryt</a>
+                    <div class="col-lg-2 mx-auto text-center">
+                        <a class="btn btn-warning float-left" asp-action="CarList">Tillbaka</a>
+                        <input type="submit" class="btn btn-primary float-right" value="Spara">
                     </div>
                 </div>
             </form>
