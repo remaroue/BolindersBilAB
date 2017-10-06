@@ -45,14 +45,19 @@ namespace WU16.BolindersBilAB.Web.Infrastructure
                 newQuery = "?page=";
             }
 
-            if((PageModel.CurrentPage - 1) > 0)
+            if ((PageModel.CurrentPage - 1) > 0)
             {
                 var prevButton = new TagBuilder("a");
-                prevButton.AddCssClass("btn btn-primary mr-auto");
+                prevButton.AddCssClass("btn btn-primary");
                 prevButton.Attributes["href"] = ViewContext.HttpContext.Request.Path + newQuery + (PageModel.CurrentPage - 1);
                 prevButton.InnerHtml.AppendHtml("<span class=\"fa fa-arrow-left\"></span>");
                 output.Content.AppendHtml(prevButton);
             }
+
+            var middle = new TagBuilder("span");
+            middle.AddCssClass("mx-auto btn");
+            middle.InnerHtml.AppendHtml($"<span>{PageModel.CurrentPage} / {PageModel.TotalItems / PageModel.ItemsPerPage}</span>");
+            output.Content.AppendHtml(middle);
 
             if (PageModel.CurrentPage < (PageModel.TotalItems / PageModel.ItemsPerPage))
             {
@@ -62,6 +67,6 @@ namespace WU16.BolindersBilAB.Web.Infrastructure
                 nextButton.InnerHtml.AppendHtml("<span class=\"fa fa-arrow-right\"></span>");
                 output.Content.AppendHtml(nextButton);
             }
-                   }
+        }
     }
 }
