@@ -13,11 +13,13 @@
     });
 
     $(".update-car").on("click", function (e) {
+        debugger
+        if (confirm('Bekräfta uppdatering')) {
+            var licenseNumber = $(e.target).data("licensenumber");
 
-        var licenseNumber = $(e.target).parent().data("licensenumber");
-
-        $.post("/admin/bil/pop/" + licenseNumber, function (e) {
-            location.reload();
-        });
+            $.post("/admin/bil/pop/" + licenseNumber, function (e) {
+                location.reload();
+            });
+        }
     });
 });
