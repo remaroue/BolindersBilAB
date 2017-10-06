@@ -66,6 +66,5 @@ namespace WU16.BolindersBilAB.Web.Models
         public ICollection<IFormFile> Images { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime LastUpdated { get; set; }
-
     }
 }

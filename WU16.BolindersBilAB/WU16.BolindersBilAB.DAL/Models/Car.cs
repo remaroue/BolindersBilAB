@@ -32,7 +32,7 @@ namespace WU16.BolindersBilAB.DAL.Models
         [SeedChooseFrom("v70", "TT3", "turbo", "TT4", "v60", "v40", "i3", "i5", "roadster")]
         public string Model { get; set; }
 
-        [SeedIgnore]
+        [SeedChooseFrom("X Drive5", "ala", "hybrid", "clean")]
         public string ModelDescription { get; set; }
 
         [SeedDataType(SeederDataType.LoremIpsum)]

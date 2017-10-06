@@ -68,7 +68,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return View(new CarListViewModel()
             {
-                Cars = cars.PaginateCars(page, 8).ToList(),
+                Cars = cars.PaginateCars(page, 8, false).ToList(),
                 Query = query,
                 Pager = new PagingInfo
                 {
@@ -107,7 +107,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return View(
                 new CarListViewModel {
-                    Cars = cars.PaginateCars(page, 20, 20).ToList(),
+                    Cars = cars.PaginateCars(page, 20, true).ToList(),
                     Query = query,
                     Pager = new PagingInfo
                     {

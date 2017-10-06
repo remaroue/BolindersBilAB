@@ -49,7 +49,8 @@ namespace WU16.BolindersBilAB.BLL.Services
                 .Include(x => x.CarBrand)
                 .Include(x => x.Location)
                 .Include(x => x.CarImages)
-                .FirstOrDefault(x => x.GetUrl() == $"/bil/{brand}/{model}/{modelDescription}/{unique}");
+                .Where(x => x.CarBrandId == brand && x.Model == model && x.ModelDescription == modelDescription)
+                .FirstOrDefault(x => x.GetUnique() == unique);
         }
 
         public IEnumerable<SimplifiedCar> GetSimilarCars(Car car)

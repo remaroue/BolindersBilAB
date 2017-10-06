@@ -16,7 +16,7 @@ namespace WU16.BolindersBilAB.BLL.Helpers
         }
 
         public static string GetUrl(this Car car) => $"/bil/{car.CarBrandId}/{car.Model}/{car.ModelDescription}/{car.GetUnique()}";
-        public static string GetUnique(this Car car) => $"{(int)car.CarType}{(int)car.FuelType}{(int)car.Gearbox}{(int)car.CreationDate.DayOfWeek}{car.LicenseNumber.First()}";
+        public static string GetUnique(this Car car) => $"{car.LicenseNumber.First()}{(int)car.CarType}{(int)car.FuelType}{(int)car.Gearbox}{(int)car.CreationDate.DayOfWeek}";
 
         public static IQueryable<Car> FilterByParameter(this IQueryable<Car> cars, string parameter)
         {
@@ -104,9 +104,16 @@ namespace WU16.BolindersBilAB.BLL.Helpers
             };
         }
 
-        public static IEnumerable<Car> PaginateCars(this IEnumerable<Car> cars, int page, int take, int skip=0)
+        public static IEnumerable<Car> PaginateCars(this IEnumerable<Car> cars, int page, int take, bool skip)
         {
-            return cars.Take((take * page)).Skip((page -1) * take).AsEnumerable();
+            if(!skip)
+            {
+            return cars.Take((take * page)).AsEnumerable();
+            }
+            else
+            {
+                return cars.Take((take * page)).Skip((page - 1) * take).AsEnumerable();
+            }
         }
 
         public static Dictionary<int, string> GetModelYears()

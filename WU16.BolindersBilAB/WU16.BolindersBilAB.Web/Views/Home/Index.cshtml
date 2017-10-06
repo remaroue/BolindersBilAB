@@ -4,7 +4,7 @@
 
 <div id="home-index-container" class="container-fluid">
     <div class="search-wrapper row">
-        <form asp-action="Search" method="GET" class="search-form col-xl-6 col-lg-8 col-md-10 col-sm-12 container">
+        <form asp-action="Search" method="GET" class="search-form col-xl-6 col-lg-6 col-md-10 col-sm-12 container">
             <h1 class="text-center">Bolinders Bil AB</h1>
             <div class="input-group">
                 <input name="search" type="text" class="search-input form-control col-8 no-gutters" placeholder="Sök på..." aria-label="Sök på...">
@@ -14,11 +14,9 @@
                     <option value="begagnade">Begagnade</option>
                 </select>
                 <div class="input-group-btn">
-                    <button type="submit" class="btn btn-secondary">Sök!</button>
+                    <button type="submit" class="btn btn-primary">Sök!</button>
                 </div>
             </div>
-
-            <span class="slogan container">Din lokala bilåterförsäljare...</span>
         </form>
     </div>
 
@@ -33,7 +31,7 @@
         <div class="row">
             @foreach (var item in ViewBag.CarCount)
             {
-                <div class="col-md-2 col-centered">
+                <div class="col-lg-2 col-6 col-centered">
                     <a href="/bilar?search=@item.CarBrand"><img src="@item.CarImage" class="img-fluid" alt="@item.CarBrand - Logo"></a>
                     <div class="center-badge">
                         <span class="badge badge-pill badge-primary align-bottom">@item.CarCount</span>

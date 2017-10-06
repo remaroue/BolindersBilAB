@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WU16.BolindersBilAB.BLL.ScheduledTasks;
 using WU16.BolindersBilAB.Web.Infrastructure;
+using WU16.BolindersBilAB.DAL.Seeding;
 
 namespace WU16.BolindersBilAB.Web
 {
@@ -164,18 +165,21 @@ namespace WU16.BolindersBilAB.Web
             {
                 var carBrands = new List<CarBrand>
                 {
-                    new CarBrand{BrandName="Volvo", ImageName="/images/carbrands/bmw-logo.png"},
-                    new CarBrand{BrandName="BMW", ImageName="/images/carbrands/ferrari-logo.png"},
-                    new CarBrand{BrandName="Audi", ImageName="/images/carbrands/koenigsegg-logo.png"},
-                    new CarBrand{BrandName="Ford", ImageName="/images/carbrands/saab-logo.png"},
-                    new CarBrand{BrandName="Mercedes-benz", ImageName="/images/carbrands/saab-logo.png"},
-                    new CarBrand{BrandName="Volkswagen", ImageName="/images/carbrands/volvo-logo.png"},
+                    new CarBrand{BrandName="Volvo", ImageName="bmw-logo.png"},
+                    new CarBrand{BrandName="BMW", ImageName="ferrari-logo.png"},
+                    new CarBrand{BrandName="Audi", ImageName="koenigsegg-logo.png"},
+                    new CarBrand{BrandName="Ford", ImageName="saab-logo.png"},
+                    new CarBrand{BrandName="Mercedes-benz", ImageName="saab-logo.png"},
+                    new CarBrand{BrandName="Volkswagen", ImageName="volvo-logo.png"},
                 };
+
+                _ctx.AddRange(carBrands);
+                _ctx.SaveChanges();
             }
 
-            if(_ctx.Cars.Any())
+            if (!_ctx.Cars.Any())
             {
-               // Seeder<Car>.SeedDbContext(_ctx, 1000, SeedDbContextSettings.ReplaceExisting);
+                Seeder<Car>.SeedDbContext(_ctx, 1000);
             }
         }
     }
