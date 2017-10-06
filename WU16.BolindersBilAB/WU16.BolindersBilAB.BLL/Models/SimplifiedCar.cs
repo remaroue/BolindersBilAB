@@ -6,5 +6,6 @@
         public string LicenseNumber { get; set; }
         public string ImageName { get; set; }
         public decimal? Price { get; internal set; }
+        public string Url { get; internal set; }
     }
 }

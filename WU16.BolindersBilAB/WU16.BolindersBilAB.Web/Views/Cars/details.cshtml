@@ -225,7 +225,7 @@
             <div class="row">
                 @foreach (var sc in Model.SimilarCars)
                 {
-                    <a href="@car.GetUrl()" class="card similar-car col-3 mx-auto">
+                    <a href="@sc.Url" class="card similar-car col-3 mx-auto">
                         <div class="card-deck">
                             @if (!string.IsNullOrEmpty(sc.ImageName))
                             {
