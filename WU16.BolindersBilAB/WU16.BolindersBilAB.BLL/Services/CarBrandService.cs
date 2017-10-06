@@ -34,7 +34,10 @@ namespace WU16.BolindersBilAB.BLL.Services
 
       public CarBrand Add(CarBrand carBrand)
         {
-            return _repo.Insert(carBrand);
+            var brand = _repo.Insert(carBrand);
+            _repo.Save();
+
+            return brand;
         }
     }
 }

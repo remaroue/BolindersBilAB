@@ -9,6 +9,7 @@ using WU16.BolindersBilAB.Web.ModelBinder;
 using WU16.BolindersBilAB.BLL.Services;
 using WU16.BolindersBilAB.BLL.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -104,6 +105,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             var cars = _carlistService.GetCars(query);
 
             ViewBag.Query = Request.QueryString;
+            ViewBag.Locations = _locationService.Get();
 
             return View(
                 new CarListViewModel {
@@ -136,10 +138,10 @@ namespace WU16.BolindersBilAB.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.CarBrands = _brandService.Get();
+                ViewBag.Locations = _locationService.Get();
                 return View(car);
             }
-            car.CreationDate = DateTime.Now;
-            car.LastUpdated = DateTime.Now;
             if (car == null)
             {
                 return BadRequest();
@@ -164,14 +166,14 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 CarType = car.CarType,
                 FuelType = car.FuelType,
                 Gearbox = car.Gearbox,
-                CreationDate = DateTime.Now,
-                LastUpdated = DateTime.Now
-
+                CreationDate = DateTime.Now
             };
-
-            newCar = _imageService.AddImageToCar(newCar, car.Images.ToArray());
+            if(car.Images.Count > 0)
+            {
+                newCar = _imageService.AddImageToCar(newCar, car.Images.ToArray());
+            }
             _carService.SaveCar(newCar);
-            return View("/");
+            return RedirectToAction(nameof(CarList));
         }
 
         [Route("/admin/bilmarke/skapa")]
@@ -191,7 +193,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 };
                 _brandService.Add(newCarBrand);
                 newCarBrand = _imageService.ChangeImageOnCarBrand(newCarBrand, carBrand.Image);
-                return View("/");
+                return RedirectToAction(nameof(CarList));
             }
             else
             {
@@ -223,6 +225,18 @@ namespace WU16.BolindersBilAB.Web.Controllers
             {
                 return View(car);
             }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("/admin/bilar")]
+        public IActionResult DeleteCars(IEnumerable<string> licenseNumbers)
+        {
+            var removedCars = _carService.DeleteCars(licenseNumbers);
+
+            _imageService.RemoveImages(removedCars);
+
+            return RedirectToAction(nameof(CarList));
         }
 
 

@@ -1,7 +1,7 @@
 ﻿
 #cars-cars-container {
     min-height: 100%;
-    
+
     .card {
         border: 1px solid #d8d8d8;
     }
@@ -38,7 +38,7 @@
 
     .car-filter {
         background-color: #4e4e4e;
-        color:white;
+        color: white;
     }
 
     .badge {
@@ -69,5 +69,9 @@
 
     .card-title {
         text-align: center;
+    }
+
+    .card-img-top{
+        max-height:340px;
     }
 }

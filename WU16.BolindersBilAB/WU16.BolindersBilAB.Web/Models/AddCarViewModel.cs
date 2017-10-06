@@ -44,7 +44,6 @@ namespace WU16.BolindersBilAB.Web.Models
         [Required]
         [Display(Name = "Plats")]
         public string LocationId { get; set; }
-        [Required]
         [Display(Name = "Bilmärke")]
         public virtual CarBrand CarBrand { get; set; }
         [Required]

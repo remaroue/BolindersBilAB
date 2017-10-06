@@ -28,10 +28,10 @@
     </div>
 
     <div class="available-logo col-md-10 container">
-        <div class="row">
+        <div class="row justify-content-center">
             @foreach (var item in ViewBag.CarCount)
             {
-                <div class="col-lg-2 col-6 col-centered">
+                <div class="col-lg-2 col-6">
                     <a href="/bilar?search=@item.CarBrand"><img src="@item.CarImage" class="img-fluid" alt="@item.CarBrand - Logo"></a>
                     <div class="center-badge">
                         <span class="badge badge-pill badge-primary align-bottom">@item.CarCount</span>

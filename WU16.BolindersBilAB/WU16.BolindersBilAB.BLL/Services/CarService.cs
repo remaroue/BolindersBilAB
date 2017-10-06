@@ -84,5 +84,15 @@ namespace WU16.BolindersBilAB.BLL.Services
             _repo.Edit(car);
             _repo.Save();
         }
+
+        public List<Car> DeleteCars(IEnumerable<string> licenseNumbers)
+        {
+            var cars = _repo.Get().Include(x => x.CarImages).Where(x => licenseNumbers.Contains(x.LicenseNumber)).ToList();
+
+            _repo.Delete(cars);
+            _repo.Save();
+
+            return cars;
+        }
     }
 }

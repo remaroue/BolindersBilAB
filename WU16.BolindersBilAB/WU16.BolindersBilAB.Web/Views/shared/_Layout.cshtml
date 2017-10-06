@@ -42,7 +42,10 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
-                            <a class="nav-link" href="/Account/logout">Logga ut</a>
+                            <a class="nav-link" asp-action="CarList" asp-controller="Cars">Admin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Logout" asp-controller="Account">Logga ut</a>
                         </li>
                     }
                 </ul>

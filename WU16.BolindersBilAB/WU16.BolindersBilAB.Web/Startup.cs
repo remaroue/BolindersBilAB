@@ -18,6 +18,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WU16.BolindersBilAB.BLL.ScheduledTasks;
 using WU16.BolindersBilAB.Web.Infrastructure;
+using WU16.BolindersBilAB.DAL.Seeding;
+using WU16.BolindersBilAB.DAL.Seeding.Enums;
 
 namespace WU16.BolindersBilAB.Web
 {
@@ -175,7 +177,7 @@ namespace WU16.BolindersBilAB.Web
 
             if(_ctx.Cars.Any())
             {
-               // Seeder<Car>.SeedDbContext(_ctx, 1000, SeedDbContextSettings.ReplaceExisting);
+               //Seeder<Car>.SeedDbContext(_ctx, 1000, SeedDbContextSettings.ReplaceExisting);
             }
         }
     }
