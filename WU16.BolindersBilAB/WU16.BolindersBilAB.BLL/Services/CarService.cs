@@ -88,9 +88,35 @@ namespace WU16.BolindersBilAB.BLL.Services
             return car;
         }
 
-        public void UpdateCar(Car car)
+        public void UpdateCar(Car car, Car model = null)
         {
             car.LastUpdated = DateTime.Now;
+
+            if(model != null)
+            {
+                car.IsLeaseable = model.IsLeaseable;
+                car.Used = car.Used;
+
+                car.Milage = model.Milage;
+                car.Price = model.Price;
+                car.HorsePower = model.HorsePower;
+
+                car.Model = model.Model;
+                car.ModelDescription = model.ModelDescription;
+                car.ModelYear = model.ModelYear;
+
+                car.LocationId = model.LocationId;
+                car.CarBrandId = model.CarBrandId;
+
+
+                car.CarType = model.CarType;
+                car.FuelType = model.FuelType;
+                car.Gearbox = model.Gearbox;
+
+                car.Color = car.Color;
+                car.Equipment = model.Equipment;
+                car.Description = model.Description;
+            }
 
             _repo.Edit(car);
             _repo.Save();

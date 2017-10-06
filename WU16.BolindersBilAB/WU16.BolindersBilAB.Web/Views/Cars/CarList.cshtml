@@ -60,26 +60,26 @@
         </div>
     </div>
     <div class="row justify-content-center">
-            <form id="carListTable" class="col-lg-10 d-flex" asp-action="DeleteCars" method="post">
-                <table id="ListAllCarsTable" class="table border table-striped table-hover">
-                    <thead>
+        <form id="carListTable" class="col-lg-10 d-flex" asp-action="DeleteCars" method="post">
+            <table id="ListAllCarsTable" class="table border table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Bilmärke</th>
+                        <th>Modell</th>
+                        <th>Registreringsnummer</th>
+                        <th>Plats</th>
+                        <th>Skapad</th>
+                        <th>Senast uppdaterad</th>
+                        <th colspan="2" class="text-right"><span class="fa fa-cogs"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var car in Model.Cars)
+                    {
                         <tr>
-                            <th>Bilmärke</th>
-                            <th>Modell</th>
-                            <th>Registreringsnummer</th>
-                            <th>Plats</th>
-                            <th>Skapad</th>
-                            <th>Senast uppdaterad</th>
-                            <th colspan="2" class="text-right"><span class="fa fa-cogs"></span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var car in Model.Cars)
-                        {
-                            <tr>
-                                <td>
-                                    @car.CarBrand.BrandName
-                                </td>
+                            <td>
+                                @car.CarBrand.BrandName
+                            </td>
 
                             <td>
                                 @car.Model
@@ -99,8 +99,11 @@
                                     @car.LastUpdated.Value.ToShortDateString()
                                 }
                             </td>
-                            <td width="50px">
-                                <a asp-route-licensenumber="@car.LicenseNumber" asp-action="EditCar" class="btn btn-primary"><span class="fa fa-edit text-white"></span></a>
+                            <td width="100px">
+                                <div class="btn-group">
+                                    <a data-licenseNumber="@car.LicenseNumber" class="btn btn-warning update-car fa fa-arrow-up text-white"></a>
+                                    <a asp-route-licensenumber="@car.LicenseNumber" asp-action="EditCar" class="btn btn-primary"><span class="fa fa-edit text-white"></span></a>
+                                </div>
                             </td>
                             <td width="25px" class="pt-4" colspan="1">
                                 <input type="checkbox" name="licenseNumbers" class="float-right" value="@car.LicenseNumber" />
