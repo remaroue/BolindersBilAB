@@ -13,7 +13,6 @@
     });
 
     $(".update-car").on("click", function (e) {
-        debugger
         if (confirm('Bekräfta uppdatering')) {
             var licenseNumber = $(e.target).data("licensenumber");
 
