@@ -191,8 +191,9 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 {
                     BrandName = carBrand.BrandName
                 };
-                _brandService.Add(newCarBrand);
+                
                 newCarBrand = _imageService.ChangeImageOnCarBrand(newCarBrand, carBrand.Image);
+                _brandService.Add(newCarBrand);
                 return RedirectToAction(nameof(CarList));
             }
             else
