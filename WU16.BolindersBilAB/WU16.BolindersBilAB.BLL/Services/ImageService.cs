@@ -202,5 +202,16 @@ namespace WU16.BolindersBilAB.BLL.Services
         {
             File.Delete($"{_config.BasePath}{imageName}");
         }
+
+        public void RemoveImages(List<Car> removedCars)
+        {
+            foreach(var car in removedCars)
+            {
+                foreach(var img in car.CarImages)
+                {
+                    File.Delete($"{_config.BasePath}{img.FileName}");
+                }
+            }
+        }
     }
 }

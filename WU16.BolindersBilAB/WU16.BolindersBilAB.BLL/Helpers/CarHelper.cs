@@ -86,6 +86,11 @@ namespace WU16.BolindersBilAB.BLL.Helpers
                     cars = cars.Where(x => query.Search.Contains(x.ModelDescription));
             }
 
+            if(!string.IsNullOrEmpty(query.LocationId))
+            {
+                cars = cars.Where(x => x.Location.Id == query.LocationId);
+            }
+
             if (query.Skip > 0)
                 cars = cars.Skip(query.Skip);
             if (query.Take > 0)
