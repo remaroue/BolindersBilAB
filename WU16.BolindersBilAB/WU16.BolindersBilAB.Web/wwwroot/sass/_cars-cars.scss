@@ -72,16 +72,29 @@
     }
 
     .card-img-top {
-        max-height: 340px;
+        height: 340px;
     }
 
     @media (min-width: 991px) {
+
         .hide-lg {
-            display:none;
+            display: none;
         }
 
         .collapse {
-            display:block;
+            display: block;
+        }
+    }
+
+    @media (max-width:767px) {
+        .card-img-top {
+            height:250px;
+        }
+    }
+
+    @media only screen and (max-width: 991px) and (min-width: 768px) {
+        .card-imt-top {
+            height:300px;
         }
     }
 }
