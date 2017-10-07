@@ -176,8 +176,9 @@ namespace WU16.BolindersBilAB.BLL.Services
 
                 if (car.CarImages?.Count > 0)
                 {
-                    var images = car.CarImages;
-                    var newOrder = model.ExistingImages;
+                    
+                    var images = car.CarImages.ToList();
+                    var newOrder = (model.ExistingImages ?? new string[0]);
 
                     var removed = images.Where(x => !newOrder.Contains(x.FileName)).ToArray();
                     foreach (var img in removed)
@@ -186,7 +187,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                         car.CarImages.Remove(img);
                     }
 
-                    if (car.CarImages.Count > 0)
+                    if (car.CarImages.Count > 0 && newOrder.Length > 0)
                     {
                         var imgs = new List<CarImage>();
                         var i = 0;

@@ -71,7 +71,23 @@
         text-align: center;
     }
 
-    .card-img-top {
+    .no-image {
+        width: 100%;
+        display: block;
+        background-color: #f0f0f0;
+        position: relative;
+
+        p {
+            font-size: 1.8em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            text-align: center;
+        }
+    }
+
+    .card-img-top, .no-image {
         height: 340px;
     }
 
@@ -87,14 +103,14 @@
     }
 
     @media (max-width:767px) {
-        .card-img-top {
-            height:250px;
+        .card-img-top, .no-image {
+            height: 250px;
         }
     }
 
     @media only screen and (max-width: 991px) and (min-width: 768px) {
-        .card-imt-top {
-            height:300px;
+        .card-imt-top, .no-image {
+            height: 300px;
         }
     }
 }
