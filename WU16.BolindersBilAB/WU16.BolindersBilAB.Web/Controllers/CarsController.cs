@@ -204,10 +204,8 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Route("/admin/bil/skapa")]
         public IActionResult AddCar(CarFormViewModel car)
         {
-            if (CheckMediatype(car.Images))
-            {
+            if (!CheckMediatype(car.Images))
                 ModelState.AddModelError("Images", "Bilder måste vara av typen png. jpg eller jpeg.");
-            }
 
             if (!ModelState.IsValid)
             {
