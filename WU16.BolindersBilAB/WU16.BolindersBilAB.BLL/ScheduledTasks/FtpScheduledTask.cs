@@ -1,7 +1,8 @@
 ﻿using DNTScheduler.Core.Contracts;
 using System.Threading.Tasks;
+using WU16.BolindersBilAB.BLL.Services;
 
-namespace WU16.BolindersBilAB.BLL.Services
+namespace WU16.BolindersBilAB.BLL.ScheduledTasks
 {
     public class FtpScheduledTask : IScheduledTask
     {
@@ -21,7 +22,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                 return;
             }
 
-            //_ftpService.Run();
+            _ftpService.Run();
         }
     }
 }

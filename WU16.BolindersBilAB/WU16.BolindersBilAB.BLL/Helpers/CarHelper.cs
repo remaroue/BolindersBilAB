@@ -4,16 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using WU16.BolindersBilAB.DAL.Models;
+using WU16.BolindersBilAB.Web.Models;
 
-namespace WU16.BolindersBilAB.DAL.Helpers
+namespace WU16.BolindersBilAB.BLL.Helpers
 {
-    public static class CarListHelper
+    public static class CarHelper
     {
         private static readonly Regex _pattern = new Regex("[^a-z,å,ä,ö,0-9]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         public static string NormalizeLicenseNumber(string input)
         {
             return _pattern.Replace(input.ToUpper(), string.Empty);
         }
+
+        private static string ReplaceIf(string value, string replacement) => string.IsNullOrEmpty(value) ? replacement: value;
+        public static string GetUrl(this Car car) => $"/bil/{ReplaceIf(car.CarBrandId, "brand")}/{ReplaceIf(car.Model, "model")}/{ReplaceIf(car.ModelDescription, "model-desc")}/{car.GetUnique()}";
+        public static string GetUnique(this Car car) => $"{car.LicenseNumber.First()}{(int)car.CarType}{(int)car.FuelType}{(int)car.Gearbox}{(int)car.CreationDate.DayOfWeek}";
 
         public static IQueryable<Car> FilterByParameter(this IQueryable<Car> cars, string parameter)
         {
@@ -49,40 +54,46 @@ namespace WU16.BolindersBilAB.DAL.Helpers
 
 
             if (query.MilageFrom > 0)
-                cars = cars.Where(x => x.Milage >= query.MilageFrom);
+                cars = cars.Where(x => (x.Milage ?? int.MinValue) >= query.MilageFrom);
             if (query.MilageTo > 0)
-                cars = cars.Where(x => x.Milage <= query.MilageTo);
+                cars = cars.Where(x => (x.Milage ?? int.MaxValue) <= query.MilageTo);
 
             if (query.PriceFrom > 0)
-                cars = cars.Where(x => x.Price >= query.PriceFrom);
+                cars = cars.Where(x => (x.Price ?? decimal.MinValue) >= query.PriceFrom);
             if (query.PriceTo > 0)
-                cars = cars.Where(x => x.Price <= query.PriceTo);
+                cars = cars.Where(x => (x.Price ?? decimal.MaxValue) <= query.PriceTo);
 
-            if (query.YearFrom > 0)
+            if (query.YearFrom > 0 && !(query.YearFrom < 1940))
                 cars = cars.Where(x => x.ModelYear >= query.YearFrom);
+            if (query.YearFrom < 1940 && query.YearFrom != 0)
+                cars = cars.Where(x => x.ModelYear >= 0);
             if (query.YearTo > 0)
                 cars = cars.Where(x => x.ModelYear <= query.YearTo);
 
-            
-
-            // TODO: Free Search match
-            if (query.Search != null)
+            if (!string.IsNullOrEmpty(query.Search))
             {
+                if (cars.Any(x => query.Search.Contains(x.LicenseNumber)))
+                    cars = cars.Where(x => query.Search.Contains(x.LicenseNumber));
 
-                if (cars.Where(x => x.Description.Contains(query.Search)) != null)
+                if (cars.Any(x => x.Description.Contains(query.Search)))
                     cars = cars.Where(x => x.Description.Contains(query.Search));
 
-                if (cars.Where(x => x.Equipment.Contains(query.Search)) != null)
+                if (cars.Any(x => x.Equipment.Contains(query.Search)))
                     cars = cars.Where(x => x.Equipment.Contains(query.Search));
 
+                if (cars.Any(x => query.Search.Contains(x.ModelYear.ToString())))
+                    cars = cars.Where(x => query.Search.Contains(x.ModelYear.ToString()));
 
-                if (cars.Where(x => x.ModelYear.Equals(int.Parse(query.Search))) != null)
+                if (cars.Any(x => query.Search.Contains(x.Model)))
+                    cars = cars.Where(x => query.Search.Contains(x.Model));
 
-                    cars = cars.Where(x => x.ModelYear.Equals(int.Parse(query.Search)));
+                if (cars.Any(x => query.Search.Contains(x.ModelDescription)))
+                    cars = cars.Where(x => query.Search.Contains(x.ModelDescription));
+            }
 
-
-                if (cars.Where(x => x.Model.Contains(query.Search)) != null)
-                    cars = cars.Where(x => x.Model.Contains(query.Search));
+            if(!string.IsNullOrEmpty(query.LocationId))
+            {
+                cars = cars.Where(x => x.Location.Id == query.LocationId);
             }
 
             if (query.Skip > 0)
@@ -97,15 +108,22 @@ namespace WU16.BolindersBilAB.DAL.Helpers
         {
             return new CarListQuery()
             {
-                PriceFrom = car.Price,
+                PriceFrom = car.Price ?? 0m,
                 CarBrand = new List<CarBrand>() { car.CarBrand },
                 Take = 4
             };
         }
 
-        public static IEnumerable<Car> PaginateCars(this IEnumerable<Car> cars, int page)
+        public static IEnumerable<Car> PaginateCars(this IEnumerable<Car> cars, int page, int take, bool skip)
         {
-            return cars.Take((8 * page)).AsEnumerable();
+            if(!skip)
+            {
+            return cars.Take((take * page)).AsEnumerable();
+            }
+            else
+            {
+                return cars.Take((take * page)).Skip((page - 1) * take).AsEnumerable();
+            }
         }
 
         public static Dictionary<int, string> GetModelYears()
@@ -176,6 +194,31 @@ namespace WU16.BolindersBilAB.DAL.Helpers
             milages.Add(30001, "30 000 +");
 
             return milages;
+        }
+
+        public static CarFormViewModel GetCarForm(this Car car)
+        {
+            return new CarFormViewModel()
+            {
+                LicenseNumber = CarHelper.NormalizeLicenseNumber(car.LicenseNumber),
+                Model = car.Model,
+                ModelDescription = car.ModelDescription,
+                Description = car.Description,
+                ModelYear = car.ModelYear,
+                IsLeaseable = car.IsLeaseable,
+                Milage = car.Milage,
+                Price = car.Price,
+                Color = car.Color,
+                HorsePower = car.HorsePower,
+                Used = car.Used,
+                LocationId = car.LocationId,
+                CarBrandId = car.CarBrandId,
+                Equipment = car.Equipment,
+                CarType = car.CarType,
+                FuelType = car.FuelType,
+                Gearbox = car.Gearbox,
+                ExistingImages = car.CarImages.OrderBy(x => x.Priority).Select(x => x.FileName).ToArray()
+            };
         }
     }
 }

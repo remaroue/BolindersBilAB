@@ -1,28 +1,116 @@
 ﻿
 #cars-cars-container {
+    min-height: 100%;
+
     .card {
-        border: 1px solid #ffffff;
+        border: 1px solid #d8d8d8;
     }
 
-    .card-body {
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-top: 5px;
-    }
-
-    .car-price {
-        font-size: 1.20em;
-        color: $green;
-    }
 
     .card:hover {
-        border: 1px solid #d8d8d8;
-        transform: scale(1.02);
+        background-color: #f1f1f1;
         cursor: pointer;
     }
 
     .select2-selection__choice {
         color: $white;
         background-color: $blue !important;
+        border-radius: $border-radius;
+        border: 1px solid $blue;
+    }
+
+    select2 select2-container select2-container--default {
+        width: 100%;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        color: #e4d7d7;
+    }
+
+    .select2-container--default .select2-selection--multiple {
+        border-radius: $border-radius;
+        border-color: #c7c7c7;
+    }
+
+    .btn-lg {
+        border-radius: $border-radius;
+    }
+
+    .car-filter {
+        background-color: #4e4e4e;
+        color: white;
+    }
+
+    .badge {
+        font-weight: normal;
+    }
+
+    .spec-items {
+        text-align: center;
+    }
+
+    .spec-items > div > label {
+        margin-bottom: 0;
+        font-size: 0.8em;
+    }
+
+    .spec-items > div > p {
+        font-size: 0.9em;
+    }
+
+    .car-img {
+        width: 100%;
+        display: block;
+    }
+
+    .badge {
+        width: 100%;
+    }
+
+    .card-title {
+        text-align: center;
+    }
+
+    .no-image {
+        width: 100%;
+        display: block;
+        background-color: #f0f0f0;
+        position: relative;
+
+        p {
+            font-size: 1.8em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            text-align: center;
+        }
+    }
+
+    .card-img-top, .no-image {
+        height: 340px;
+    }
+
+    @media (min-width: 991px) {
+
+        .hide-lg {
+            display: none;
+        }
+
+        .collapse {
+            display: block;
+        }
+    }
+
+    @media (max-width:767px) {
+        .card-img-top, .no-image {
+            height: 250px;
+        }
+    }
+
+    @media only screen and (max-width: 991px) and (min-width: 768px) {
+        .card-imt-top, .no-image {
+            height: 300px;
+        }
     }
 }

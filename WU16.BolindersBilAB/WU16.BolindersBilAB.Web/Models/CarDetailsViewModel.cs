@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using WU16.BolindersBilAB.BLL.Models;
 using WU16.BolindersBilAB.DAL.Models;
-using WU16.BolindersBilAB.DAL.Services;
 
 namespace WU16.BolindersBilAB.Web.Models
 {

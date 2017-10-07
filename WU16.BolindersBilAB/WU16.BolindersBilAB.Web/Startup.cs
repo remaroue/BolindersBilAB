@@ -9,12 +9,16 @@ using WU16.BolindersBilAB.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using WU16.BolindersBilAB.DAL.Repository;
-using WU16.BolindersBilAB.DAL.Services;
 using Microsoft.AspNetCore.Routing;
 using WU16.BolindersBilAB.BLL.Configuration;
 using WU16.BolindersBilAB.BLL.Services;
 using DNTScheduler.Core;
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using WU16.BolindersBilAB.BLL.ScheduledTasks;
 using WU16.BolindersBilAB.Web.Infrastructure;
+using WU16.BolindersBilAB.DAL.Seeding;
 
 namespace WU16.BolindersBilAB.Web
 {
@@ -47,15 +51,14 @@ namespace WU16.BolindersBilAB.Web
             services.AddScoped<CarSearchService>();
             services.AddScoped<ImageService>();
 
-            services.AddSingleton<FtpService>();
+            services.AddScoped<FtpService>();
 
             services.AddDNTScheduler(options =>
             {
                 options.AddScheduledTask<FtpScheduledTask>(
                     runAt: utcNow =>
                     {
-                        var now = utcNow.AddMinutes(2);
-                        return now.Day % 3 == 0 && now.Hour == 0 && now.Minute == 1 && now.Second == 1;
+                        return false;
                     },
                     order: 1);
             });
@@ -85,7 +88,7 @@ namespace WU16.BolindersBilAB.Web
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.Cookie.Expiration = TimeSpan.FromDays(150);
-                options.LoginPath = "/Account/Login"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login
+                options.LoginPath = "/admin"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login
                 options.LogoutPath = "/Account/Logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout
                 options.AccessDeniedPath = "/Home/Index"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied
                 options.SlidingExpiration = true;
@@ -94,7 +97,7 @@ namespace WU16.BolindersBilAB.Web
             services.AddMvc();
 
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
-            services.AddScoped<CarListService>();
+            services.AddScoped<CarService>();
             services.AddScoped<CarBrandService>();
             services.AddScoped<LocationService>();
             services.AddScoped<CarService>();
@@ -115,6 +118,8 @@ namespace WU16.BolindersBilAB.Web
             }
             else
             {
+                app.UseExceptionHandler("/error.html");
+                app.UseMiddleware<ErrorHandlerMiddleWare>();
                 app.UseStaticFiles(new StaticFileOptions()
                 {
                     OnPrepareResponse = x =>
@@ -127,10 +132,9 @@ namespace WU16.BolindersBilAB.Web
             }
 
             app.UseAuthentication();
-
             app.UseMvc(x => x.MapRoute("default", template: "{Controller=Home}/{Action=Index}/{Id?}"));
 
-            /*if (!userManager.Users.Any())
+            if (!userManager.Users.Any())
             {
                 var user1 = new ApplicationUser { UserName = "jonkoping@bolindersbil.se", Email = "jonkoping@bolindersbil.se" };
                 var user2 = new ApplicationUser { UserName = "varnamo@bolindersbil.se", Email = "varnamo@bolindersbil.se" };
@@ -146,11 +150,11 @@ namespace WU16.BolindersBilAB.Web
             if (!_ctx.Locations.Any())
             {
                 var locations = new List<Location>
-                {
-                    new Location{Name="Bolinders Bil Jönköping", Address="Lovsjövägen 33", City="Jönköping", Zip="55626", PhoneNumber="036-123456", Email="jonkoping@bolindersbil.se", Id="BB1"},
-                    new Location{Name="Bolinders Bil Värnamo", Address="Bultgatan 2", City="Värnamo", Zip="54452", PhoneNumber="0370-123456", Email="varnamo@bolindersbil.se", Id="BB2"},
-                    new Location{Name="Bolinders Bil Göteborg", Address="Industrivägen 1", City="Göteborg", Zip="55336", PhoneNumber="031-123456", Email="goteborg@bolindersbil.se", Id="BB3"}
-                };
+               {
+                   new Location{Name="Bolinders Bil Jönköping", Address="Lovsjövägen 33", City="Jönköping", Zip="55626", PhoneNumber="036-123456", Email="jonkoping@bolindersbil.se", Id="BB1"},
+                   new Location{Name="Bolinders Bil Värnamo", Address="Bultgatan 2", City="Värnamo", Zip="54452", PhoneNumber="0370-123456", Email="varnamo@bolindersbil.se", Id="BB2"},
+                   new Location{Name="Bolinders Bil Göteborg", Address="Industrivägen 1", City="Göteborg", Zip="55336", PhoneNumber="031-123456", Email="goteborg@bolindersbil.se", Id="BB3"}
+               };
 
                 _ctx.AddRange(locations);
                 _ctx.SaveChanges();
@@ -160,43 +164,22 @@ namespace WU16.BolindersBilAB.Web
             {
                 var carBrands = new List<CarBrand>
                 {
-                    new CarBrand{BrandName="Volvo", ImageUrl="/images/carbrands/bmw-logo.png"},
-                    new CarBrand{BrandName="BMW", ImageUrl="/images/carbrands/ferrari-logo.png"},
-                    new CarBrand{BrandName="Audi", ImageUrl="/images/carbrands/koenigsegg-logo.png"},
-                    new CarBrand{BrandName="Ford", ImageUrl="/images/carbrands/saab-logo.png"},
-                    new CarBrand{BrandName="Mercedes-benz", ImageUrl="/images/carbrands/saab-logo.png"},
-                    new CarBrand{BrandName="Volkswagen", ImageUrl="/images/carbrands/volvo-logo.png"},
+                    new CarBrand{BrandName="Volvo", ImageName="bmw-logo.png"},
+                    new CarBrand{BrandName="BMW", ImageName="ferrari-logo.png"},
+                    new CarBrand{BrandName="Audi", ImageName="koenigsegg-logo.png"},
+                    new CarBrand{BrandName="Ford", ImageName="saab-logo.png"},
+                    new CarBrand{BrandName="Mercedes-benz", ImageName="saab-logo.png"},
+                    new CarBrand{BrandName="Volkswagen", ImageName="volvo-logo.png"},
                 };
 
                 _ctx.AddRange(carBrands);
                 _ctx.SaveChanges();
             }
+
             if (!_ctx.Cars.Any())
             {
-                var mercedes = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "Mercedes-benz");
-                var volvo = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "Volvo");
-                var bmw = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "BMW");
-                var vw = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "Volkswagen");
-
-                var location = _ctx.Locations.FirstOrDefault(x => x.City == "Jönköping");
-
-                var cars = new List<Car>
-                {
-                    new Car{Location = location, LicenseNumber="ABC123", CarBrand = volvo, CarType=CarType.Kombi, Color="Black", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description="<insert description here>", HorsePower=154, Gearbox = Gearbox.Automat, FuelType= FuelType.Bensin, IsLeaseable = false, ModelYear = 2013, Used = true, Milage=13000, Model="v70", Price=55000},
-                    new Car{Location = location, LicenseNumber="CDS123", CarBrand = bmw, CarType=CarType.Coupé, Color="Black", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description="<insert description here>", HorsePower=154, Gearbox = Gearbox.Automat, FuelType= FuelType.Bensin, IsLeaseable = false, ModelYear = 2013, Used = true, Milage=13000, Model="v70", Price=55000},
-                    new Car{Location = location, LicenseNumber ="DFG545", CarBrand = mercedes, CarType=CarType.Cab, Color="Red", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description="<insert description here>", HorsePower=354, Gearbox = Gearbox.Automat, FuelType= FuelType.Diesel, IsLeaseable = false, ModelYear = 2013, Used = true, Milage=13000, Model="C400", Price=550000},
-                    new Car{Location = location, LicenseNumber="LUL404", CarBrand = vw, CarType=CarType.Småbil, Color="Red", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description="<insert description here>", HorsePower=354, Gearbox = Gearbox.Automat, FuelType= FuelType.Bensin, IsLeaseable = false, ModelYear = 2016, Used = true, Milage=5000, Model="Golf GTI", Price=95000},
-
-                };
-                _ctx.AddRange(cars);
-                _ctx.SaveChanges();
-            }*/
-
-            //// similar car
-            //var vw2 = _ctx.CarBrands.FirstOrDefault(x => x.BrandName == "Volkswagen");
-            //var location2 = _ctx.Locations.FirstOrDefault(x => x.City == "Jönköping");
-            //_ctx.Cars.Add(new Car { Location = location2, LicenseNumber = "L0L404", CarBrand = vw2, CarType = CarType.Småbil, Color = "Red", CreationDate = DateTime.Now, LastUpdated = DateTime.Now, Description = "<insert description here>", HorsePower = 354, Gearbox = Gearbox.Automat, FuelType = FuelType.Bensin, IsLeaseable = false, ModelYear = 2014, Used = true, Milage = 5000, Model = "Golf GTI", Price = 95000 });
-            //_ctx.SaveChanges();
+                //Seeder<Car>.SeedDbContext(_ctx, 1000);
+            }
         }
     }
 }

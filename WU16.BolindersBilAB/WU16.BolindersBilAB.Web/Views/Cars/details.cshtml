@@ -1,17 +1,18 @@
 ﻿@model WU16.BolindersBilAB.Web.Models.CarDetailsViewModel
+@using WU16.BolindersBilAB.BLL.Helpers;
 @{
     var car = Model.Car;
 
     ViewData["Title"] = $"{car.CarBrand.BrandName} {car.Model} {car.ModelYear}";
 
-    var taxedPrice = Math.Round(car.Price * 1.25m, 2);
+    var taxedPrice = Math.Round((car.Price ?? 0) * 1.25m, 2);
     var cashPayment = Math.Round(taxedPrice * 0.2m, 2).ToString(new System.Globalization.CultureInfo("en-US"));
 
     var anyImages = car.CarImages != null ? car.CarImages.Any() : false;
     string[] imageUrls = null;
     if (anyImages)
     {
-        imageUrls = car.CarImages.Select(x => $"/images/upload{x.FileName}").ToArray();
+        imageUrls = car.CarImages.Select(x => $"/images/upload/{x.FileName}").ToArray();
     }
 
     var condition = car.Used ? "Begagnad" : "Ny";
@@ -60,10 +61,11 @@
                 @car.Description
             </p>
 
-            <div>
+            <div class="equipment">
                 @if (!string.IsNullOrEmpty(car.Equipment))
                 {
-                    foreach (var e in car.Equipment.Split("|"))
+
+                    foreach (var e in car.Equipment.Split(new char[] { '|', ',' }))
                     {
                         <span class="badge badge-success">@e</span>
                     }
@@ -92,11 +94,15 @@
                         <td>@car.CarBrand.BrandName</td>
                     </tr>
                     <tr>
-                        <td>car</td>
+                        <td>Model</td>
                         <td>@car.Model</td>
                     </tr>
                     <tr>
-                        <td>Årscarl</td>
+                        <td>Model beskrivning</td>
+                        <td>@car.ModelDescription</td>
+                    </tr>
+                    <tr>
+                        <td>Årsmodel</td>
                         <td>@car.ModelYear</td>
                     </tr>
                     <tr>
@@ -129,13 +135,29 @@
                     </tr>
                     <tr>
                         <td>Pris</td>
-                        <td>@taxedPrice kr</td>
+                        
+                        @if (car.Price != null)
+                        {
+                            <td>@taxedPrice kr</td>
+                        }
+                        else
+                        {
+                            <td>Inget Pris Satt.</td>
+                        }
                     </tr>
                     @if (car.IsLeaseable)
                     {
                         <tr>
                             <td>Leasing Pris</td>
-                            <td>@car.Price kr</td>
+
+                            @if (car.Price != null)
+                            {
+                                <td>@car.Price kr</td>
+                            }
+                            else
+                            {
+                                <td>Inget Pris Satt.</td>
+                            }
                         </tr>
                     }
                 </tbody>
@@ -146,44 +168,53 @@
     @* /Main Content *@
 
     @* Price Calculator *@
-    <div class="row price-calculator">
-        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
-            <form class="form">
-                <input type="hidden" value="@taxedPrice" />
+    @if (Model.Car.Price != null)
+    {
+        <div class="row price-calculator">
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                <form class="form">
+                    <input type="hidden" value="@taxedPrice" />
 
-                <div class="col-12 form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Kontant</div>
-                        <input type="number" value="@cashPayment" class="form-control" />
-                        <div class="input-group-addon">Kr</div>
+                    <div class="col-12 form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Kontant</div>
+                            <input type="number" value="@cashPayment" class="form-control" />
+                            <div class="input-group-addon">Kr</div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-12 form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">Avbetalnigs längd</div>
-                        <select class="custom-select form-control">
-                            <option value="12">12 månader</option>
-                            <option value="24">24 månader</option>
-                            <option selected="selected" value="36">36 månader</option>
-                            <option value="48">48 månader</option>
-                            <option value="48">48 månader</option>
-                            <option value="72">72 månader</option>
-                        </select>
+                    <div class="col-12 form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">Avbetalnigs längd</div>
+                            <select class="custom-select form-control">
+                                <option value="12">12 månader</option>
+                                <option value="24">24 månader</option>
+                                <option selected="selected" value="36">36 månader</option>
+                                <option value="48">48 månader</option>
+                                <option value="48">48 månader</option>
+                                <option value="72">72 månader</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-12 form-group">
-                    <button class="btn btn-block btn-primary">Räkna ut</button>
-                </div>
-            </form>
+                    <div class="col-12 form-group">
+                        <button class="btn btn-block btn-primary">Räkna ut</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4 col-sm-12 price-result justify-content-sm-start">
+                <p class="month"></p>
+                <p class="total"></p>
+                <p>Kontakta säljare: <a href="tel:@car.Location.PhoneNumber">@car.Location.PhoneNumber</a></p>
+            </div>
         </div>
-        <div class="col-md-4 col-sm-12 price-result justify-content-sm-start">
-            <p class="month"></p>
-            <p class="total"></p>
+    }
+    else
+    {
+        <div class="col-12 price-result justify-content-sm-start">
             <p>Kontakta säljare: <a href="tel:@car.Location.PhoneNumber">@car.Location.PhoneNumber</a></p>
         </div>
-    </div>
+    }
     @* /Price Calculator *@
 
     @* Similar Cars *@
@@ -192,28 +223,26 @@
         if (Model.SimilarCars.Any())
         {
             <div class="row">
-                <div class="card-group mx-auto">
-                    @foreach (var sc in Model.SimilarCars)
-                    {
-                        <a href="/bil/@sc.LicenseNumber" class="card similar-car col-3">
-                            <div class="card-deck">
-                                @if (!string.IsNullOrEmpty(sc.ImageName))
-                                {
-                                    <img class="card-img-top" src="~/Images/Upload/@sc.ImageName" alt="@sc.Title" />
-                                }
-                                else
-                                {
-                                    <div class="card-img-top no-image">
-                                        <p><i class="fa fa-file-image-o"></i></p>
-                                    </div>
-                                }
-                            </div>
-                            <div class="card-block">
-                                <h5>@sc.Title</h5>
-                            </div>
-                        </a>
-                    }
-                </div>
+                @foreach (var sc in Model.SimilarCars)
+                {
+                    <a href="@sc.Url" class="card similar-car col-3 mx-auto">
+                        <div class="card-deck">
+                            @if (!string.IsNullOrEmpty(sc.ImageName))
+                            {
+                                <img class="card-img-top" src="~/Images/Upload/@sc.ImageName" alt="@sc.Title" />
+                            }
+                            else
+                            {
+                                <div class="card-img-top no-image">
+                                    <p><i class="fa fa-file-image-o"></i></p>
+                                </div>
+                            }
+                        </div>
+                        <div class="card-block">
+                            <h5>@sc.Title</h5>
+                        </div>
+                    </a>
+                }
             </div>
         }
     }

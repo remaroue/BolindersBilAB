@@ -13,11 +13,11 @@ namespace WU16.BolindersBilAB.DAL.Seeding.Enums
         /// </summary>
         AppendToExisting,
         /// <summary>
-        /// Removes Existing Rows before seeding
+        /// Tries Removing Existing Rows before seeding, else crash and burn.
         /// </summary>
         ReplaceExisting,
         /// <summary>
-        /// Do not seed if there are rows
+        /// Do not seed if there are existing rows.
         /// </summary>
         LeaveIfExists
     }

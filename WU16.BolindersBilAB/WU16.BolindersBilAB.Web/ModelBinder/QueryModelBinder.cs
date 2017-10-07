@@ -20,7 +20,8 @@ namespace WU16.BolindersBilAB.Web.ModelBinder
             var gearbox = bindingContext.ActionContext.HttpContext.Request.Query["gearbox"];
             var carType = bindingContext.ActionContext.HttpContext.Request.Query["type"];
             var fuel = bindingContext.ActionContext.HttpContext.Request.Query["fuel"];
-
+            var search = bindingContext.ActionContext.HttpContext.Request.Query["search"];
+            var locationId = bindingContext.ActionContext.HttpContext.Request.Query["location-id"];
 
             var fuelTypes = new List<FuelType>();
             var carTypes = new List<CarType>();
@@ -51,7 +52,9 @@ namespace WU16.BolindersBilAB.Web.ModelBinder
                 PriceTo = Convert.ToDecimal(maxPrice),
                 FuelType = fuelTypes,
                 CarType = carTypes,
-                Gearbox = gearboxes
+                Gearbox = gearboxes,
+                Search = search,
+                LocationId = locationId.ToString()
             };
 
 

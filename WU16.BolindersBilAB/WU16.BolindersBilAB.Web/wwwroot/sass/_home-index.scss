@@ -1,4 +1,29 @@
 ﻿#home-index-container {
+    .search-input {
+        border-right: 0;
+        margin-right: -1px;
+    }
+
+    button[type=submit] {
+        padding-top: 1px;
+        text-align: center;
+        padding: 0.45rem 1.4rem;
+        cursor: pointer;
+
+        @media screen and (max-width: 768px) {
+            padding: 0.45rem 0.8rem;
+        }
+    }
+
+    select.form-control {
+        box-sizing: content-box;
+        height: 1.28rem;
+        border: 0;
+        margin: 0;
+        margin-top: 1px;
+        border-left: 1px solid #CCC;
+    }
+
     .main-nav {
         width: 100%;
     }
@@ -8,7 +33,7 @@
     }
 
     .search-wrapper {
-        background: url(http://buzz.mrexotics.com/wp-content/uploads/2015/06/bugatti-veyron-ss-vs-henessey-venom-gt-sssupersportsdotcom-e1435610078620.jpg) no-repeat center center fixed;
+        background: url("/Images/bg-image.jpeg") no-repeat bottom fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -16,6 +41,12 @@
     }
 
     .search-form {
+
+        h1 {
+            text-shadow: -0px -2px #000;
+            font-size:3em;
+        }
+
         padding-top: 180px;
         padding-bottom: 250px;
     }
@@ -40,6 +71,10 @@
         /*height: 100%;*/
     }
 
+    .news-feed {
+        padding-top: 30px;
+    }
+
     .news-feed a {
         color: #000;
     }
@@ -47,5 +82,9 @@
     .col-centered {
         float: none;
         margin: 0 auto;
+    }
+
+    .card-img {
+        max-height: 240px;
     }
 }

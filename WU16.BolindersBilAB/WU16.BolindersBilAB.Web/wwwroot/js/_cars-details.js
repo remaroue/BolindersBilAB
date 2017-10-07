@@ -37,7 +37,6 @@
 })();
 
 $(document).ready(function () {
-
     if ($(".no-images").length === 0) {
         const currentImg = "#cars-details-container .current-image img";
 
@@ -83,6 +82,7 @@ $(document).ready(function () {
         $("#cars-details-container .price-result > p.month").text(montlyPayment + "Kr per månad");
         $("#cars-details-container .price-result > p.total").text("Total pris: " + totalCost + "Kr");
     }
+
     $("#cars-details-container form").on("submit", function (e) {
         e.preventDefault();
         calculatePrice();
@@ -91,8 +91,7 @@ $(document).ready(function () {
 
     $("#cars-details-container .share-button").on("click", function (e) {
         const formTemplate = '<form id="shareCarForm"><h4>Dela denna bil!</h4><div class="form-group"><input type="email" placeholder="Email" class="form-control" /></div><div class="form-group"><input type="submit" class="btn btn-primary btn-block" /></div></form>';
-        const spinnerTemplate = '<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>';
-
+        const spinnerTemplate = '<i class="fa fa-spinner fa-spin"></i>';
         CustomModal.open(formTemplate, "col-xl-4 col-lg-4 col-md-8 col-sm-10");
 
         $("#shareCarForm").on("submit", function (e) {
@@ -107,7 +106,7 @@ $(document).ready(function () {
 
             $.ajax({
                 method: "POST",
-                url: "/bil/dela",
+                url: "/api/bil/dela",
                 contentType: "application/json; charset=utf-8",
                 data: json,
                 success: CustomModal.close

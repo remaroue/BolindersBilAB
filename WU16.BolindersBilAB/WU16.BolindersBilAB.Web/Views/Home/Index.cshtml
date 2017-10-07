@@ -4,25 +4,34 @@
 
 <div id="home-index-container" class="container-fluid">
     <div class="search-wrapper row">
-        <form asp-controller="Cars" asp-action="Cars" method="GET" class="search-form col-md-6 container">
+        <form asp-action="Search" method="GET" class="search-form col-xl-6 col-lg-6 col-md-10 col-sm-12 container">
             <h1 class="text-center">Bolinders Bil AB</h1>
             <div class="input-group">
-                <input name="search" type="text" class="form-control col-md-12" placeholder="Sök på..." aria-label="Sök på...">
-                
-                <span class="input-group-btn">
-                    <button type="submit" class="btn btn-secondary">Sök!</button>
-                </span>
+                <input name="search" type="text" class="search-input form-control col-8 no-gutters" placeholder="Sök på..." aria-label="Sök på...">
+                <select name="parameter" class="form-control col-3 no-gutters">
+                    <option value="">Alla fordon</option>
+                    <option value="nya">Nya</option>
+                    <option value="begagnade">Begagnade</option>
+                </select>
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-primary">Sök!</button>
+                </div>
             </div>
-
-            <span class="slogan container">Din lokala bilåterförsäljare...</span>
         </form>
     </div>
 
-    <div class="available-logo col-md-10 container">
+
+    <div class="news-feed col-md-10 container">
         <div class="row">
+
+        </div>
+    </div>
+
+    <div class="available-logo col-md-10 container">
+        <div class="row justify-content-center">
             @foreach (var item in ViewBag.CarCount)
             {
-                <div class="col-md-2 col-centered">
+                <div class="col-lg-2 col-6">
                     <a href="/bilar?search=@item.CarBrand"><img src="@item.CarImage" class="img-fluid" alt="@item.CarBrand - Logo"></a>
                     <div class="center-badge">
                         <span class="badge badge-pill badge-primary align-bottom">@item.CarCount</span>
@@ -31,13 +40,6 @@
             }
         </div>
     </div>
-
-    <div class="news-feed col-md-10 container">
-        <div class="row">
-
-        </div>
-    </div>
-
 </div>
 @section Scripts {
     <script src="~/js/_home-index.js" asp-append-version="true"></script>

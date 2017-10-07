@@ -22,6 +22,11 @@ namespace WU16.BolindersBilAB.DAL.Repository
             _ctx.Set<T>().Remove(entity);
         }
 
+        public void Delete(IEnumerable<T> entity)
+        {
+            _ctx.Set<T>().RemoveRange(entity);
+        }
+
         public void Edit(T entity)
         {
             _ctx.Entry(entity).State = EntityState.Modified;

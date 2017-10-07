@@ -13,28 +13,33 @@ namespace WU16.BolindersBilAB.DAL.Seeding.Helper
         {
             var attr = Attribute.GetCustomAttribute(property, typeof(SeedNumericValueAttribute)) as SeedNumericValueAttribute;
 
-            if (property.PropertyType.IsPrimitive)
+            var type = property.PropertyType;
+            if (Nullable.GetUnderlyingType(type) != null) type = Nullable.GetUnderlyingType(type);
+
+            if (type.IsPrimitive)
             {
-                if (Convert.GetTypeCode(property.PropertyType) != TypeCode.Int32)
+                var typecode = Type.GetTypeCode(type);
+
+                if (typecode == TypeCode.Int32)
                 {
                     var min = Convert.ToInt32(attr.Min);
-                    var max = Convert.ToInt32(attr.Min);
+                    var max = Convert.ToInt32(attr.Max);
 
                     var rand = new Random();
                     for (int i = 0; i < rows.Length; i++)
                         property.SetValue(rows[i], rand.Next(min, max));
                 }
-                else if (Convert.GetTypeCode(property.PropertyType) != TypeCode.Double)
+                else if (typecode == TypeCode.Double)
                 {
                     var min = Convert.ToDouble(attr.Min);
-                    var max = Convert.ToDouble(attr.Min);
+                    var max = Convert.ToDouble(attr.Max);
 
                     var rand = new Random();
                     for (int i = 0; i < rows.Length; i++)
                         property.SetValue(rows[i], Convert.ToDouble(min + rand.NextDouble() * (max - min)));
                 }
             }
-            else if (property.PropertyType.Equals(typeof(decimal)))
+            else if (type.Equals(typeof(decimal)))
             {
                 var rand = new Random();
                 for (int i = 0; i < rows.Length; i++)

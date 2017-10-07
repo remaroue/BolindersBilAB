@@ -1,0 +1,117 @@
+﻿@model CarAdminListViewModel
+
+@{
+    ViewData["Title"] = "Admin | Bilar";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center mt-2">
+        <div class="col-lg-10">
+            <h2 class="text-center"> Adminpanel</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="d-flex justify-content-center">
+                <div class="btn-group">
+                    <a asp-action="AddCar" class="btn btn-primary">Skapa bil</a>
+                    <a asp-action="AddCarBrand" class="btn btn-primary">Skapa bilmärke</a>
+
+                </div>
+                <div>
+                    <select id="editBrand" class="form-control ml-2">
+                        <option value="">Redigera Bilmärke</option>
+                        @foreach (var brand in Model.Carbrands)
+                        {
+                            <option value="/admin/bilmarke/uppdatera/@brand.BrandName">@brand.BrandName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </div>
+    <div class="row justify-content-center mt-3">
+        <div class="col-lg-10">
+            <div class="d-flex mb-2">
+                <form asp-action="CarList" class="col-lg-4 pl-0" method="get">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control col-lg-6" placeholder="Sök..." asp-for="@Model.Query.Search" />
+                        <select name="location-id" asp-for="Query.LocationId" class="form-control col-lg-6">
+                            <option value="" selected>Alla anläggningar</option>
+                            @foreach (var location in ViewBag.Locations)
+                            {
+                                <option value="@location.Id">@location.Name</option>
+
+                            }
+                        </select>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">Sök</button>
+                        </span>
+                    </div>
+                </form>
+                <button id="removeCars" class="btn btn-danger ml-auto">Ta bort markerade</button>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <form id="carListTable" class="col-lg-10 d-flex" asp-action="DeleteCars" method="post">
+            <table id="ListAllCarsTable" class="table border table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Bilmärke</th>
+                        <th>Modell</th>
+                        <th>Registreringsnummer</th>
+                        <th>Plats</th>
+                        <th>Skapad</th>
+                        <th>Senast uppdaterad</th>
+                        <th colspan="2" class="text-right"><span class="fa fa-cogs"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var car in Model.Cars)
+                    {
+                        <tr>
+                            <td>
+                                @car.CarBrand?.BrandName
+                            </td>
+
+                            <td>
+                                @car.Model
+                            </td>
+                            <td>
+                                @car.LicenseNumber
+                            </td>
+                            <td>
+                                @car.Location.Name
+                            </td>
+                            <td>
+                                @car.CreationDate.ToShortDateString()
+                            </td>
+                            <td>
+                                @if (car.LastUpdated.HasValue)
+                                {
+                                    @car.LastUpdated.Value.ToShortDateString()
+                                }
+                            </td>
+                            <td width="100px">
+                                <div class="btn-group">
+                                    <a data-licenseNumber="@car.LicenseNumber" class="btn btn-warning update-car fa fa-arrow-up text-white"></a>
+                                    <a asp-route-licensenumber="@car.LicenseNumber" asp-action="EditCar" class="btn btn-primary"><span class="fa fa-edit text-white"></span></a>
+                                </div>
+                            </td>
+                            <td width="25px" class="pt-4" colspan="1">
+                                <input type="checkbox" name="licenseNumbers" class="float-right" value="@car.LicenseNumber" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </form>
+        <pagination class="col-lg-10 d-flex justify-content-end mb-2" page-model="@Model.Pager" page-query="@ViewBag.Query" page-action="CarList"></pagination>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/_admin-carlist.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,33 @@
+﻿@model AddBrandViewModel
+
+@{
+    ViewData["Title"] = "Nytt bilmärke";
+}
+
+<div class="container h-100">
+    <h2 class="text-center mt-2">Nytt bilmärke</h2>
+    <hr class="w-100" />
+    <div class="row justify-content-center">
+        <div class="col-lg-4">
+            <form asp-action="AddCarBrand" enctype="multipart/form-data">
+                <div class="text-center" asp-validation-summary="All">
+                </div>
+                <div class="form-group">
+                    <label asp-for="BrandName"></label>
+                    <input asp-for="BrandName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Logga</label>
+                    <input type="file" class="form-control-file" asp-for="Image" />
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Spara" class="btn btn-primary float-right" />
+                    <a class="btn btn-warning float-left" asp-action="CarList">Tillbaka</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
+

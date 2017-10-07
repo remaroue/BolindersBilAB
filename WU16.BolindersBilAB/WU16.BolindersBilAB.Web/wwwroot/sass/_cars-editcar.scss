@@ -1,0 +1,68 @@
+﻿
+#cars-editcar {
+    .ex-img-container {
+        position: relative;
+        list-style: none;
+
+        img {
+            border: 1px solid #ccc;
+        }
+    }
+
+    .open-close-eximg {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .move-image {
+        padding: 0.1em;
+        display: block;
+        position: absolute;
+        top: -0.5em;
+        left: 0;
+        /*transform: translateY(-50%);*/
+        font-size: 1.3em;
+        cursor: pointer;
+        color: #000;
+    }
+
+    body.dragging, body.dragging * {
+        cursor: move !important;
+    }
+
+    .dragged {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -50%);
+    }
+
+    ol li.placeholder {
+        position: relative;
+        /** More li styles **/
+        color: transparent;
+    }
+
+    li.placeholder:before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        transform: translateX(-50%);
+        /** Define arrowhead **/
+        height: 100%;
+        width: 10px;
+        background-color: #28a745;
+    }
+
+    .remove-image {
+        padding: 0.1em;
+        display: block;
+        position: absolute;
+        top: -0.8em;
+        right: 0;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: #dc3545;
+    }
+}
