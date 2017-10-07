@@ -48,12 +48,28 @@ namespace WU16.BolindersBilAB.BLL.Services
 
         public Car GetCar(string brand, string model, string modelDescription, string unique)
         {
-            return _repo.Get()
+            var cars = _repo.Get()
                 .Include(x => x.CarBrand)
                 .Include(x => x.Location)
                 .Include(x => x.CarImages)
-                .Where(x => x.CarBrandId == brand && x.Model == model && x.ModelDescription == modelDescription)
-                .FirstOrDefault(x => x.GetUnique() == unique);
+                .AsQueryable();
+
+            if (brand == "brand")
+                cars = cars.Where(x => string.IsNullOrEmpty(x.CarBrandId));
+            else
+                cars = cars.Where(x => x.CarBrandId == brand);
+
+            if (model == "model")
+                cars = cars.Where(x => string.IsNullOrEmpty(x.Model));
+            else
+                cars = cars.Where(x => x.Model == model);
+
+            if (modelDescription == "model-desc")
+                cars = cars.Where(x => string.IsNullOrEmpty(x.ModelDescription));
+            else
+                cars = cars.Where(x => x.ModelDescription == modelDescription);
+
+            return cars.FirstOrDefault(x => x.GetUnique() == unique);
         }
 
         public IEnumerable<SimplifiedCar> GetSimilarCars(Car car)
@@ -186,7 +202,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                         car.CarImages = imgs;
                     }
 
-                    if(model.Images?.Count > 0)
+                    if (model.Images?.Count > 0)
                         car = _imageService.AddImageToCar(car, model.Images.ToArray());
                 }
             }

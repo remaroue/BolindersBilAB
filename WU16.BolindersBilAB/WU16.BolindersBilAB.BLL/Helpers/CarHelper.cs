@@ -16,7 +16,8 @@ namespace WU16.BolindersBilAB.BLL.Helpers
             return _pattern.Replace(input.ToUpper(), string.Empty);
         }
 
-        public static string GetUrl(this Car car) => $"/bil/{car.CarBrandId}/{car.Model}/{car.ModelDescription}/{car.GetUnique()}";
+        private static string ReplaceIf(string value, string replacement) => string.IsNullOrEmpty(value) ? replacement: value;
+        public static string GetUrl(this Car car) => $"/bil/{ReplaceIf(car.CarBrandId, "brand")}/{ReplaceIf(car.Model, "model")}/{ReplaceIf(car.ModelDescription, "model-desc")}/{car.GetUnique()}";
         public static string GetUnique(this Car car) => $"{car.LicenseNumber.First()}{(int)car.CarType}{(int)car.FuelType}{(int)car.Gearbox}{(int)car.CreationDate.DayOfWeek}";
 
         public static IQueryable<Car> FilterByParameter(this IQueryable<Car> cars, string parameter)
