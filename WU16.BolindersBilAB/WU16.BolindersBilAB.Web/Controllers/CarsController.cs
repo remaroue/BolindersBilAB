@@ -11,6 +11,7 @@ using WU16.BolindersBilAB.BLL.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using System.Net;
+using Microsoft.AspNetCore.Http;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -201,8 +202,13 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Authorize]
         [HttpPost]
         [Route("/admin/bil/skapa")]
-        public IActionResult AddCar([FromForm]CarFormViewModel car)
+        public IActionResult AddCar(CarFormViewModel car)
         {
+            if (CheckMediatype(car.Images))
+            {
+                ModelState.AddModelError("Images", "Bilder måste vara av typen png. jpg eller jpeg.");
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewBag.CarBrands = _brandService.Get();
@@ -234,7 +240,10 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [HttpPost]
         [Route("/admin/bil/uppdatera/{licenseNumber}")]
         public IActionResult EditCar(string licenseNumber, CarFormViewModel carUpdate)
-        {            
+        {
+            if(!CheckMediatype(carUpdate.Images))
+                ModelState.AddModelError("Images", "Bilder måste vara av typen png. jpg eller jpeg.");
+
             if (!ModelState.IsValid)
             {
                 ViewBag.CarBrands = _brandService.Get();
@@ -282,8 +291,29 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return RedirectToAction(nameof(CarList));
         }
-        #endregion
 
+        private bool CheckMediatype(ICollection<IFormFile> files)
+        {
+            var okey = true;
+
+            foreach (var file in files)
+            {
+                switch(file.ContentType)
+                {
+                    case "image/png":
+                    case "image/jpg":
+                    case "image/jpeg":
+                        okey = true;
+                        break;
+                    default:
+                        okey = false;
+                        break;
+                }
+            }
+
+            return okey;
+        }
+        #endregion
         #endregion
     }
 }
