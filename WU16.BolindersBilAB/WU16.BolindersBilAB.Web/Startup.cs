@@ -132,7 +132,6 @@ namespace WU16.BolindersBilAB.Web
             }
 
             app.UseAuthentication();
-
             app.UseMvc(x => x.MapRoute("default", template: "{Controller=Home}/{Action=Index}/{Id?}"));
 
             if (!userManager.Users.Any())
@@ -179,7 +178,7 @@ namespace WU16.BolindersBilAB.Web
 
             if (!_ctx.Cars.Any())
             {
-                Seeder<Car>.SeedDbContext(_ctx, 1000);
+                //Seeder<Car>.SeedDbContext(_ctx, 1000);
             }
         }
     }

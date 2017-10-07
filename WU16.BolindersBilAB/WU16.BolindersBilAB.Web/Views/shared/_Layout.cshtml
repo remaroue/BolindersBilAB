@@ -11,8 +11,8 @@
         <link href="~/dist/css/vendor.css" rel="stylesheet" />
     </environment>
     <environment include="Production">
-        <link href="~/dist/css/main.min.css" rel="stylesheet" />
-        <link href="~/dist/css/vendor.min.css" rel="stylesheet" />
+        <link href="~/dist/css/main.min.css" asp-append-version="true" rel="stylesheet" />
+        <link href="~/dist/css/vendor.min.css" asp-append-version="true" rel="stylesheet" />
     </environment>
 </head>
 <body>
@@ -64,10 +64,10 @@
     <footer class="bg-dark">
     </footer>
 
-    <script src="/dist/js/vendor.min.js"></script>
+    <script src="/dist/js/vendor.min.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", false)
 
-    <script src="~/js/_cookie.js"></script>
+    <script src="~/js/_cookie.js" asp-append-version="true"></script>
 </body>
 </html>
