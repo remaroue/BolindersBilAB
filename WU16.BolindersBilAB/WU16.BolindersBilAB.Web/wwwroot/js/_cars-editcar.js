@@ -1,6 +1,7 @@
 ﻿$(function () {
     $(".existing-images").sortable({
-        handle: 'i.move-image'
+        handle: 'i.move-image',
+        tolerance: -200
     });
 
     $(".open-close-eximg").on("click", function (e) {
