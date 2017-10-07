@@ -81,7 +81,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
             });
         }
 
-        
+
 
         [HttpPost]
         [Route("api/bil/dela")]
@@ -201,7 +201,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Authorize]
         [HttpPost]
         [Route("/admin/bil/skapa")]
-        public IActionResult AddCar(AddCarViewModel car)
+        public IActionResult AddCar([FromForm]CarFormViewModel car)
         {
             if (!ModelState.IsValid)
             {
@@ -214,62 +214,47 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 return BadRequest();
             }
 
-            var newCar = new Car
-            {
-                LicenseNumber = car.LicenseNumber,
-                Model = car.Model,
-                Description = car.Description,
-                ModelYear = car.ModelYear,
-                IsLeaseable = car.IsLeaseable,
-                Milage = car.Milage,
-                Price = car.Price,
-                Color = car.Color,
-                HorsePower = car.HorsePower,
-                Used = car.Used,
-                LocationId = car.LocationId,
-                CarBrand = car.CarBrand,
-                CarBrandId = car.CarBrandId,
-                Equipment = car.Equipment,
-                CarType = car.CarType,
-                FuelType = car.FuelType,
-                Gearbox = car.Gearbox,
-                ModelDescription = car.ModelDescription,
-                CreationDate = DateTime.Now
-            };
-            if (car.Images?.Count > 0)
-            {
-                newCar = _imageService.AddImageToCar(newCar, car.Images.ToArray());
-            }
-            _carService.SaveCar(newCar);
+            _carService.SaveCar(car);
             return RedirectToAction(nameof(CarList));
         }
 
         [Authorize]
-        [Route("/admin/bil/{licenseNumber}")]
+        [Route("/admin/bil/uppdatera/{licenseNumber}")]
         public IActionResult EditCar(string licenseNumber)
         {
             ViewBag.CarBrands = _brandService.Get();
             ViewBag.Locations = _locationService.Get();
-            var car = _carService.GetCar(licenseNumber);
+
+            var car = _carService.GetCar(licenseNumber).GetCarForm();
+
             return View(car);
         }
+
         [Authorize]
         [HttpPost]
-        [Route("/admin/bil/{licenseNumber}")]
-        public IActionResult EditCar(Car model)
-        {
-            if (ModelState.IsValid)
+        [Route("/admin/bil/uppdatera/{licenseNumber}")]
+        public IActionResult EditCar(string licenseNumber, CarFormViewModel carUpdate)
+        {            
+            if (!ModelState.IsValid)
             {
-                var car = _carService.GetCar(model.LicenseNumber);
-                if (car == null) return BadRequest();
+                ViewBag.CarBrands = _brandService.Get();
+                ViewBag.Locations = _locationService.Get();
+                return View(carUpdate);
+            }
 
-                _carService.UpdateCar(car, model);
+            var car = _carService.GetCar(licenseNumber);
+            if (car == null) return BadRequest();
 
-                return RedirectToAction(nameof(CarList));
+            _carService.UpdateCar(car, carUpdate);
+
+            if(carUpdate.Images?.Count > 0)
+            {
+                return RedirectToAction(nameof(EditCar), new { licenseNumber = licenseNumber });
             }
             else
             {
-                return View(model);
+                return RedirectToAction(nameof(CarList));
+
             }
         }
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,11 +8,11 @@ using WU16.BolindersBilAB.DAL.Models;
 
 namespace WU16.BolindersBilAB.Web.Models
 {
-    public class AddCarViewModel
+    public class CarFormViewModel
     {
-        [Display(Name ="Registreringsnummer")]
         [Required]
-        public string LicenseNumber {get;set;}
+        [Display(Name = "Registreringsnummer")]
+        public string LicenseNumber { get; set; }
         [Required]
         [Display(Name = "Modell")]
         public string Model { get; set; }
@@ -21,7 +20,7 @@ namespace WU16.BolindersBilAB.Web.Models
         [Display(Name = "Modell Beskrivning")]
         public string ModelDescription { get; set; }
         [Required]
-        [Display(Name ="Beskrivning")]
+        [Display(Name = "Beskrivning")]
         public string Description { get; set; }
         [Required]
         [Display(Name = "Årsmodell")]
@@ -47,14 +46,13 @@ namespace WU16.BolindersBilAB.Web.Models
         [Required]
         [Display(Name = "Plats")]
         public string LocationId { get; set; }
-        [Display(Name = "Bilmärke")]
-        public virtual CarBrand CarBrand { get; set; }
         [Required]
         [Display(Name = "Bilmärke")]
         public string CarBrandId { get; set; }
         [Required]
-        [Display(Name ="Utrustning")]
+        [Display(Name = "Utrustning")]
         public string Equipment { get; set; }
+
         [Required]
         [Display(Name = "Kaross")]
         public CarType CarType { get; set; }
@@ -64,9 +62,10 @@ namespace WU16.BolindersBilAB.Web.Models
         [Required]
         [Display(Name = "Växellåda")]
         public Gearbox Gearbox { get; set; }
+
+        public string[] ExistingImages { get; set; }
+
         [Display(Name = "Bilder")]
         public ICollection<IFormFile> Images { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime LastUpdated { get; set; }
     }
 }

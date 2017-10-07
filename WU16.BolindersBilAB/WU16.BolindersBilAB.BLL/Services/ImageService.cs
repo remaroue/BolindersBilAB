@@ -176,7 +176,7 @@ namespace WU16.BolindersBilAB.BLL.Services
 
             if (car.CarImages == null) car.CarImages = new List<CarImage>();
 
-            var i = 0;
+            var i = (car.CarImages?.Count ?? 0);
             foreach (var fileName in fileNames)
             {
                 car.CarImages.Add(new CarImage()

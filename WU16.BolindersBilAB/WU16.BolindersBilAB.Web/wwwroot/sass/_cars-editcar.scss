@@ -1,0 +1,39 @@
+﻿
+#cars-editcar {
+    .ex-img-container {
+        margin: 5px;
+        position: relative;
+        list-style: none;
+
+        img {
+            border: 1px solid #ccc;
+        }
+    }
+
+    .open-close-eximg {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .move-image {
+        padding: 0.1em;
+        display: block;
+        position: absolute;
+        top: -0.5em;
+        left: 0;
+        font-size: 1.3em;
+        cursor: pointer;
+        color: #000;
+    }
+
+    .remove-image {
+        padding: 0.1em;
+        display: block;
+        position: absolute;
+        top: -0.8em;
+        right: 0;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: #dc3545;
+    }
+}

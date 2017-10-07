@@ -1,4 +1,4 @@
-﻿@model AddCarViewModel
+﻿@model CarFormViewModel
 
 @{
     ViewData["Title"] = "Ny bil";
@@ -27,7 +27,6 @@
 
                             </select>
                             <span asp-validation-for="CarBrandId" class="text-danger"></span>
-
                         </div>
                         <div class="form-group">
                             <label asp-for="Model" class="control-label"></label>
@@ -42,9 +41,9 @@
                         <div class="form-group">
                             <label asp-for="CarType" class="control-label"></label>
                             <select class="form-control" asp-for="CarType">
-                                @foreach (var type in Enum.GetNames(typeof(CarType)))
+                                @foreach (var type in Enum.GetNames(typeof(CarType)).Select(x => Enum.Parse<CarType>(x)))
                                 {
-                                    <option>@type</option>
+                                    <option value="@((int)type)">@type.ToString()</option>
                                 }
 
                             </select>
@@ -87,22 +86,20 @@
                             <div class="form-group">
                                 <label asp-for="FuelType" class="control-label"></label>
                                 <select class="form-control" asp-for="FuelType">
-                                    @foreach (var type in Enum.GetNames(typeof(FuelType)))
+                                    @foreach (var type in Enum.GetNames(typeof(FuelType)).Select(x => Enum.Parse<FuelType>(x)))
                                     {
-                                        <option>@type</option>
+                                        <option value="@((int)type)">@type.ToString()</option>
                                     }
-
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label asp-for="Gearbox" class="control-label"></label>
                                 <select class="form-control" asp-for="Gearbox">
-                                    @foreach (var type in Enum.GetNames(typeof(Gearbox)))
+                                    @foreach (var type in Enum.GetNames(typeof(Gearbox)).Select(x => Enum.Parse<Gearbox>(x)))
                                     {
-                                        <option>@type</option>
+                                        <option value="@((int)type)">@type.ToString()</option>
                                     }
-
                                 </select>
                             </div>
                             <div class="checkbox">
@@ -123,17 +120,18 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="Equipment" class="control-label"></label>
-                            <textarea style="resize:none;" rows="3" asp-for="Equipment" class="form-control" rows="5"></textarea>
+                            <textarea style="resize:none;" asp-for="Equipment" class="form-control" rows="5"></textarea>
                             <span asp-validation-for="Equipment" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Description" class="control-label"></label>
-                            <textarea style="resize:none;" rows="3" asp-for="Description" class="form-control" rows="5"></textarea>
+                            <textarea style="resize:none;" asp-for="Description" class="form-control" rows="5"></textarea>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label for="images">Bilder</label>
+                            <label asp-for="Images">Bilder</label>
                             <input type="file" asp-for="Images" class="form-control-file" multiple />
+                            <span asp-validation-for="Images" class="text-danger"></span>
                         </div>
                     </div>
                 </div>

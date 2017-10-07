@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using WU16.BolindersBilAB.DAL.Models;
+using WU16.BolindersBilAB.Web.Models;
 
 namespace WU16.BolindersBilAB.BLL.Helpers
 {
@@ -192,6 +193,31 @@ namespace WU16.BolindersBilAB.BLL.Helpers
             milages.Add(30001, "30 000 +");
 
             return milages;
+        }
+
+        public static CarFormViewModel GetCarForm(this Car car)
+        {
+            return new CarFormViewModel()
+            {
+                LicenseNumber = CarHelper.NormalizeLicenseNumber(car.LicenseNumber),
+                Model = car.Model,
+                ModelDescription = car.ModelDescription,
+                Description = car.Description,
+                ModelYear = car.ModelYear,
+                IsLeaseable = car.IsLeaseable,
+                Milage = car.Milage,
+                Price = car.Price,
+                Color = car.Color,
+                HorsePower = car.HorsePower,
+                Used = car.Used,
+                LocationId = car.LocationId,
+                CarBrandId = car.CarBrandId,
+                Equipment = car.Equipment,
+                CarType = car.CarType,
+                FuelType = car.FuelType,
+                Gearbox = car.Gearbox,
+                ExistingImages = car.CarImages.OrderBy(x => x.Priority).Select(x => x.FileName).ToArray()
+            };
         }
     }
 }

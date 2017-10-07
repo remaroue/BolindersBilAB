@@ -1,31 +1,31 @@
-﻿@model Car
+﻿@model CarFormViewModel
 
 @{
     ViewData["Title"] = "Ändra bil";
 }
 
-<div class="container-fluid h-100">
+<div id="cars-editcar" class="container-fluid mb-4">
     <h2 class="text-center mt-2">Ändra bil</h2>
     <hr />
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <form asp-action="EditCar" enctype="multipart/form-data">
+            <form asp-action="EditCar" method="post" enctype="multipart/form-data">
                 <div class="d-flex">
                     <div class="col-lg-3">
                         <div class="form-group">
                             <label asp-for="LicenseNumber" class="control-label"></label>
-                            <input asp-for="LicenseNumber" disabled class="form-control" />
+                            <input asp-for="LicenseNumber" disabled class="form-control disabled" />
                             <span asp-validation-for="LicenseNumber" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="CarBrand" class="control-label"></label>
+                            <label asp-for="CarBrandId" class="control-label"></label>
                             <select class="form-control" asp-for="CarBrandId">
                                 @foreach (var type in ViewBag.CarBrands)
                                 {
                                     <option value="@type.BrandName">@type.BrandName</option>
                                 }
-
                             </select>
+                            <span asp-validation-for="CarBrandId" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Model" class="control-label"></label>
@@ -33,11 +33,16 @@
                             <span asp-validation-for="Model" class="text-danger"></span>
                         </div>
                         <div class="form-group">
+                            <label asp-for="ModelDescription" class="control-label"></label>
+                            <input asp-for="ModelDescription" class="form-control" />
+                            <span asp-validation-for="ModelDescription" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
                             <label asp-for="CarType" class="control-label"></label>
                             <select class="form-control" asp-for="CarType">
-                                @foreach (var type in Enum.GetNames(typeof(CarType)))
+                                @foreach (var type in Enum.GetNames(typeof(CarType)).Select(x => Enum.Parse<CarType>(x)))
                                 {
-                                    <option>@type</option>
+                                    <option value="@((int)type)">@type.ToString()</option>
                                 }
 
                             </select>
@@ -47,16 +52,7 @@
                             <input asp-for="ModelYear" class="form-control" />
                             <span asp-validation-for="ModelYear" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="LocationId" class="control-label"></label>
-                            <select class="form-control" asp-for="LocationId">
-                                @foreach (var type in ViewBag.Locations)
-                                {
-                                    <option value="@type.Id">@type.Name</option>
-                                }
 
-                            </select>
-                        </div>
                         <div class="form-group">
                             <div class="checkbox">
                                 <label>
@@ -89,22 +85,20 @@
                         <div class="form-group">
                             <label asp-for="FuelType" class="control-label"></label>
                             <select class="form-control" asp-for="FuelType">
-                                @foreach (var type in Enum.GetNames(typeof(FuelType)))
+                                @foreach (var type in Enum.GetNames(typeof(FuelType)).Select(x => Enum.Parse<FuelType>(x)))
                                 {
-                                    <option>@type</option>
+                                    <option value="@((int)type)">@type.ToString()</option>
                                 }
-
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label asp-for="Gearbox" class="control-label"></label>
                             <select class="form-control" asp-for="Gearbox">
-                                @foreach (var type in Enum.GetNames(typeof(Gearbox)))
+                                @foreach (var type in Enum.GetNames(typeof(Gearbox)).Select(x => Enum.Parse<Gearbox>(x)))
                                 {
-                                    <option>@type</option>
+                                    <option value="@((int)type)">@type.ToString()</option>
                                 }
-
                             </select>
                         </div>
                         <div class="checkbox">
@@ -115,28 +109,63 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
+                            <label asp-for="LocationId" class="control-label"></label>
+                            <select class="form-control" asp-for="LocationId">
+                                @foreach (var type in ViewBag.Locations)
+                                {
+                                    <option value="@type.Id">@type.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label asp-for="Equipment" class="control-label"></label>
-                            <textarea style="resize:none;" rows="3" asp-for="Equipment" class="form-control" rows="5"></textarea>
+                            <textarea style="resize:none;" asp-for="Equipment" class="form-control" rows="5"></textarea>
                             <span asp-validation-for="Equipment" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Description" class="control-label"></label>
-                            <textarea style="resize:none;" rows="3" asp-for="Description" class="form-control" rows="5"></textarea>
+                            <textarea style="resize:none;" asp-for="Description" class="form-control" rows="5"></textarea>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
+                        
                         <div class="form-group">
-                            <label for="images">Bilder</label>
-                            <input type="file" asp-for="CarImages" class="form-control-file" multiple />
+                            <label asp-for="Images">Nya Bilder</label>
+                            <input type="file" asp-for="Images" class="form-control-file" multiple />
+                            <span asp-validation-for="Images" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
+                @if (Model.ExistingImages?.Length > 0)
+                {
+                    <div class="col-12">
+                        <label class="open-close-eximg mx-auto">Satta bilder <i class="fa fa-chevron-up "></i></label>
+                        <ol style="display: none;" class="row existing-images">
+                            @foreach (var img in Model.ExistingImages)
+                            {
+                                <li class="col-1 ex-img-container">
+                                    <i class="fa fa-arrows move-image"></i>
+                                    <img src="/images/upload/@img" class="img-fluid" />
+                                    <i class="fa fa-remove remove-image"></i>
+                                    <input type="hidden" name="ExistingImages" value="@img">
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                }
+
                 <div class="d-flex">
-                    <div class="col-lg-2 mx-auto text-center">
-                        <a class="btn btn-warning float-left" asp-action="CarList">Tillbaka</a>
-                        <input type="submit" class="btn btn-primary float-right" value="Spara">
+                    <div class="col-lg-12 text-center">
+                        <div class="col-lg-2 mx-auto text-center">
+                            <a class="btn btn-warning float-left" asp-action="CarList">Tillbaka</a>
+                            <input type="submit" class="btn btn-primary float-right" value="Spara">
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/_cars-editcar.js"></script>
+}

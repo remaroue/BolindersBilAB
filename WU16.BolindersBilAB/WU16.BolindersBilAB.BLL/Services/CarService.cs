@@ -6,16 +6,19 @@ using WU16.BolindersBilAB.BLL.Models;
 using WU16.BolindersBilAB.DAL.Models;
 using WU16.BolindersBilAB.DAL.Repository;
 using System;
+using WU16.BolindersBilAB.Web.Models;
 
 namespace WU16.BolindersBilAB.BLL.Services
 {
     public class CarService
     {
         private IRepository<Car> _repo;
+        private ImageService _imageService;
 
-        public CarService(IRepository<Car> Repo)
+        public CarService(IRepository<Car> Repo, ImageService imageService)
         {
             _repo = Repo;
+            _imageService = imageService;
         }
 
         public IQueryable<Car> GetCars(CarListQuery query = null)
@@ -73,9 +76,47 @@ namespace WU16.BolindersBilAB.BLL.Services
                 }).ToArray();
         }
 
-        public void SaveCar(Car car)
+        /// <summary>
+        /// Should be internal, leave it
+        /// </summary>
+        /// <param name="car"></param>
+        internal void SaveCar(Car car)
         {
             car.LicenseNumber = CarHelper.NormalizeLicenseNumber(car.LicenseNumber);
+            car.CreationDate = DateTime.Now;
+
+            _repo.Insert(car);
+            _repo.Save();
+        }
+
+        public void SaveCar(CarFormViewModel model)
+        {
+            var car = new Car
+            {
+                LicenseNumber = CarHelper.NormalizeLicenseNumber(model.LicenseNumber),
+                Model = model.Model,
+                Description = model.Description,
+                ModelYear = model.ModelYear,
+                IsLeaseable = model.IsLeaseable,
+                Milage = model.Milage,
+                Price = model.Price,
+                Color = model.Color,
+                HorsePower = model.HorsePower,
+                Used = model.Used,
+                LocationId = model.LocationId,
+                CarBrandId = model.CarBrandId,
+                Equipment = model.Equipment,
+                CarType = model.CarType,
+                FuelType = model.FuelType,
+                Gearbox = model.Gearbox,
+                ModelDescription = model.ModelDescription,
+                CreationDate = DateTime.Now
+            };
+
+            if (model.Images?.Count > 0)
+            {
+                car = _imageService.AddImageToCar(car, model.Images.ToArray());
+            }
 
             _repo.Insert(car);
             _repo.Save();
@@ -88,11 +129,11 @@ namespace WU16.BolindersBilAB.BLL.Services
             return car;
         }
 
-        public void UpdateCar(Car car, Car model = null)
+        public void UpdateCar(Car car, CarFormViewModel model = null)
         {
             car.LastUpdated = DateTime.Now;
 
-            if(model != null)
+            if (model != null)
             {
                 car.IsLeaseable = model.IsLeaseable;
                 car.Used = car.Used;
@@ -116,6 +157,38 @@ namespace WU16.BolindersBilAB.BLL.Services
                 car.Color = car.Color;
                 car.Equipment = model.Equipment;
                 car.Description = model.Description;
+
+                if (car.CarImages?.Count > 0)
+                {
+                    var images = car.CarImages;
+                    var newOrder = model.ExistingImages;
+
+                    var removed = images.Where(x => !newOrder.Contains(x.FileName)).ToArray();
+                    foreach (var img in removed)
+                    {
+                        _imageService.RemoveImage(img.FileName);
+                        car.CarImages.Remove(img);
+                    }
+
+                    if (car.CarImages.Count > 0)
+                    {
+                        var imgs = new List<CarImage>();
+                        var i = 0;
+                        foreach (var name in newOrder)
+                        {
+                            var img = images.FirstOrDefault(x => x.FileName == name);
+                            img.Priority = i;
+
+                            imgs.Add(img);
+                            i++;
+                        }
+
+                        car.CarImages = imgs;
+                    }
+
+                    if(model.Images?.Count > 0)
+                        car = _imageService.AddImageToCar(car, model.Images.ToArray());
+                }
             }
 
             _repo.Edit(car);
