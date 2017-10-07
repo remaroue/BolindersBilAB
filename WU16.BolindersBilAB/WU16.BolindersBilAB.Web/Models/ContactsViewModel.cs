@@ -9,7 +9,7 @@ namespace WU16.BolindersBilAB.Web.Models
     public class ContactsViewModel
     {
         public IEnumerable<Location> Locations { get; set; }
-        public bool Sent { get; set; }
-
+        public bool? Sent { get; set; }
+        public ContactMailViewModel FormModel { get; set; }
     }
 }

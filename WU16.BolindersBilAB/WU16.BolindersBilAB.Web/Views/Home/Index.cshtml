@@ -4,8 +4,8 @@
 
 <div id="home-index-container" class="container-fluid">
     <div class="search-wrapper row">
-        <form method="get" action="/bilar/nya" class="search-form col-md-6 container">
-            <h1 class="container text-center">Bolinders Bil AB</h1>
+        <form asp-controller="Cars" asp-action="Cars" method="GET" class="search-form col-md-6 container">
+            <h1 class="text-center">Bolinders Bil AB</h1>
             <div class="input-group">
                 <input name="search" type="text" class="form-control col-md-12" placeholder="Sök på..." aria-label="Sök på...">
                 
@@ -15,21 +15,6 @@
             </div>
 
             <span class="slogan container">Din lokala bilåterförsäljare...</span>
-
-            <nav class="main-nav">
-                <ul class="nav justify-content-center">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Kontakt</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Om oss</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Bilar</a>
-                    </li>
-                </ul>
-            </nav>
         </form>
     </div>
 
@@ -38,7 +23,7 @@
             @foreach (var item in ViewBag.CarCount)
             {
                 <div class="col-md-2 col-centered">
-                    <img src="@item.CarImage" class="img-fluid" alt="@item.CarBrand - Logo">
+                    <a href="/bilar?search=@item.CarBrand"><img src="@item.CarImage" class="img-fluid" alt="@item.CarBrand - Logo"></a>
                     <div class="center-badge">
                         <span class="badge badge-pill badge-primary align-bottom">@item.CarCount</span>
                     </div>

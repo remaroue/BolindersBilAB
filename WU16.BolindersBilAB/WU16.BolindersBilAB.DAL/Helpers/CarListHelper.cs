@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,6 +47,7 @@ namespace WU16.BolindersBilAB.DAL.Helpers
             if (query.FuelType?.Count > 0)
                 cars = cars.Where(x => query.FuelType.Contains(x.FuelType));
 
+
             if (query.MilageFrom > 0)
                 cars = cars.Where(x => x.Milage >= query.MilageFrom);
             if (query.MilageTo > 0)
@@ -63,17 +63,25 @@ namespace WU16.BolindersBilAB.DAL.Helpers
             if (query.YearTo > 0)
                 cars = cars.Where(x => x.ModelYear <= query.YearTo);
 
+            
+
+            // TODO: Free Search match
             if (query.Search != null)
             {
-                if (cars.Any(x => x.Description.Contains(query.Search)))
+
+                if (cars.Where(x => x.Description.Contains(query.Search)) != null)
                     cars = cars.Where(x => x.Description.Contains(query.Search));
-                if (cars.Any(x => x.Equipment.Contains(query.Search)))
+
+                if (cars.Where(x => x.Equipment.Contains(query.Search)) != null)
                     cars = cars.Where(x => x.Equipment.Contains(query.Search));
 
-                if (cars.Any(x => query.Search.Contains(x.ToString())))
-                    cars = cars.Where(x => query.Search.Contains(x.ToString()));
 
-                if (cars.Any(x => x.Model.Contains(query.Search)))
+                if (cars.Where(x => x.ModelYear.Equals(int.Parse(query.Search))) != null)
+
+                    cars = cars.Where(x => x.ModelYear.Equals(int.Parse(query.Search)));
+
+
+                if (cars.Where(x => x.Model.Contains(query.Search)) != null)
                     cars = cars.Where(x => x.Model.Contains(query.Search));
             }
 
@@ -94,6 +102,7 @@ namespace WU16.BolindersBilAB.DAL.Helpers
                 Take = 4
             };
         }
+
         public static IEnumerable<Car> PaginateCars(this IEnumerable<Car> cars, int page)
         {
             return cars.Take((8 * page)).AsEnumerable();
@@ -103,12 +112,12 @@ namespace WU16.BolindersBilAB.DAL.Helpers
         {
             var years = new Dictionary<int, string>();
             var startYear = DateTime.Now.Year;
-            while(startYear > 1940)
+            while (startYear > 1940)
             {
-                if(startYear > 1980)
+                if (startYear > 1980)
                 {
-                years.Add(startYear, startYear.ToString());
-                startYear--;
+                    years.Add(startYear, startYear.ToString());
+                    startYear--;
                 }
                 else
                 {
@@ -127,22 +136,22 @@ namespace WU16.BolindersBilAB.DAL.Helpers
             var prices = new Dictionary<int, string>();
             var startPrice = 5000;
 
-            while(startPrice < 1000000)
+            while (startPrice < 1000000)
             {
                 prices.Add(startPrice, startPrice.ToString("# ### ### ###kr"));
-                if(startPrice < 10000)
+                if (startPrice < 10000)
                 {
                     startPrice += 1000;
                 }
-                else if(startPrice < 200000)
+                else if (startPrice < 200000)
                 {
                     startPrice += 10000;
                 }
-                else if(startPrice < 500000)
+                else if (startPrice < 500000)
                 {
                     startPrice += 50000;
                 }
-                else if(startPrice < 1000000)
+                else if (startPrice < 1000000)
                 {
                     startPrice += 100000;
                 }

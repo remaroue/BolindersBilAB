@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using WU16.BolindersBilAB.DAL;
 
 namespace WU16.BolindersBilAB.Web
 {

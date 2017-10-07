@@ -14,6 +14,7 @@ using System.Text.Encodings.Web;
 using System.IO;
 using System.Text;
 using WU16.BolindersBilAB.Web.ModelBinder;
+using WU16.BolindersBilAB.BLL.Services;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -113,7 +114,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             var totalItems = cars.ToList().Count;
 
-            ViewBag.Query = Request.QueryString.ToString();
+            ViewBag.Query = Request.QueryString;
             ViewBag.Prices = CarListHelper.GetPriceRange();
             ViewBag.Years = CarListHelper.GetModelYears();
             ViewBag.Milages = CarListHelper.GetMilageRange();

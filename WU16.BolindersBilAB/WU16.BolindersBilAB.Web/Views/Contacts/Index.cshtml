@@ -17,9 +17,16 @@
 
         </div>
         <div style="background-color:#fc0" class="col-6">
-            @if (Model.Sent)
+            @if (Model.Sent != null)
             {
-                <div class="alert alert-success">Email skickat</div>
+                if ((bool)Model.Sent)
+                {
+                    <div class="alert alert-success">Email skickat.</div>
+                }
+                else
+                {
+                    <div class="alert alert-danger">Email skickades inte!</div>
+                }
             }
             <h2>Kontakt forumulär</h2>
             <form asp-action="Index">
@@ -33,19 +40,19 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <input name="FirstName" type="text" class="form-control" />
+                    <input name="FirstName" placeholder="Förnamn" type="text" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <input name="LastName" type="text" class="form-control" />
+                    <input name="LastName" placeholder="Efternamn" type="text" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <input name="email" type="email" class="form-control" />
+                    <input name="email" placeholder="E-Mailadress" type="email" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <input name="subject" type="text" class="form-control" />
+                    <input name="subject" placeholder="Ämne" type="text" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <textarea name="Message" class="form-control"></textarea>
+                    <textarea name="Message" placeholder="Brötext" class="form-control"></textarea>
                 </div>
                 <input type="submit" />
             </form>

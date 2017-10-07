@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -26,7 +27,7 @@ namespace WU16.BolindersBilAB.Web.Infrastructure
         public ViewContext ViewContext { get; set; }
         public PagingInfo PageModel { get; set; }
         public string PageAction { get; set; }
-        public string PageQuery { get; set; }
+        public QueryString PageQuery { get; set; }
 
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -34,13 +35,27 @@ namespace WU16.BolindersBilAB.Web.Infrastructure
             if(PageModel.CurrentPage * PageModel.ItemsPerPage < PageModel.TotalItems)
             {              
                 IUrlHelper urlHelper = _helper.GetUrlHelper(ViewContext);
-                var newQuery = HttpUtility.ParseQueryString(PageQuery);
+                var newQuery = "";
+                var parameters = PageQuery.Value.Split("&").ToList();
+
+                parameters.Remove("page=" + (PageModel.CurrentPage).ToString());
+
+
+                if (PageQuery.Value.Contains("?search"))
+                {
+                    parameters.Add("page=" + (PageModel.CurrentPage + 1).ToString());
+                    newQuery = string.Join("&", parameters);
+                }
+                else
+                {
+                    newQuery = "?page=" + (PageModel.CurrentPage + 1).ToString();
+                }
+
                 var tag = new TagBuilder("a");
                 tag.AddCssClass("btn btn-primary mx-center");
                 tag.Attributes["id"] = "showMore";
 
-                newQuery.Set("page", (PageModel.CurrentPage + 1).ToString());
-                tag.Attributes["href"] = ViewContext.HttpContext.Request.Path + "?" + newQuery.ToString();
+                tag.Attributes["href"] = ViewContext.HttpContext.Request.Path + newQuery;
                 tag.InnerHtml.Append("Visa fler");
 
                 output.Content.AppendHtml(tag);

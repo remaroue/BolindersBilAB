@@ -7,11 +7,11 @@
     var taxedPrice = Math.Round(car.Price * 1.25m, 2);
     var cashPayment = Math.Round(taxedPrice * 0.2m, 2).ToString(new System.Globalization.CultureInfo("en-US"));
 
-    var anyImages = car.CarImages != null && car.CarImages.Count > 0 ? true : false;
+    var anyImages = car.CarImages != null ? car.CarImages.Any() : false;
     string[] imageUrls = null;
     if (anyImages)
     {
-        imageUrls = car.CarImages.Select(x => $"/images/upload/{x.FileName}").ToArray();
+        imageUrls = car.CarImages.Select(x => $"/images/upload{x.FileName}").ToArray();
     }
 
     var condition = car.Used ? "Begagnad" : "Ny";
@@ -96,7 +96,7 @@
                         <td>@car.Model</td>
                     </tr>
                     <tr>
-                        <td>Modelår</td>
+                        <td>Årscarl</td>
                         <td>@car.ModelYear</td>
                     </tr>
                     <tr>
@@ -138,10 +138,6 @@
                             <td>@car.Price kr</td>
                         </tr>
                     }
-                    <tr>
-                        <td>Anläggning</td>
-                        <td>@car.Location.City</td>
-                    </tr>
                 </tbody>
             </table>
         </div>

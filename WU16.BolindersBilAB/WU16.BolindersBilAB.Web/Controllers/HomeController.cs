@@ -23,29 +23,33 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         public IActionResult Index()
         {
-            var sortedBrands = _carListService.GetCars().GroupBy(i => i.CarBrand);
+            //var sortedBrands = _carListService.Get().GroupBy(i => i.CarBrand);
 
-            List<HomeViewModel> brandCount = new List<HomeViewModel>();
-            foreach (var brand in sortedBrands)
-            {
-                string imgUrl = "";
-                foreach(var item in _brandService.Get())
-                {
-                    if(item.BrandName == brand.Key.BrandName)
-                    {
-                        imgUrl = item.ImageName;
-                    }
-                }
+            //List<HomeViewModel> brandCount = new List<HomeViewModel>();
+            //foreach (var brand in sortedBrands)
+            //{
+            //    string imgUrl = "";
+            //    foreach(var item in _brandService.Get())
+            //    {
+            //        if(item.BrandName == brand.Key.BrandName)
+            //        {
+            //            imgUrl = "/images/upload/" + item.ImageName;
+            //        }
+            //    }
 
-                brandCount.Add(new HomeViewModel()
-                {
-                    CarBrand = brand.Key.BrandName,
-                    CarCount = brand.Count(),
-                    CarImage = imgUrl
-                });
-            }
+            //    brandCount.Add(new HomeViewModel()
+            //    {
+            //        CarBrand = brand.Key.BrandName,
+            //        CarCount = brand.Count(),
+            //        CarImage = imgUrl
+            //    });
+            //}
 
-            ViewBag.CarCount = brandCount;
+            ViewBag.CarCount = _brandService.Get().Select(x => new HomeViewModel() {
+                CarBrand = x.BrandName,
+                CarCount = x.Cars.Count,
+                CarImage = x.ImageName
+            });
             return View();
         }
     }

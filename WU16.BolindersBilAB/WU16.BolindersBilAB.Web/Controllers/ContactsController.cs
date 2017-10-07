@@ -9,6 +9,7 @@ using WU16.BolindersBilAB.DAL.Services;
 using WU16.BolindersBilAB.DAL.Models;
 using System.Text;
 using System.Web;
+using WU16.BolindersBilAB.BLL.Services;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -31,13 +32,14 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         [Route("/kontakt")]
 
-        public IActionResult Index(bool sent = false)
+        public IActionResult Index(bool? sent = null, ContactMailViewModel formModel = null)
         {
 
             return View(new ContactsViewModel()
             {
                 Locations = _locServ.Get(),
-                Sent = sent
+                Sent = sent,
+                FormModel = formModel ?? new ContactMailViewModel()
             });
         }
 
@@ -61,10 +63,11 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         public IActionResult Index(ContactMailViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid) return Index(false, model);
+            if (!_locServ.Get().Any(x => x.Email == model.Reciever)) return Index(false, model);
 
-            _emailService.SendTo("varnamo@bolindersbil.se", "Skickat Fråm Kontaktformulär", ConstructMessage(model), model.Email, isBodyHtml: true);
-            
+            _emailService.SendTo(model.Email, "Skickat Fråm Kontaktformulär", ConstructMessage(model), model.Email, isBodyHtml: true);
+
             return Index(true);
         }
 

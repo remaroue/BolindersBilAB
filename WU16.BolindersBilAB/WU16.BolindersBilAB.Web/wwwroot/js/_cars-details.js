@@ -37,7 +37,7 @@
 })();
 
 $(document).ready(function () {
-    if ($("#cars-details-container").length === 0) return;
+
     if ($(".no-images").length === 0) {
         const currentImg = "#cars-details-container .current-image img";
 

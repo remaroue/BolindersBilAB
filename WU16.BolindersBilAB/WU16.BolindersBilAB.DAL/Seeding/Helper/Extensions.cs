@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -21,6 +22,11 @@ namespace WU16.BolindersBilAB.DAL.Seeding.Helper
 
             bool getFromNegativeRange = (double)from + rnd.NextDouble() * ((double)to - (double)from) < 0;
             return getFromNegativeRange ? decimal.Remainder(r, -from) + from : decimal.Remainder(r, to);
+        }
+
+        public static string GetTableName<T>(this DbContext dbContext)
+        {
+            return dbContext.Model.FindEntityType(typeof(T)).SqlServer().TableName;
         }
     }
 }

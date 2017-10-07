@@ -1,0 +1,23 @@
+﻿.cookie-note {
+    width: 100%;
+    height: 100px;
+    background: rgba(0, 0, 0, 0.85);
+    position: fixed;
+    bottom: 0;
+    z-index: 999999;
+    display: none;
+}
+
+.cookie-note button {
+    float: right;
+}
+
+.cookie-note p {
+    color: #fff;
+    font-size: 1.1em;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 20px;
+    display: block;
+    text-align: center;
+}
