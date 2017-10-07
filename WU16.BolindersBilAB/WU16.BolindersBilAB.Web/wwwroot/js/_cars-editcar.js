@@ -14,6 +14,8 @@
     });
 
     $(".remove-image").on("click", function (e) {
-        $(e.target).parent(".ex-img-container").remove();
+        if (confirm('Bekräfta borttagning')) {
+            $(e.target).parent(".ex-img-container").remove();
+        }
     })
 });
