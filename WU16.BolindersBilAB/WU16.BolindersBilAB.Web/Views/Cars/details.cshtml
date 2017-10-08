@@ -12,7 +12,7 @@
     string[] imageUrls = null;
     if (anyImages)
     {
-        imageUrls = car.CarImages.Select(x => $"/images/upload/{x.FileName}").ToArray();
+        imageUrls = car.CarImages.OrderBy(x => x.Priority).Select(x => $"/images/upload/{x.FileName}").ToArray();
     }
 
     var condition = car.Used ? "Begagnad" : "Ny";

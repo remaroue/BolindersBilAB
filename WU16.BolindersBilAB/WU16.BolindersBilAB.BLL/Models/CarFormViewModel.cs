@@ -10,46 +10,50 @@ namespace WU16.BolindersBilAB.Web.Models
 {
     public class CarFormViewModel
     {
-        [Required]
+        [Required(ErrorMessage="Registreringsnummer måste anges.")]
         [Display(Name = "Registreringsnummer")]
         public string LicenseNumber { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Model måste anges.")]
         [Display(Name = "Modell")]
         public string Model { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Model Beskrivning måste anges.")]
         [Display(Name = "Modell Beskrivning")]
         public string ModelDescription { get; set; }
-        [Required]
+
         [Display(Name = "Beskrivning")]
         public string Description { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Årsmodell måste anges.")]
         [Display(Name = "Årsmodell")]
         public int ModelYear { get; set; }
+
         [Required]
-        [Display(Name = "Leasing")]
+        [Display(Name = "Leasbar")]
         public bool IsLeaseable { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Mätarställning(mil) måste anges.")]
         [Display(Name = "Mätarställning(mil)")]
         public int? Milage { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Pris måste anges.")]
         [Display(Name = "Pris")]
         public decimal? Price { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Färg måste anges.")]
         [Display(Name = "Färg")]
         public string Color { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Hästkrafter måste anges.")]
         [Display(Name = "Hästkrafter")]
         public int? HorsePower { get; set; }
         [Required]
         [Display(Name = "Begagnad")]
         public bool Used { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Plats måste anges.")]
         [Display(Name = "Plats")]
         public string LocationId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Bilmärke måste anges.")]
         [Display(Name = "Bilmärke")]
         public string CarBrandId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Utrustning måste anges.")]
         [Display(Name = "Utrustning")]
         public string Equipment { get; set; }
 

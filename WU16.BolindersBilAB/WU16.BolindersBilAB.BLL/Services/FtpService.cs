@@ -159,7 +159,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                 {
                     sb.Append($"<p>Tillagda bilmärken: {addedCarBrands.Count()}st</p><ul>");
                     foreach (var brand in addedCarBrands)
-                        sb.Append($"<li>{brand.BrandName}</li>");
+                        sb.Append($"<li>{brand.BrandName} - <a href='localhost:42536/admin/bilmarke/uppdatera/{brand.BrandName}'>Redigera</a></li>");
                     sb.Append("</ul><p style='color:#f00;'>Bilmärkena behöver bilder.</p>");
                 }
 

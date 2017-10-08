@@ -86,7 +86,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                 {
                     Title = $"{x.CarBrand.BrandName} {x.Model} {x.ModelYear}",
                     LicenseNumber = x.LicenseNumber,
-                    ImageName = x.CarImages.FirstOrDefault().FileName ?? null,
+                    ImageName = x.CarImages.OrderBy(y => y.Priority).FirstOrDefault().FileName ?? null,
                     Price = x.Price,
                     Url = x.GetUrl()
                 }).ToArray();
