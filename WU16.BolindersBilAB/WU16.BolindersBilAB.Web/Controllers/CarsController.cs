@@ -292,7 +292,8 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         private bool CheckMediatype(ICollection<IFormFile> files)
         {
-            if (files.Count == 0) return true;
+            if (files == null) return true;
+            else if (files.Count == 0) return true;
 
             var okey = true;
 
