@@ -62,7 +62,17 @@ namespace WU16.BolindersBilAB.Web.Controllers
         public IActionResult Index(ContactMailViewModel model)
         {
             if (!ModelState.IsValid) return Index(false, model);
-            if (!_locServ.Get().Any(x => x.Email == model.Reciever)) return Index(false, model);
+
+
+
+            if (string.IsNullOrEmpty(model.Reciever))
+            {
+                model.Reciever = "kontakt@bolindersbil.se";
+            }
+            else
+            {
+                if (!_locServ.Get().Any(x => x.Email == model.Reciever)) return Index(false, model);
+            }
 
             _emailService.SendTo(model.Email, "Skickat Fråm Kontaktformulär", ConstructMessage(model), model.Email, isBodyHtml: true);
 
