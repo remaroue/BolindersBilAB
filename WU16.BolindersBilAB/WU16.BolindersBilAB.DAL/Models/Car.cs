@@ -32,7 +32,7 @@ namespace WU16.BolindersBilAB.DAL.Models
         [SeedChooseFrom("v70", "TT3", "turbo", "TT4", "v60", "v40", "i3", "i5", "roadster")]
         public string Model { get; set; }
 
-        [SeedIgnore]
+        [SeedChooseFrom("X Drive5", "ala", "hybrid", "clean")]
         public string ModelDescription { get; set; }
 
         [SeedDataType(SeederDataType.LoremIpsum)]
@@ -55,8 +55,6 @@ namespace WU16.BolindersBilAB.DAL.Models
         [SeedNumericValue(80, 200)]
         public int? HorsePower { get; set; }
 
-        
-
         public bool Used { get; set; }
 
         [SeedDataType(SeederDataType.Now)]
@@ -68,13 +66,9 @@ namespace WU16.BolindersBilAB.DAL.Models
         [SeedIgnore]
         public virtual ICollection<CarImage> CarImages { get; set; }
 
-        
-
         public CarType CarType { get; set; }
-        
 
         public FuelType FuelType { get; set; }
-        
 
         public Gearbox Gearbox { get; set; }
 

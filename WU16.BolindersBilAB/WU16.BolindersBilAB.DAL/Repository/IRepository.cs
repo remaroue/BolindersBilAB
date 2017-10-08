@@ -13,5 +13,6 @@ namespace WU16.BolindersBilAB.DAL.Repository
         void  Delete(T entity);
         void Edit(T entity);
         void Save();
+        void Delete(IEnumerable<T> entities);
     }
 }

@@ -23,7 +23,14 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Route("/admin")]
         public IActionResult Login()
         {
-            return View(new LoginViewModel());
+            if (!User.Identity.IsAuthenticated)
+            {
+                return View(new LoginViewModel()); 
+            }
+            else
+            {
+                return RedirectToAction("CarList", "Cars");
+            }
         }
 
         [HttpPost]
@@ -41,7 +48,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 if (result.Succeeded)
                 {
                     // TODO: Reroute to admin parts
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("CarList", "Cars");
                 }
                 else
                 {

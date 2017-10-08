@@ -1,11 +1,13 @@
 ﻿$(document).ready(function () {
+
+
     $('#fuelType').select2();
     $('#carType').select2();
     $('#gearbox').select2();
 
     $('.card').on('click', function () {
-        var licenseNumber = $(this).data('id');
-        location.href = '/bil/' + licenseNumber
+        var url = $(this).data('url');
+        location.href = url;
     });
     var timer;
     $(window).on('scroll', function () {

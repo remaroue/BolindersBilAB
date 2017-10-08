@@ -1,10 +1,11 @@
 ﻿@model WU16.BolindersBilAB.Web.Models.CarDetailsViewModel
+@using WU16.BolindersBilAB.BLL.Helpers;
 @{
     var car = Model.Car;
 
     ViewData["Title"] = $"{car.CarBrand.BrandName} {car.Model} {car.ModelYear}";
 
-    var taxedPrice = Math.Round((decimal)car.Price * 1.25m, 2);
+    var taxedPrice = Math.Round((car.Price ?? 0) * 1.25m, 2);
     var cashPayment = Math.Round(taxedPrice * 0.2m, 2).ToString(new System.Globalization.CultureInfo("en-US"));
 
     var anyImages = car.CarImages != null ? car.CarImages.Any() : false;
@@ -134,13 +135,29 @@
                     </tr>
                     <tr>
                         <td>Pris</td>
-                        <td>@taxedPrice kr</td>
+                        
+                        @if (car.Price != null)
+                        {
+                            <td>@taxedPrice kr</td>
+                        }
+                        else
+                        {
+                            <td>Inget Pris Satt.</td>
+                        }
                     </tr>
                     @if (car.IsLeaseable)
                     {
                         <tr>
                             <td>Leasing Pris</td>
-                            <td>@car.Price kr</td>
+
+                            @if (car.Price != null)
+                            {
+                                <td>@car.Price kr</td>
+                            }
+                            else
+                            {
+                                <td>Inget Pris Satt.</td>
+                            }
                         </tr>
                     }
                 </tbody>
@@ -207,8 +224,8 @@
         {
             <div class="row">
                 @foreach (var sc in Model.SimilarCars)
-                    {
-                    <a href="/bil/@sc.LicenseNumber" class="card float-left similar-car col-3 mx-auto">
+                {
+                    <a href="@sc.Url" class="card similar-car col-3 mx-auto">
                         <div class="card-deck">
                             @if (!string.IsNullOrEmpty(sc.ImageName))
                             {

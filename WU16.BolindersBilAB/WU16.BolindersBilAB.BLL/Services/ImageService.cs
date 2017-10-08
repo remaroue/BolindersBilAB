@@ -176,7 +176,7 @@ namespace WU16.BolindersBilAB.BLL.Services
 
             if (car.CarImages == null) car.CarImages = new List<CarImage>();
 
-            var i = 0;
+            var i = (car.CarImages?.Count ?? 0);
             foreach (var fileName in fileNames)
             {
                 car.CarImages.Add(new CarImage()
@@ -201,6 +201,17 @@ namespace WU16.BolindersBilAB.BLL.Services
         public void RemoveImage(string imageName)
         {
             File.Delete($"{_config.BasePath}{imageName}");
+        }
+
+        public void RemoveImages(List<Car> removedCars)
+        {
+            foreach(var car in removedCars)
+            {
+                foreach(var img in car.CarImages)
+                {
+                    File.Delete($"{_config.BasePath}{img.FileName}");
+                }
+            }
         }
     }
 }

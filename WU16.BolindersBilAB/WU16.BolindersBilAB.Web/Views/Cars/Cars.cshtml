@@ -1,4 +1,5 @@
 ﻿@model CarListViewModel
+@using WU16.BolindersBilAB.BLL.Helpers;
 @{
     if (ViewBag.Parameter == "nya")
     {
@@ -16,14 +17,15 @@
 
 <div id="cars-cars-container" class="container-fluid">
     <div class="row justify-content-center car-filter">
-        <div class="col-lg-8 mt-3">
+        <div class="col-lg-8 mt-3 text-center">
             <h1 class="text-center">@ViewData["Title"]</h1>
-            <form class="mt-4" asp-action="Cars" method="get">
+            <button class="btn btn-sm btn-primary w-50 hide-lg mb-2" data-toggle="collapse" data-target="#collapseFilter"><i class="fa fa-filter"></i> Filter</button>
+            <form class="mt-4 collapse text-left" id="collapseFilter" asp-action="Cars" method="get">
                 <div class="form-row">
                 </div>
                 <div class="form-row">
                     <div class="form-group col-lg-2 col-sm-6 col-6">
-                        <label class="col-form-label">Årsmodell från</label>
+                        <label class="col-form-label">År från</label>
                         <select name="min-year" asp-for="Query.YearFrom" class="form-control">
                             <option value="0">-</option>
                             @foreach (var row in ViewBag.Years)
@@ -33,7 +35,7 @@
                         </select>
                     </div>
                     <div class="form-group col-lg-2 col-sm-6 col-6">
-                        <label for="inputEmail4" class="col-form-label">Årsmodell till</label>
+                        <label for="inputEmail4" class="col-form-label">År till</label>
                         <select name="max-year" asp-for="Query.YearTo" class="form-control">
                             <option value="0">-</option>
                             @foreach (var row in ViewBag.Years)
@@ -118,7 +120,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group ml-auto mr-1">
-                        <button type="submit" class="btn btn-primary btn-lg">Sök</button>
+                        <button type="submit" class="btn btn-primary">Sök</button>
                     </div>
                 </div>
             </form>
@@ -131,15 +133,15 @@
             {
                     @foreach (var car in Model.Cars)
                 {
-                        <div class="col-lg-6 mb-2">
-                            <div class="card" data-id="@car.LicenseNumber">
+                        <div class="col-lg-6 col-sm-6 mb-2">
+                            <div class="card" data-url="@car.GetUrl()">
                                 @if(car.CarImages.Count == 0)
                                 {
-                                    <img class="card-img-top" src="https://via.placeholder.com/500x250" alt="Card image cap">
+                                    <div class="no-image"><p><i class="fa fa-file-image-o"></i></p></div>
                                 }
                                 else
                                 {
-                                    <img class="card-img-top" src="~/Images/Uploads/@car.CarImages.First().FileName" alt="@car.LicenseNumber"/>
+                                    <img class="card-img-top" src="~/Images/upload/@car.CarImages.First().FileName" alt="@car.LicenseNumber"/>
                                 }
                                 <div class="card-body">
                                     <div class="row">

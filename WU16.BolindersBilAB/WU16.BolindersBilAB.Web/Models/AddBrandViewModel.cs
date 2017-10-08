@@ -9,9 +9,9 @@ namespace WU16.BolindersBilAB.Web.Models
 {
     public class AddBrandViewModel
     {
-        [Required]
+        [Required(ErrorMessage ="Du måste ange ett namn")]
         [Display(Name = "Namn")]
         public string BrandName { get; set; }
-         public IFormFile Image { get; set; }
+        public IFormFile Image { get; set; }
     }
 }

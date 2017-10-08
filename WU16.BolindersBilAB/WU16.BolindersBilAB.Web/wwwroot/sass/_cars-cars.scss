@@ -1,7 +1,7 @@
 ﻿
 #cars-cars-container {
     min-height: 100%;
-    
+
     .card {
         border: 1px solid #d8d8d8;
     }
@@ -38,7 +38,7 @@
 
     .car-filter {
         background-color: #4e4e4e;
-        color:white;
+        color: white;
     }
 
     .badge {
@@ -69,5 +69,48 @@
 
     .card-title {
         text-align: center;
+    }
+
+    .no-image {
+        width: 100%;
+        display: block;
+        background-color: #f0f0f0;
+        position: relative;
+
+        p {
+            font-size: 1.8em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            text-align: center;
+        }
+    }
+
+    .card-img-top, .no-image {
+        height: 340px;
+    }
+
+    @media (min-width: 991px) {
+
+        .hide-lg {
+            display: none;
+        }
+
+        .collapse {
+            display: block;
+        }
+    }
+
+    @media (max-width:767px) {
+        .card-img-top, .no-image {
+            height: 250px;
+        }
+    }
+
+    @media only screen and (max-width: 991px) and (min-width: 768px) {
+        .card-imt-top, .no-image {
+            height: 300px;
+        }
     }
 }

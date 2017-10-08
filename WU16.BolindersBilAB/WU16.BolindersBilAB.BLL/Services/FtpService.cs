@@ -123,7 +123,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                 throw new Exception($"LocationId {to.LocationId} does not exist.");
         }
 
-        private string BuildLiTag(Car car) => $"<li>{car.CarBrandId} {car.Model} {car.ModelDescription} - <a href=localhost:63037/bil/{car.LicenseNumber}>Till Annonsen.</a></li>";
+        private string BuildLiTag(Car car) => $"<li>{car.CarBrandId} {car.Model} {car.ModelDescription} - <a href=localhost:63037{car.GetUrl()}>Till Annonsen.</a></li>";
 
         private void ConstructAndSendEmails(List<Car> addedCars, List<Car> updatedCars, List<FailedCar> failedCars, List<CarBrand> addedCarBrands)
         {

@@ -17,15 +17,11 @@ namespace WU16.BolindersBilAB.Web.Infrastructure
 
         public async Task Invoke(HttpContext context)
         {
-           if (context.Response.StatusCode == 404)
+            await next.Invoke(context);
+            if (context.Response.StatusCode == 404)
             {
                 context.Response.Redirect("/404");
             }
-            else
-            {
-                await next.Invoke(context);
-            }
-
         }
 
     }
