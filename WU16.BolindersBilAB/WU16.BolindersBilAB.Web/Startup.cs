@@ -160,26 +160,26 @@ namespace WU16.BolindersBilAB.Web
                 _ctx.SaveChanges();
             }
 
-            if (!_ctx.CarBrands.Any())
-            {
-                var carBrands = new List<CarBrand>
-                {
-                    new CarBrand{BrandName="Volvo", ImageName="bmw-logo.png"},
-                    new CarBrand{BrandName="BMW", ImageName="ferrari-logo.png"},
-                    new CarBrand{BrandName="Audi", ImageName="koenigsegg-logo.png"},
-                    new CarBrand{BrandName="Ford", ImageName="saab-logo.png"},
-                    new CarBrand{BrandName="Mercedes-benz", ImageName="saab-logo.png"},
-                    new CarBrand{BrandName="Volkswagen", ImageName="volvo-logo.png"},
-                };
+            //if (!_ctx.CarBrands.Any())
+            //{
+            //    var carBrands = new List<CarBrand>
+            //    {
+            //        new CarBrand{BrandName="Volvo", ImageName="bmw-logo.png"},
+            //        new CarBrand{BrandName="BMW", ImageName="ferrari-logo.png"},
+            //        new CarBrand{BrandName="Audi", ImageName="koenigsegg-logo.png"},
+            //        new CarBrand{BrandName="Ford", ImageName="saab-logo.png"},
+            //        new CarBrand{BrandName="Mercedes-benz", ImageName="saab-logo.png"},
+            //        new CarBrand{BrandName="Volkswagen", ImageName="volvo-logo.png"},
+            //    };
 
-                _ctx.AddRange(carBrands);
-                _ctx.SaveChanges();
-            }
+            //    _ctx.AddRange(carBrands);
+            //    _ctx.SaveChanges();
+            //}
 
-            if (!_ctx.Cars.Any())
-            {
-                //Seeder<Car>.SeedDbContext(_ctx, 1000);
-            }
+            //if (!_ctx.Cars.Any())
+            //{
+            //    //Seeder<Car>.SeedDbContext(_ctx, 1000);
+            //}
         }
     }
 }

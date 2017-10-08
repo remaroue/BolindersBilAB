@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "4.0.0-beta",
-    "font-awesome": "4.7.0"
+    "font-awesome": "4.7.0",
+    "select2": "4.0.4"
   }
 }
