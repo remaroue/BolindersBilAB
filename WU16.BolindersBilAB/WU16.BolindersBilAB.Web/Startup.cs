@@ -178,7 +178,8 @@ namespace WU16.BolindersBilAB.Web
 
             //if (!_ctx.Cars.Any())
             //{
-            //Seeder<Car>.SeedDbContext(_ctx, 1000);
+            //    //Seeder<Car>.SeedDbContext(_ctx, 1000);
+            //}
         }
     }
 }
