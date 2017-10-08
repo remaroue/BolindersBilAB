@@ -4,7 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta charset="utf-8" />
-    <title>@ViewBag.Title</title>
+    <title>@ViewBag.Title | Bolinders Bil</title>
 
     <environment include="Development">
         <link href="~/dist/css/main.css" rel="stylesheet" />
@@ -37,7 +37,7 @@
                         <a class="nav-link" asp-action="Cars" asp-controller="Cars" asp-route-parameter="begagnade">Begagnade bilar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-action="Index" asp-controller="Contacts">Kontakt </a>
+                        <a class="nav-link" asp-action="Contact" asp-controller="Home">Kontakt </a>
                     </li>
                     @if (User.Identity.IsAuthenticated)
                     {

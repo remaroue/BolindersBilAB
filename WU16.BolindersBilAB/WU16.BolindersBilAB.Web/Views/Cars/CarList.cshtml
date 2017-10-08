@@ -1,7 +1,7 @@
 ﻿@model CarAdminListViewModel
 
 @{
-    ViewData["Title"] = "Admin | Bilar";
+    ViewData["Title"] = "Admin";
 }
 
 <div class="container-fluid">
@@ -16,7 +16,6 @@
                 <div class="btn-group">
                     <a asp-action="AddCar" class="btn btn-primary">Skapa bil</a>
                     <a asp-action="AddCarBrand" class="btn btn-primary">Skapa bilmärke</a>
-
                 </div>
                 <div>
                     <select id="editBrand" class="form-control ml-2">
@@ -96,7 +95,7 @@
                             </td>
                             <td width="100px">
                                 <div class="btn-group">
-                                    <a data-licenseNumber="@car.LicenseNumber" class="btn btn-warning update-car fa fa-arrow-up text-white"></a>
+                                    <a data-licenseNumber="@car.LicenseNumber" class="btn btn-success update-car fa fa-arrow-up text-white"></a>
                                     <a asp-route-licensenumber="@car.LicenseNumber" asp-action="EditCar" class="btn btn-primary"><span class="fa fa-edit text-white"></span></a>
                                 </div>
                             </td>

@@ -18,7 +18,7 @@ var api_key = "40f2eef1b2884b309ff075ca16508d76";
 
                 var article = [
                     ' <div class="card col-lg-4" style="border:none;">',
-                    '<a href="' + value.url + '">',
+                    '<a target="_blank" href="' + value.url + '">',
                     '<img class="card-img" src="' + value.urlToImage + '" alt="Card image cap">',
                     '<div class="card-body">',
                     '<h4>'+ value.title +'</h4>',

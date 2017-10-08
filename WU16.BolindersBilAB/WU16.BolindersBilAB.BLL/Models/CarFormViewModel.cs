@@ -47,8 +47,8 @@ namespace WU16.BolindersBilAB.Web.Models
         [Required]
         [Display(Name = "Begagnad")]
         public bool Used { get; set; }
-        [Required(ErrorMessage = "Plats måste anges.")]
-        [Display(Name = "Plats")]
+        [Required(ErrorMessage = "Anläggning måste anges.")]
+        [Display(Name = "Anläggning")]
         public string LocationId { get; set; }
         [Required(ErrorMessage = "Bilmärke måste anges.")]
         [Display(Name = "Bilmärke")]
