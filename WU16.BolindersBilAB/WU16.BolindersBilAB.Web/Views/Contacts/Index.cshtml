@@ -5,13 +5,19 @@
 
     <div class="row">
         <div style="background-color:#ccc" class="col-6">
-            <h2>Våra Anläggningar</h2>
+            <h2 class="mt-4 mb-4 text-center">Våra Anläggningar</h2>
             @foreach (var item in Model.Locations)
             {
-                <div>
+                <div class="mt-3">
                     <h4>@item.Name </h4>
                     <p>Adress: @item.Address, @item.Zip, @item.City</p>
-                    <p>E-Mail: @item.Email</p>
+                    <p class="mt-0">E-Mail: @item.Email</p>
+                </div>
+                <div>
+                    <iframe class="col-12"
+                            height="200"
+                            frameborder="0" style="border:0"
+                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAMvZHNncXZ93dbj6MZqOf3mCmPSP_rpes&q=@item.City,@item.Address" allowfullscreen></iframe>
                 </div>
             }
 
@@ -28,11 +34,11 @@
                     <div class="alert alert-danger">Email skickades inte!</div>
                 }
             }
-            <h2>Kontakt forumulär</h2>
+            <h2 class="mt-4 mb-4 text-center">Kontakt forumulär</h2>
             <form asp-action="Index">
-                <div>
+                <div class="form-group">
 
-                    <select name="Reciever">
+                    <select class="form-control" name="Reciever">
                         @foreach (var item in Model.Locations)
                         {
                             <option value="@item.Email">@item.City</option>
@@ -54,7 +60,8 @@
                 <div class="form-group">
                     <textarea name="Message" placeholder="Brötext" class="form-control"></textarea>
                 </div>
-                <input type="submit" />
+
+                <input class="btn float-right btn-primary" type="submit" />
             </form>
 
         </div>

@@ -201,11 +201,13 @@ namespace WU16.BolindersBilAB.DAL.Migrations
 
                     b.Property<string>("Equipment");
 
+                    b.Property<string>("FtpId");
+
                     b.Property<int>("FuelType");
 
                     b.Property<int>("Gearbox");
 
-                    b.Property<int>("HorsePower");
+                    b.Property<int?>("HorsePower");
 
                     b.Property<bool>("IsLeaseable");
 
@@ -213,13 +215,15 @@ namespace WU16.BolindersBilAB.DAL.Migrations
 
                     b.Property<string>("LocationId");
 
-                    b.Property<int>("Milage");
+                    b.Property<int?>("Milage");
 
                     b.Property<string>("Model");
 
+                    b.Property<string>("ModelDescription");
+
                     b.Property<int>("ModelYear");
 
-                    b.Property<decimal>("Price");
+                    b.Property<decimal?>("Price");
 
                     b.Property<bool>("Used");
 

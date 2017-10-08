@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WU16.BolindersBilAB.DAL.DataAccess;
 using WU16.BolindersBilAB.Web.Models;
-using WU16.BolindersBilAB.DAL.Services;
-using WU16.BolindersBilAB.DAL.Models;
 using System.Text;
 using System.Web;
 using WU16.BolindersBilAB.BLL.Services;
