@@ -137,6 +137,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         }
         [HttpPost]
         [Route("/admin/bilmarke/skapa")]
+        [ValidateAntiForgeryToken]
         public IActionResult AddCarBrand(AddBrandViewModel carBrand)
         {
             if (ModelState.IsValid)
@@ -155,6 +156,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 return View(carBrand);
             }
         }
+
         [HttpGet]
         [Authorize]
         [Route("/admin/bilmarke/uppdatera/{brandName}")]
@@ -173,6 +175,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [HttpPost]
         [Authorize]
         [Route("/admin/bilmarke/uppdatera/{brandName}")]
+        [ValidateAntiForgeryToken]
         public IActionResult EditCarBrand(AddBrandViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -202,6 +205,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Authorize]
         [HttpPost]
         [Route("/admin/bil/skapa")]
+        [ValidateAntiForgeryToken]
         public IActionResult AddCar([FromForm]CarFormViewModel car)
         {
             if (!CheckMediatype(car.Images))
@@ -237,6 +241,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Authorize]
         [HttpPost]
         [Route("/admin/bil/uppdatera/{licenseNumber}")]
+        [ValidateAntiForgeryToken]
         public IActionResult EditCar(string licenseNumber, CarFormViewModel carUpdate)
         {
             if(!CheckMediatype(carUpdate.Images))
@@ -281,6 +286,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Authorize]
         [HttpPost]
         [Route("/admin/bilar")]
+        [ValidateAntiForgeryToken]
         public IActionResult DeleteCars(IEnumerable<string> licenseNumbers)
         {
             var removedCars = _carService.DeleteCars(licenseNumbers);
@@ -290,6 +296,11 @@ namespace WU16.BolindersBilAB.Web.Controllers
             return RedirectToAction(nameof(CarList));
         }
 
+        /// <summary>
+        /// not safe
+        /// </summary>
+        /// <param name="files"></param>
+        /// <returns></returns>
         private bool CheckMediatype(ICollection<IFormFile> files)
         {
             if (files == null) return true;
