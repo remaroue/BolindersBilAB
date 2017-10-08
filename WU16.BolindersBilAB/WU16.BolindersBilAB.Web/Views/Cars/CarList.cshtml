@@ -1,4 +1,5 @@
 ﻿@model CarAdminListViewModel
+@using WU16.BolindersBilAB.BLL.Helpers;
 
 @{
     ViewData["Title"] = "Admin | Bilar";
@@ -65,7 +66,7 @@
                         <th>Plats</th>
                         <th>Skapad</th>
                         <th>Senast uppdaterad</th>
-                        <th colspan="2" class="text-right"><span class="fa fa-cogs"></span></th>
+                        <th colspan="2" class="text-center"><span class="fa fa-cogs"></span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -98,10 +99,11 @@
                                 <div class="btn-group">
                                     <a data-licenseNumber="@car.LicenseNumber" class="btn btn-warning update-car fa fa-arrow-up text-white"></a>
                                     <a asp-route-licensenumber="@car.LicenseNumber" asp-action="EditCar" class="btn btn-primary"><span class="fa fa-edit text-white"></span></a>
+                                    <a href="@car.GetUrl()" target="_blank" class="btn btn-secondary"><i class="fa fa-external-link"></i></a>
                                 </div>
                             </td>
                             <td width="25px" class="pt-4" colspan="1">
-                                <input type="checkbox" name="licenseNumbers" class="float-right" value="@car.LicenseNumber" />
+                                <input type="checkbox" class="custom-checkbox p-2 float-right" s name="licenseNumbers" value="@car.LicenseNumber" />
                             </td>
                         </tr>
                     }
