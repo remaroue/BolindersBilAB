@@ -139,7 +139,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         public IActionResult AddCar([FromForm]CarFormViewModel car)
         {
             if (!CheckMediatype(car.Images))
-                ModelState.AddModelError("Images", "Bilder måste vara av typen png. jpg eller jpeg.");
+                ModelState.AddModelError("Images", "Bilder måste vara av typen png, jpg eller jpeg.");
 
             if (!ModelState.IsValid)
             {
@@ -173,7 +173,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         public IActionResult EditCar(string licenseNumber, CarFormViewModel carUpdate)
         {
             if (!CheckMediatype(carUpdate.Images))
-                ModelState.AddModelError("Images", "Bilder måste vara av typen png. jpg eller jpeg.");
+                ModelState.AddModelError("Images", "Bilder måste vara av typen png, jpg eller jpeg.");
 
             if (!ModelState.IsValid)
             {
