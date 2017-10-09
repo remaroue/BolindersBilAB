@@ -12,6 +12,6 @@ namespace WU16.BolindersBilAB.Web.Models
     {
         public string CarBrand { get; set; }
         public int CarCount { get; set; }
-        public string CarImage { get; set; }
+        public string BrandImage { get; set; }
     }
 }

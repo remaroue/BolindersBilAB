@@ -39,15 +39,16 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.CarCount = _brandService.Get()
+            var brands = _brandService.Get()
                 .Where(x => x.ImageName != null && x.Cars.Count > 0)
                 .Select(x => new HomeViewModel()
                 {
                     CarBrand = x.BrandName,
                     CarCount = x.Cars.Count,
-                    CarImage = $"images/upload/{x.ImageName}"
-                });
-            return View();
+                    BrandImage = $"images/upload/{x.ImageName}"
+                }).ToList();
+
+            return View(brands);
         }
 
         [HttpGet]
