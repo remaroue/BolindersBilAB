@@ -44,6 +44,11 @@
     </div>
 </div>
 @section Scripts {
-    <script src="~/js/_home-index.js" asp-append-version="true"></script>
+    <environment include="Development">
+        <script src="~/js/_home-index.js"></script>
+    </environment>
 
+    <environment include="Production">
+        <script src="~/js/_home-index.min.js" asp-append-version="true"></script>
+    </environment>
 }

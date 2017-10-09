@@ -135,15 +135,16 @@
                 {
                         <div class="col-lg-6 col-sm-6 mb-2">
                             <div class="card" data-url="@car.GetUrl()">
-                                @if(car.CarImages.Count == 0)
+                                @if (car.CarImages.Count == 0)
                                 {
-                                    <div class="no-image"><p><i class="fa fa-file-image-o"></i></p>
-                                    <span>Bilder saknas</span>
-                                </div>
+                                    <div class="no-image">
+                                        <p><i class="fa fa-file-image-o"></i></p>
+                                        <span>Bilder saknas</span>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <img class="card-img-top" src="~/Images/upload/@car.CarImages.OrderBy(x => x.Priority).First().FileName" alt="@car.LicenseNumber"/>
+                                    <img class="card-img-top" src="~/Images/upload/@car.CarImages.OrderBy(x => x.Priority).First().FileName" alt="@car.LicenseNumber" />
                                 }
                                 <div class="card-body">
                                     <div class="row">
@@ -174,21 +175,27 @@
                             </div>
                         </div>
 
-                    }
-                    <div class="mx-auto mt-3 mb-3" id="pager" page-query="@ViewBag.Query" data-page="@Model.Pager.CurrentPage" page-action="Cars" page-model="@Model.Pager"></div>
-                }
-                else
-                {
-                    <div class="col-lg-12 text-center">
-                        <h5>Inga bilar hittades.</h5>
-                    </div>
-                }
+                                                }
+                                                <div class="mx-auto mt-3 mb-3" id="pager" page-query="@ViewBag.Query" data-page="@Model.Pager.CurrentPage" page-action="Cars" page-model="@Model.Pager"></div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-lg-12 text-center">
+                                                        <h5>Inga bilar hittades.</h5>
+                                                    </div>
+                                                }
             </div>
-            </div>
-
         </div>
+
     </div>
-    @section Scripts {
-        <script src="~/js/_cars-cars.js" asp-append-version="true"></script>
-    }
+</div>
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/_cars-cars.js"></script>
+    </environment>
+
+    <environment include="Production">
+        <script src="~/js/_cars-cars.min.js" asp-append-version="true"></script>
+    </environment>
+}
 

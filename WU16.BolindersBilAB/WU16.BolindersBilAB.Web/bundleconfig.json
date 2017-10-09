@@ -15,5 +15,41 @@
       "wwwroot/lib/font-awesome/css/font-awesome.css",
       "wwwroot/lib/select2/dist/css/select2.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/_admin-carlist.min.js",
+    "inputFiles": [
+      "wwwroot/js/_admin-carlist.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/_cars-cars.min.js",
+    "inputFiles": [
+      "wwwroot/js/_cars-cars.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/_cars-editcar.min.js",
+    "inputFiles": [
+      "wwwroot/js/_cars-editcar.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/_cars-details.min.js",
+    "inputFiles": [
+      "wwwroot/js/_cars-details.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/_cookie.min.js",
+    "inputFiles": [
+      "wwwroot/js/_cookie.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/_home-index.min.js",
+    "inputFiles": [
+      "wwwroot/js/_home-index.js"
+    ]
   }
 ]

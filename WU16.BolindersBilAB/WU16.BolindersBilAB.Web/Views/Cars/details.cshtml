@@ -135,7 +135,7 @@
                     </tr>
                     <tr>
                         <td>Pris</td>
-                        
+
                         @if (car.Price != null)
                         {
                             <td>@taxedPrice kr</td>
@@ -253,5 +253,11 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/_cars-details.js" asp-append-version="true"></script>
+    <environment include="Development">
+        <script src="~/js/_cars-details.js"></script>
+    </environment>
+
+    <environment include="Production">
+        <script src="~/js/_cars-details.min.js" asp-append-version="true"></script>
+    </environment>
 }

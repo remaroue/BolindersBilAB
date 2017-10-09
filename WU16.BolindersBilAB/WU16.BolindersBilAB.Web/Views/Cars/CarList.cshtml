@@ -114,5 +114,11 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/_admin-carlist.js" asp-append-version="true"></script>
+    <environment include="Development">
+        <script src="~/js/_admin-carlist.js"></script>
+    </environment>
+
+    <environment include="Production">
+        <script src="~/js/_admin-carlist.min.js" asp-append-version="true"></script>
+    </environment>
 }

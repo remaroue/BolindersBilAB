@@ -165,5 +165,11 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/_cars-editcar.js"></script>
+    <environment include="Development">
+        <script src="~/js/_cars-editcar.js"></script>
+    </environment>
+
+    <environment include="Production">
+        <script src="~/js/_cars-editcar.min.js" asp-append-version="true"></script>
+    </environment>
 }

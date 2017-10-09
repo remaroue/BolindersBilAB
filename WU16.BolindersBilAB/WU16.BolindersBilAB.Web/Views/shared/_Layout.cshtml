@@ -69,6 +69,12 @@
 
     @RenderSection("Scripts", false)
 
-    <script src="~/js/_cookie.js" asp-append-version="true"></script>
+    <environment include="Development">
+        <script src="~/js/_cookie.js"></script>
+    </environment>
+
+    <environment include="Production">
+        <script src="~/js/_cookie.min.js" asp-append-version="true"></script>
+    </environment>
 </body>
 </html>
