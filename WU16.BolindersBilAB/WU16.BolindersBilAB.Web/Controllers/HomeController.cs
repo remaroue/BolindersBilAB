@@ -6,6 +6,7 @@ using WU16.BolindersBilAB.BLL.Configuration;
 using Microsoft.Extensions.Options;
 using System.Text;
 using System.Web;
+using System;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -53,7 +54,6 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Route("/kontakt")]
         public IActionResult Contact(bool? sent = null, ContactMailViewModel formModel = null)
         {
-
             return View(new ContactsViewModel()
             {
                 Locations = _locationService.Get(),
@@ -65,6 +65,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         //Posts mail to corresponding location of place of sales.
         [HttpPost]
         [Route("/kontakt")]
+        [ValidateAntiForgeryToken]
         public IActionResult Contact(ContactMailViewModel model)
         {
             if (!ModelState.IsValid) return Contact(false, model);
@@ -78,7 +79,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
                 if (!_locationService.Get().Any(x => x.Email == model.Reciever)) return Contact(false, model);
             }
 
-            _emailService.SendTo(model.Email, "Skickat Fråm Kontaktformulär", ConstructMessage(model), model.Email, isBodyHtml: true);
+            _emailService.SendTo(model.Email, $"Skickat Fråm Kontaktformulär: {DateTime.Now.ToShortDateString()}", ConstructMessage(model), model.Email, isBodyHtml: true);
 
             return Contact(true);
         }
