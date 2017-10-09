@@ -35,7 +35,7 @@
             @foreach (var item in Model)
             {
                 <div class="col-lg-2 col-6">
-                    <a href="/bilar?search=@item.CarBrand"><img src="images/upload/@item.BrandImage" class="img-fluid" alt="@item.CarBrand - Logo"></a>
+                    <a href="/bilar?search=@item.CarBrand"><img src="@item.BrandImage" class="img-fluid" alt="@item.CarBrand - Logo"></a>
                     <div class="center-badge">
                         <span class="badge badge-pill badge-primary align-bottom">@item.CarCount</span>
                     </div>
