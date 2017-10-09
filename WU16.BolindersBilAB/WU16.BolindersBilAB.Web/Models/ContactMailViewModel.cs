@@ -21,7 +21,7 @@ namespace WU16.BolindersBilAB.Web.Models
         [Required(ErrorMessage = "Medelande måste anges.")]
         public string Message { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "E-post måste anges.")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
     }
