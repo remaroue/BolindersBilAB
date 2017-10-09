@@ -202,10 +202,10 @@ namespace WU16.BolindersBilAB.BLL.Services
 
                         car.CarImages = imgs;
                     }
-
-                    if (model.Images?.Count > 0)
-                        car = _imageService.AddImageToCar(car, model.Images.ToArray());
                 }
+
+                if (model.Images?.Count > 0)
+                    car = _imageService.AddImageToCar(car, model.Images.ToArray());
             }
 
             _repo.Edit(car);
