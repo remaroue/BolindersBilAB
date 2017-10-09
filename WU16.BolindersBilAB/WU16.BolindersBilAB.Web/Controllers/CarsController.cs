@@ -19,21 +19,13 @@ namespace WU16.BolindersBilAB.Web.Controllers
     {
         private CarSearchService _carSearchService;
         private EmailService _emailService;
-        private CarService _carlistService;
-        private CarBrandService _brandService;
-        private LocationService _locationService;
         private CarService _carService;
-        private ImageService _imageService;
 
-        public CarsController(CarSearchService carSearchService, EmailService emailService, CarService carListService, CarBrandService carBrandService, LocationService locationService, CarService carService, ImageService imageService)
+        public CarsController(CarSearchService carSearchService, EmailService emailService, CarService carService)
         {
             _carSearchService = carSearchService;
             _emailService = emailService;
-            _carlistService = carListService;
-            _brandService = carBrandService;
-            _locationService = locationService;
             _carService = carService;
-            _imageService = imageService;
         }
 
         #region public 
@@ -41,10 +33,10 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [Route("/bil/{brand}/{model}/{modelDescription}/{unique}")]
         public IActionResult Details(string brand, string model, string modelDescription, string unique)
         {
-            var car = _carlistService.GetCar(brand, model, modelDescription, unique);
+            var car = _carService.GetCar(brand, model, modelDescription, unique);
             if (car == null) return BadRequest();
 
-            var similarCars = _carlistService.GetSimilarCars(car);
+            var similarCars = _carService.GetSimilarCars(car);
 
             return View(new CarDetailsViewModel()
             {
@@ -59,7 +51,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         {
             query = _carSearchService.GetCarListQuery(query.Search, query);
 
-            var cars = _carlistService
+            var cars = _carService
                 .GetCars(query)
                 .FilterByParameter(parameter).ToList();
 
@@ -82,8 +74,6 @@ namespace WU16.BolindersBilAB.Web.Controllers
             });
         }
 
-
-
         [HttpPost]
         [Route("api/bil/dela")]
         public bool Share([FromBody]ShareViewModel model)
@@ -100,232 +90,6 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
             return _emailService.SendTo(model.Email, subject, writer.ToString(), isBodyHtml: true);
         }
-        #endregion
-
-        #region admin
-        [Authorize]
-        [HttpGet]
-        [Route("/admin/bilar")]
-        public IActionResult CarList([ModelBinder(BinderType = typeof(QueryModelBinder))]CarListQuery query, int page = 1)
-        {
-            query = _carSearchService.GetCarListQuery(query.Search, query);
-            var cars = _carlistService.GetCars(query);
-
-            ViewBag.Query = Request.QueryString;
-            ViewBag.Locations = _locationService.Get();
-
-            return View(
-                new CarAdminListViewModel
-                {
-                    Cars = cars.PaginateCars(page, 20, true).ToList(),
-                    Query = query,
-                    Carbrands = _brandService.Get(),
-                    Pager = new PagingInfo
-                    {
-                        CurrentPage = page,
-                        ItemsPerPage = 20,
-                        TotalItems = cars.Count()
-                    }
-                });
-        }
-
-        #region CrudCarBrand
-        [Route("/admin/bilmarke/skapa")]
-        public IActionResult AddCarBrand()
-        {
-            return View();
-        }
-        [HttpPost]
-        [Route("/admin/bilmarke/skapa")]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddCarBrand(AddBrandViewModel carBrand)
-        {
-            if (ModelState.IsValid)
-            {
-                var newCarBrand = new CarBrand
-                {
-                    BrandName = carBrand.BrandName
-                };
-
-                newCarBrand = _imageService.ChangeImageOnCarBrand(newCarBrand, carBrand.Image);
-                _brandService.Add(newCarBrand);
-                return RedirectToAction(nameof(CarList));
-            }
-            else
-            {
-                return View(carBrand);
-            }
-        }
-
-        [HttpGet]
-        [Authorize]
-        [Route("/admin/bilmarke/uppdatera/{brandName}")]
-        public IActionResult EditCarBrand(string brandName)
-        {
-            var brand = _brandService.GetBrand(brandName);
-
-            if (brand == null) return BadRequest();
-
-            return View(new AddBrandViewModel()
-            {
-                BrandName = brandName
-            });
-        }
-
-        [HttpPost]
-        [Authorize]
-        [Route("/admin/bilmarke/uppdatera/{brandName}")]
-        [ValidateAntiForgeryToken]
-        public IActionResult EditCarBrand(AddBrandViewModel model)
-        {
-            if (!ModelState.IsValid) return View(model);
-
-            var carBrand = _brandService.GetBrand(model.BrandName);
-            if (carBrand == null) return BadRequest();
-
-            if (!string.IsNullOrEmpty(carBrand.ImageName)) _imageService.RemoveImage(carBrand.ImageName);
-
-            carBrand = _imageService.ChangeImageOnCarBrand(carBrand, model.Image);
-            _brandService.Update(carBrand);
-
-            return RedirectToAction(nameof(CarList));
-        }
-        #endregion
-
-        #region CrudCar
-        [Authorize]
-        [HttpGet]
-        [Route("/admin/bil/skapa")]
-        public IActionResult AddCar()
-        {
-            ViewBag.CarBrands = _brandService.Get();
-            ViewBag.Locations = _locationService.Get();
-            return View();
-        }
-        [Authorize]
-        [HttpPost]
-        [Route("/admin/bil/skapa")]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddCar([FromForm]CarFormViewModel car)
-        {
-            if (!CheckMediatype(car.Images))
-                ModelState.AddModelError("Images", "Bilder måste vara av typen png. jpg eller jpeg.");
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.CarBrands = _brandService.Get();
-                ViewBag.Locations = _locationService.Get();
-                return View(car);
-            }
-            if (car == null)
-            {
-                return BadRequest();
-            }
-
-            _carService.SaveCar(car);
-            return RedirectToAction(nameof(CarList));
-        }
-
-        [Authorize]
-        [Route("/admin/bil/uppdatera/{licenseNumber}")]
-        public IActionResult EditCar(string licenseNumber)
-        {
-            ViewBag.CarBrands = _brandService.Get();
-            ViewBag.Locations = _locationService.Get();
-
-            var car = _carService.GetCar(licenseNumber).GetCarForm();
-
-            return View(car);
-        }
-
-        [Authorize]
-        [HttpPost]
-        [Route("/admin/bil/uppdatera/{licenseNumber}")]
-        [ValidateAntiForgeryToken]
-        public IActionResult EditCar(string licenseNumber, CarFormViewModel carUpdate)
-        {
-            if(!CheckMediatype(carUpdate.Images))
-                ModelState.AddModelError("Images", "Bilder måste vara av typen png. jpg eller jpeg.");
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.CarBrands = _brandService.Get();
-                ViewBag.Locations = _locationService.Get();
-                return View(carUpdate);
-            }
-
-            var car = _carService.GetCar(licenseNumber);
-            if (car == null) return BadRequest();
-
-            _carService.UpdateCar(car, carUpdate);
-
-            if(carUpdate.Images?.Count > 0)
-            {
-                return RedirectToAction(nameof(EditCar), new { licenseNumber = licenseNumber });
-            }
-            else
-            {
-                return RedirectToAction(nameof(CarList));
-
-            }
-        }
-
-        [Authorize]
-        [HttpPost]
-        [Route("/admin/bil/pop/{licenseNumber}")]
-        public IActionResult PopCar(string licenseNumber)
-        {
-            var car = _carService.GetCar(licenseNumber);
-            if (car == null) return BadRequest();
-
-            _carService.UpdateCar(car);
-
-            return StatusCode(200);
-        }
-
-        [Authorize]
-        [HttpPost]
-        [Route("/admin/bilar")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteCars(IEnumerable<string> licenseNumbers)
-        {
-            var removedCars = _carService.DeleteCars(licenseNumbers);
-
-            _imageService.RemoveImages(removedCars);
-
-            return RedirectToAction(nameof(CarList));
-        }
-
-        /// <summary>
-        /// not safe
-        /// </summary>
-        /// <param name="files"></param>
-        /// <returns></returns>
-        private bool CheckMediatype(ICollection<IFormFile> files)
-        {
-            if (files == null) return true;
-            else if (files.Count == 0) return true;
-
-            var okey = true;
-
-            foreach (var file in files)
-            {
-                switch(file.ContentType)
-                {
-                    case "image/png":
-                    case "image/jpg":
-                    case "image/jpeg":
-                        okey = true;
-                        break;
-                    default:
-                        okey = false;
-                        break;
-                }
-            }
-
-            return okey;
-        }
-        #endregion
         #endregion
     }
 }

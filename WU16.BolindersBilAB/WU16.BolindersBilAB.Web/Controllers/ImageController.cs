@@ -3,9 +3,11 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using WU16.BolindersBilAB.BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
+    [Authorize]
     public class ImageController : Controller
     {
         private CarBrandService _bs;

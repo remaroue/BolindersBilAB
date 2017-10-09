@@ -58,11 +58,11 @@ namespace WU16.BolindersBilAB.Web.Infrastructure
             {
                 var middle = new TagBuilder("span");
                 middle.AddCssClass("mx-auto btn");
-                middle.InnerHtml.AppendHtml($"<span>{PageModel.CurrentPage} / {PageModel.TotalItems / PageModel.ItemsPerPage}</span>");
+                middle.InnerHtml.AppendHtml($"<span>{PageModel.CurrentPage} / {(PageModel.TotalItems / PageModel.ItemsPerPage) + 1}</span>");
                 output.Content.AppendHtml(middle);
             }
 
-            if (PageModel.CurrentPage < (PageModel.TotalItems / PageModel.ItemsPerPage))
+            if (PageModel.CurrentPage < (PageModel.TotalItems / PageModel.ItemsPerPage) + 1)
             {
                 var nextButton = new TagBuilder("a");
                 nextButton.AddCssClass("btn btn-primary");

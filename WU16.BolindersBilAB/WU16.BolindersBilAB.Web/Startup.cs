@@ -88,8 +88,8 @@ namespace WU16.BolindersBilAB.Web
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.Cookie.Expiration = TimeSpan.FromDays(150);
-                options.LoginPath = "/admin"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login
-                options.LogoutPath = "/Account/Logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout
+                options.LoginPath = "/login"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login
+                options.LogoutPath = "/logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout
                 options.AccessDeniedPath = "/Home/Index"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied
                 options.SlidingExpiration = true;
             });
@@ -147,39 +147,39 @@ namespace WU16.BolindersBilAB.Web
                 Task.WaitAll(userManager.CreateAsync(user4, "Admin1234"));
             }
 
-            //if (!_ctx.Locations.Any())
-            //{
-            //    var locations = new List<Location>
-            //   {
-            //       new Location{Name="Bolinders Bil Jönköping", Address="Lovsjövägen 33", City="Jönköping", Zip="55626", PhoneNumber="036-123456", Email="jonkoping@bolindersbil.se", Id="BB1"},
-            //       new Location{Name="Bolinders Bil Värnamo", Address="Bultgatan 2", City="Värnamo", Zip="54452", PhoneNumber="0370-123456", Email="varnamo@bolindersbil.se", Id="BB2"},
-            //       new Location{Name="Bolinders Bil Göteborg", Address="Industrivägen 1", City="Göteborg", Zip="55336", PhoneNumber="031-123456", Email="goteborg@bolindersbil.se", Id="BB3"}
-            //   };
+            if (!_ctx.Locations.Any())
+            {
+                var locations = new List<Location>
+               {
+                   new Location{Name="Bolinders Bil Jönköping", Address="Lovsjövägen 33", City="Jönköping", Zip="55626", PhoneNumber="036-123456", Email="jonkoping@bolindersbil.se", Id="BB1"},
+                   new Location{Name="Bolinders Bil Värnamo", Address="Bultgatan 2", City="Värnamo", Zip="54452", PhoneNumber="0370-123456", Email="varnamo@bolindersbil.se", Id="BB2"},
+                   new Location{Name="Bolinders Bil Göteborg", Address="Industrivägen 1", City="Göteborg", Zip="55336", PhoneNumber="031-123456", Email="goteborg@bolindersbil.se", Id="BB3"}
+               };
 
-            //    _ctx.AddRange(locations);
-            //    _ctx.SaveChanges();
-            //}
+                _ctx.AddRange(locations);
+                _ctx.SaveChanges();
+            }
 
-            //if (!_ctx.CarBrands.Any())
-            //{
-            //    var carBrands = new List<CarBrand>
-            //    {
-            //        new CarBrand{BrandName="Volvo", ImageName="bmw-logo.png"},
-            //        new CarBrand{BrandName="BMW", ImageName="ferrari-logo.png"},
-            //        new CarBrand{BrandName="Audi", ImageName="koenigsegg-logo.png"},
-            //        new CarBrand{BrandName="Ford", ImageName="saab-logo.png"},
-            //        new CarBrand{BrandName="Mercedes-benz", ImageName="saab-logo.png"},
-            //        new CarBrand{BrandName="Volkswagen", ImageName="volvo-logo.png"},
-            //    };
+            if (!_ctx.CarBrands.Any())
+            {
+                var carBrands = new List<CarBrand>
+                {
+                    new CarBrand{BrandName="Volvo", ImageName="bmw-logo.png"},
+                    new CarBrand{BrandName="BMW", ImageName="ferrari-logo.png"},
+                    new CarBrand{BrandName="Audi", ImageName="koenigsegg-logo.png"},
+                    new CarBrand{BrandName="Ford", ImageName="saab-logo.png"},
+                    new CarBrand{BrandName="Mercedes-benz", ImageName="saab-logo.png"},
+                    new CarBrand{BrandName="Volkswagen", ImageName="volvo-logo.png"},
+                };
 
-            //    _ctx.AddRange(carBrands);
-            //    _ctx.SaveChanges();
-            //}
+                _ctx.AddRange(carBrands);
+                _ctx.SaveChanges();
+            }
 
-            //if (!_ctx.Cars.Any())
-            //{
-            //    //Seeder<Car>.SeedDbContext(_ctx, 1000);
-            //}
+            if (!_ctx.Cars.Any())
+            {
+                Seeder<Car>.SeedDbContext(_ctx, 41);
+            }
         }
     }
 }

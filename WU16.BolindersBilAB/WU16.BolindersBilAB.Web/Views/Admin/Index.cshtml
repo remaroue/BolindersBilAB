@@ -34,7 +34,7 @@
     <div class="row justify-content-center mt-3">
         <div class="col-lg-10">
             <div class="d-flex mb-2">
-                <form asp-action="CarList" class="col-lg-4 pl-0" method="get">
+                <form asp-action="Index" class="col-lg-4 pl-0" method="get">
                     <div class="input-group">
                         <input type="text" name="search" class="form-control col-lg-6" placeholder="Sök..." asp-for="@Model.Query.Search" />
                         <select name="location-id" asp-for="Query.LocationId" class="form-control col-lg-6">
@@ -109,16 +109,16 @@
                 </tbody>
             </table>
         </form>
-        <pagination class="col-lg-10 d-flex justify-content-end mb-2" page-model="@Model.Pager" page-query="@ViewBag.Query" page-action="CarList"></pagination>
+        <pagination class="col-lg-10 d-flex justify-content-end mb-2" page-model="@Model.Pager" page-query="@ViewBag.Query" page-action="Index"></pagination>
     </div>
 </div>
 
 @section Scripts {
     <environment include="Development">
-        <script src="~/js/_admin-carlist.js"></script>
+        <script src="~/js/_admin-index.js"></script>
     </environment>
 
     <environment include="Production">
-        <script src="~/js/_admin-carlist.min.js" asp-append-version="true"></script>
+        <script src="~/js/_admin-index.min.js" asp-append-version="true"></script>
     </environment>
 }

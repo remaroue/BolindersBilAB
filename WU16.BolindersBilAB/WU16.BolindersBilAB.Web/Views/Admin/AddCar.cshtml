@@ -1,20 +1,20 @@
 ﻿@model CarFormViewModel
 
 @{
-    ViewData["Title"] = "Redigera bil";
+    ViewData["Title"] = "Ny bil";
 }
 
-<div id="cars-editcar" class="container-fluid mb-4">
-    <h2 class="text-center mt-2">Redigera bil</h2>
+<div class="container-fluid h-100">
+    <h2 class="text-center mt-2">Ny bil</h2>
     <hr />
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <form asp-action="EditCar" method="post" enctype="multipart/form-data">
+            <form asp-action="AddCar" method="post" enctype="multipart/form-data">
                 <div class="d-flex">
                     <div class="col-lg-3">
                         <div class="form-group">
                             <label asp-for="LicenseNumber" class="control-label"></label>
-                            <input asp-for="LicenseNumber" disabled class="form-control disabled" />
+                            <input asp-for="LicenseNumber" class="form-control" />
                             <span asp-validation-for="LicenseNumber" class="text-danger"></span>
                         </div>
                         <div class="form-group">
@@ -24,6 +24,7 @@
                                 {
                                     <option value="@type.BrandName">@type.BrandName</option>
                                 }
+
                             </select>
                             <span asp-validation-for="CarBrandId" class="text-danger"></span>
                         </div>
@@ -69,7 +70,7 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="Price" class="control-label"></label>
-                            <input asp-for="Price" class="form-control" />
+                            <input asp-for="Price" type="number" class="form-control" />
                             <span asp-validation-for="Price" class="text-danger"></span>
                         </div>
                         <div class="form-group">
@@ -127,36 +128,17 @@
                             <textarea style="resize:none;" asp-for="Description" class="form-control" rows="5"></textarea>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
-
                         <div class="form-group">
-                            <label asp-for="Images">Nya Bilder</label>
+                            <label asp-for="Images">Bilder</label>
                             <input type="file" asp-for="Images" class="form-control-file" multiple />
                             <span asp-validation-for="Images" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
-                @if (Model.ExistingImages?.Length > 0)
-                {
-                    <div class="col-12">
-                        <label class="open-close-eximg mx-auto">Satta bilder <i class="fa fa-chevron-up "></i></label>
-                        <ol style="display: none;" class="row existing-images">
-                            @foreach (var img in Model.ExistingImages)
-                            {
-                                <li class="col-1 ex-img-container">
-                                    <i class="fa fa-arrows move-image"></i>
-                                    <img src="/images/upload/@img" class="img-fluid" />
-                                    <i class="fa fa-remove remove-image"></i>
-                                    <input type="hidden" name="ExistingImages" value="@img">
-                                </li>
-                            }
-                        </ol>
-                    </div>
-                }
-
                 <div class="row justify-content-center">
                     <div class="btn-group">
-                        <a class="btn btn-warning float-left" asp-action="CarList">Tillbaka</a>
-                        <input type="submit" class="btn btn-primary float-right" value="Spara">
+                        <a class="btn btn-warning float-left" asp-action="Index">Tillbaka</a>
+                        <input type="submit" class="btn btn-primary float-right" value="Skapa">
                     </div>
                 </div>
             </form>
@@ -164,12 +146,4 @@
     </div>
 </div>
 
-@section Scripts {
-    <environment include="Development">
-        <script src="~/js/_cars-editcar.js"></script>
-    </environment>
 
-    <environment include="Production">
-        <script src="~/js/_cars-editcar.min.js" asp-append-version="true"></script>
-    </environment>
-}

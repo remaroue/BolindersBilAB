@@ -20,7 +20,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
         }
 
         [HttpGet]
-        [Route("/admin")]
+        [Route("/login")]
         public IActionResult Login()
         {
             if (!User.Identity.IsAuthenticated)
@@ -29,13 +29,13 @@ namespace WU16.BolindersBilAB.Web.Controllers
             }
             else
             {
-                return RedirectToAction("CarList", "Cars");
+                return RedirectToAction("Index", "Admin");
             }
         }
 
         [HttpPost]
+        [Route("/login")]
         [ValidateAntiForgeryToken]
-        [Route("/admin")]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -47,8 +47,7 @@ namespace WU16.BolindersBilAB.Web.Controllers
                     model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    // TODO: Reroute to admin parts
-                    return RedirectToAction("CarList", "Cars");
+                    return RedirectToAction("Index", "Admin");
                 }
                 else
                 {
@@ -63,12 +62,12 @@ namespace WU16.BolindersBilAB.Web.Controllers
 
         [HttpGet]
         [Authorize]
+        [Route("/logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToLocal("/");
         }
-
 
         private IActionResult RedirectToLocal(string returnUrl)
         {
