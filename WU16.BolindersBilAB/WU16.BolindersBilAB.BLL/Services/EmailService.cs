@@ -48,7 +48,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                     client.Send(mail);
                     return true;
                 }
-                catch(Exception)
+                catch(Exception e)
                 {
                     return false;
                 }

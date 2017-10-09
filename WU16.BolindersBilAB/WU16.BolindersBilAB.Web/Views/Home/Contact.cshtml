@@ -13,9 +13,9 @@
                 {
                     <div class="col-lg-12 mb-4 text-center">
                         <h4>@item.Name </h4>
-                            <p>@item.Address, @item.Zip, @item.City</p>
-                            <p><a href="tel:@item.PhoneNumber">@item.PhoneNumber</a></p>
-                            <p class="mt-0"><a href="mailto:@item.Email ">@item.Email</a></p>
+                        <p>@item.Address, @item.Zip, @item.City</p>
+                        <p><a href="tel:@item.PhoneNumber">@item.PhoneNumber</a></p>
+                        <p class="mt-0"><a href="mailto:@item.Email ">@item.Email</a></p>
                         <iframe class="col-12"
                                 height="400"
                                 frameborder="0" style="border:0"
@@ -25,19 +25,20 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12 d-flex flex-column align-items-center mb-3">
-            @if (Model.Sent != null)
-            {
-                if ((bool)Model.Sent)
-                {
-                    <div class="w-100 alert alert-success text-center">Email skickat.</div>
-                }
-                else
-                {
-                    <div class="w-100 alert alert-danger text-center">Email skickades inte!</div>
-                }
-            }
+
             <h2 class="mt-4 mb-4 text-center">Kontaktforumulär</h2>
             <form class="col-lg-11" asp-action="Contact">
+                @if (Model.Sent != null)
+                {
+                if ((bool)Model.Sent)
+                {
+                        <div class="w-100 alert alert-success text-center">Email skickat.</div>
+                    }
+                    else
+                    {
+                        <div class="w-100 alert alert-danger text-center">Email skickades inte!</div>
+                    }
+                }
                 <div class="form-group">
 
                     <select class="form-control" name="Reciever">
@@ -52,20 +53,20 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-lg-6">
-                    <input name="FirstName" placeholder="Förnamn" type="text" class="form-control" />
+                        <input asp-for="FormModel.LastName" placeholder="Förnamn" type="text" class="form-control" />
                     </div>
                     <div class="form-group col-lg-6">
-                    <input name="LastName" placeholder="Efternamn" type="text" class="form-control" />
+                        <input asp-for="FormModel.LastName" placeholder="Efternamn" type="text" class="form-control" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <input name="email" placeholder="E-postadress" type="email" class="form-control" />
+                    <input asp-for="FormModel.Email" placeholder="E-postadress" type="email" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <input name="subject" placeholder="Ämne" type="text" class="form-control" />
+                    <input asp-for="FormModel.Subject" placeholder="Ämne" type="text" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <textarea rows="4" name="Message" placeholder="Meddelande" class="form-control"></textarea>
+                    <textarea rows="4" asp-for="FormModel.Message" placeholder="Meddelande" class="form-control"></textarea>
                 </div>
                 <input class="btn float-right btn-primary" type="submit" />
             </form>

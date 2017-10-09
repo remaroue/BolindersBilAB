@@ -68,7 +68,12 @@ namespace WU16.BolindersBilAB.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Contact(ContactMailViewModel model)
         {
-            if (!ModelState.IsValid) return Contact(false, model);
+            if (!ModelState.IsValid) return View(new ContactsViewModel()
+            {
+                Locations = _locationService.Get(),
+                Sent = false,
+                FormModel = model
+            });
 
             if (string.IsNullOrEmpty(model.Reciever))
             {
