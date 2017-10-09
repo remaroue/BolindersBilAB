@@ -40,7 +40,6 @@
                     }
                 }
                 <div class="form-group">
-
                     <select class="form-control" name="Reciever">
                         <option value="">-Anläggning-</option>
 
@@ -53,20 +52,20 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-lg-6">
-                        <input asp-for="FormModel.LastName" placeholder="Förnamn" type="text" class="form-control" />
+                        <input name="FirstName" placeholder="Förnamn" type="text" class="form-control" />
                     </div>
                     <div class="form-group col-lg-6">
-                        <input asp-for="FormModel.LastName" placeholder="Efternamn" type="text" class="form-control" />
+                        <input name="LastName" placeholder="Efternamn" type="text" class="form-control" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <input asp-for="FormModel.Email" placeholder="E-postadress" type="email" class="form-control" />
+                    <input name="Email" placeholder="E-postadress" type="email" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <input asp-for="FormModel.Subject" placeholder="Ämne" type="text" class="form-control" />
+                    <input name="Subject" placeholder="Ämne" type="text" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <textarea rows="4" asp-for="FormModel.Message" placeholder="Meddelande" class="form-control"></textarea>
+                    <textarea rows="4" name="Message" placeholder="Meddelande" class="form-control"></textarea>
                 </div>
                 <input class="btn float-right btn-primary" type="submit" />
             </form>
