@@ -56,13 +56,6 @@ namespace WU16.BolindersBilAB.BLL.Services
             request.GetResponse().GetResponseStream().CopyTo(ms);
 
             ms.Position = 0;
-            using (var f = File.Open("wwwroot/test.xml", FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                ms.CopyTo(f);
-            }
-
-            ms.Position = 0;
-
             return ms;
         }
 

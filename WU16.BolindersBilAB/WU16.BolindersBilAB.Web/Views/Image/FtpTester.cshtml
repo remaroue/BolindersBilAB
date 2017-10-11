@@ -9,10 +9,15 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>FtpTester</title>
-    <form action="/ftptestpost" method="post">
-        <input type="submit" />
-    </form>
+    
 </head>
 <body>
+    <form action="/ftptest" method="post">
+        <input type="submit" />
+    </form>
+    @if (ViewBag.Time != null)
+    {
+        @ViewBag.Time;
+    }
 </body>
 </html>

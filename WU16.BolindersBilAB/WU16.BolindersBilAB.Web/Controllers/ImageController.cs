@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using WU16.BolindersBilAB.BLL.Services;
 using Microsoft.AspNetCore.Authorization;
+using System.Diagnostics;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
@@ -34,19 +35,25 @@ namespace WU16.BolindersBilAB.Web.Controllers
             return View();
         }
 
+        [HttpGet]
         [Route("/ftptest")]
         public IActionResult FtpTester()
         {
+            var s = new Stopwatch();
+            s.Start();
+            _ftpService.Run();
+            s.Stop();
+
+            ViewBag.Time = s.ElapsedMilliseconds;
+
             return View();
         }
 
-        [HttpPost]
-        [Route("/ftptestpost")]
-        public IActionResult FtpTesterPost()
-        {
-            _ftpService.Run();
-
-            return Redirect("/ftptest");
-        }
+        //[HttpPost]
+        //[Route("/ftptest")]
+        //public IActionResult FtpTesterPost()
+        //{
+        //    return View();
+        //}
     }
 }
