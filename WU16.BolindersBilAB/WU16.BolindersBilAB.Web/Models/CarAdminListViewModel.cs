@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WU16.BolindersBilAB.BLL.Models;
 using WU16.BolindersBilAB.DAL.Models;
 using WU16.BolindersBilAB.Web.Models;
 

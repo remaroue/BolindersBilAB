@@ -176,7 +176,6 @@ namespace WU16.BolindersBilAB.BLL.Services
 
                 if (car.CarImages?.Count > 0)
                 {
-                    
                     var images = car.CarImages.ToList();
                     var newOrder = (model.ExistingImages ?? new string[0]);
 

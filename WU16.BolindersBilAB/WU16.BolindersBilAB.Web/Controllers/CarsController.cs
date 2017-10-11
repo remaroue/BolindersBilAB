@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using System.Net;
 using Microsoft.AspNetCore.Http;
+using WU16.BolindersBilAB.BLL.Models;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {

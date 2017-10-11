@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WU16.BolindersBilAB.DAL.Models;
 
-namespace WU16.BolindersBilAB.DAL.Models
+namespace WU16.BolindersBilAB.BLL.Models
 {
     public class CarListQuery
     {

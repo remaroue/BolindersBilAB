@@ -37,7 +37,7 @@ namespace WU16.BolindersBilAB.BLL.Helpers
 
         private DateTime ConvertFromUnixTime(string unixTimestamp) => new DateTime(1970, 1, 1).AddSeconds(int.Parse(unixTimestamp));
 
-        private int? ParseInt(string value) => int.TryParse(value, out int result) ? result : (int?)null; 
+        private int? ParseInt(string value) => int.TryParse(value, out int result) ? result : (int?)null;
         private decimal? ParseDecimal(string value) => decimal.TryParse(value, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.GetCultureInfo("sv-SE"), out decimal result) ? result : (decimal?)null;
         private bool ParseBool(string value) => string.IsNullOrEmpty(value) || value == "0" ? false : true;
 
@@ -46,29 +46,34 @@ namespace WU16.BolindersBilAB.BLL.Helpers
             switch (name)
             {
                 // pure strings
-                case "id":               car.FtpId = value; break;
-                case "regno":            car.LicenseNumber = value; break;
-                case "model":            car.Model = value; break;
+                case "id": car.FtpId = value; break;
+                case "regno": car.LicenseNumber = value; break;
+                case "model": car.Model = value; break;
                 case "modeldescription": car.ModelDescription = value; break;
-                case "info":             car.Equipment = value; break;
-                case "color":            car.Color = value; break;
-                case "brand":            car.CarBrandId = value; break;
-                case "station":          car.LocationId = value; break;
+                case "info": car.Equipment = value; break;
+                case "color": car.Color = value; break;
+                case "brand": car.CarBrandId = value; break;
+                case "station": car.LocationId = value; break;
 
                 // numeric
-                case "yearmodel":        car.ModelYear = (int)ParseInt(value); break;
-                case "horsepower":       car.HorsePower = ParseInt(value); break;
-                case "miles":            car.Milage = ParseInt(value); break;
-                case "price":            car.Price = ParseDecimal(value); break;
-                case "exkl_moms":        car.IsLeaseable = ParseBool(value); break;
+                case "yearmodel": car.ModelYear = (int)ParseInt(value); break;
+                case "horsepower": car.HorsePower = ParseInt(value); break;
+                case "miles":
+                    car.Milage = ParseInt(value);
+                    car.Used = false;
+                    if (car.Milage != null)
+                        if (car.Milage > 0) car.Used = true;
+                    break;
+                case "price": car.Price = ParseDecimal(value); break;
+                case "exkl_moms": car.IsLeaseable = ParseBool(value); break;
 
                 // enums
-                case "fueltype":         car.FuelType = ParseEnum<FuelType>(value); break;
-                case "gearboxtype":      car.Gearbox = ParseEnum<Gearbox>(value); break;
-                case "bodytype":         car.CarType = ParseEnum<CarType>(value); break;
+                case "fueltype": car.FuelType = ParseEnum<FuelType>(value); break;
+                case "gearboxtype": car.Gearbox = ParseEnum<Gearbox>(value); break;
+                case "bodytype": car.CarType = ParseEnum<CarType>(value); break;
 
                 // datetime
-                case "updated":          car.LastUpdated = ConvertFromUnixTime(value); break;
+                case "updated": car.LastUpdated = ConvertFromUnixTime(value); break;
 
                 // other
                 case "image":
