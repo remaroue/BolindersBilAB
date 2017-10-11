@@ -10,6 +10,7 @@ using WU16.BolindersBilAB.BLL.Helpers;
 using WU16.BolindersBilAB.DAL.Models;
 using Microsoft.AspNetCore.Http;
 using WU16.BolindersBilAB.Web.ModelBinder;
+using WU16.BolindersBilAB.BLL.Models;
 
 namespace WU16.BolindersBilAB.Web.Controllers
 {
