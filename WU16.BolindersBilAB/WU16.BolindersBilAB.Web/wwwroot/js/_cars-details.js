@@ -76,8 +76,8 @@ $(document).ready(function () {
         const cashPayment = parseFloat($("#cars-details-container input[type=number]").val());
         const paymentLength = parseInt($("#cars-details-container select").val());
 
-        const montlyPayment = Math.round(carCost / paymentLength * 12 * 1.045 / 12);
-        const totalCost = montlyPayment * paymentLength;
+        const montlyPayment = Math.round(((((carCost - cashPayment) / paymentLength) * 12) * 1.045) / 12);
+        const totalCost = montlyPayment * paymentLength + cashPayment;
 
         $("#cars-details-container .price-result > p.month").text(montlyPayment + "Kr per månad");
         $("#cars-details-container .price-result > p.total").text("Total pris: " + totalCost + "Kr");

@@ -54,36 +54,43 @@ namespace WU16.BolindersBilAB.BLL.Services
 
             var ms = new MemoryStream();
             request.GetResponse().GetResponseStream().CopyTo(ms);
+
             ms.Position = 0;
-            
+            using (var f = File.Open("wwwroot/test.xml", FileMode.OpenOrCreate, FileAccess.Write))
+            {
+                ms.CopyTo(f);
+            }
+
+            ms.Position = 0;
+
             return ms;
         }
 
         private void MapUpdates(Car to, Car from, List<CarBrand> addedCarBrands)
         {
             // string
-            to.LocationId       = from.LocationId;
-            to.Milage           = from.Milage;
-            to.Model            = from.Model;
+            to.LocationId = from.LocationId;
+            to.Milage = from.Milage;
+            to.Model = from.Model;
             to.ModelDescription = from.ModelDescription;
 
             // boolean
-            to.IsLeaseable      = from.IsLeaseable;
+            to.IsLeaseable = from.IsLeaseable;
 
             // datetime
-            to.LastUpdated      = from.LastUpdated;
+            to.LastUpdated = from.LastUpdated;
 
             // numeric
-            to.ModelYear        = from.ModelYear;
-            to.HorsePower       = from.HorsePower;
-            to.Price            = from.Price;
-            to.Equipment        = from.Equipment;
-            to.Color            = from.Color;
+            to.ModelYear = from.ModelYear;
+            to.HorsePower = from.HorsePower;
+            to.Price = from.Price;
+            to.Equipment = from.Equipment;
+            to.Color = from.Color;
 
             // enums
-            to.CarType          = from.CarType;
-            to.FuelType         = from.FuelType;
-            to.Gearbox          = from.Gearbox;
+            to.CarType = from.CarType;
+            to.FuelType = from.FuelType;
+            to.Gearbox = from.Gearbox;
 
             // carbrand
             to.CarBrandId = from.CarBrandId;
@@ -97,7 +104,7 @@ namespace WU16.BolindersBilAB.BLL.Services
 
                 addedCarBrands.Add(addedBrand);
             }
-            
+
             // car images
             if (to.CarImages != null)
             {
@@ -155,7 +162,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                     sb.Append("</ul>");
                 }
 
-                if(addedCarBrands.Count() > 0)
+                if (addedCarBrands.Count() > 0)
                 {
                     sb.Append($"<p>Tillagda bilmärken: {addedCarBrands.Count()}st</p><ul>");
                     foreach (var brand in addedCarBrands)
@@ -163,7 +170,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                     sb.Append("</ul><p style='color:#f00;'>Bilmärkena behöver bilder.</p>");
                 }
 
-                if(failedCars.Count() > 0)
+                if (failedCars.Count() > 0)
                 {
                     sb.Append("<h2 style='color:#f00;'>Något gick fel under importen</h2><p>Kunde inte importera dessa bilar:</p>");
                     sb.Append("<table><thead>");
@@ -229,7 +236,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                         }
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     failedCars.Add(new FailedCar()
                     {

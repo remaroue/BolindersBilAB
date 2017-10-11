@@ -1,9 +1,8 @@
 ﻿$(document).ready(function () {
-var api_key = "40f2eef1b2884b309ff075ca16508d76";
+    var api_key = "40f2eef1b2884b309ff075ca16508d76";
     $.ajax({
         url: "https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=" + api_key,
         success: function (result) {
-
             function truncate(s) {
                 var i = s.indexOf(" ", 45);
 
@@ -13,7 +12,6 @@ var api_key = "40f2eef1b2884b309ff075ca16508d76";
             }
 
             $.each(result.articles.slice(0, 3), function (key, value) {
-
                 const url = "https://i.ytimg.com/vi/d_T5P-zIIAs/maxresdefault.jpg";
 
                 var article = [
@@ -21,7 +19,7 @@ var api_key = "40f2eef1b2884b309ff075ca16508d76";
                     '<a target="_blank" href="' + value.url + '">',
                     '<img class="card-img" src="' + value.urlToImage + '" alt="Card image cap">',
                     '<div class="card-body">',
-                    '<h4>'+ value.title +'</h4>',
+                    '<h4>' + value.title + '</h4>',
                     '<p class="card-text">' + truncate(value.description) + '</p > ',
                     '</div>',
                     '</a>',
