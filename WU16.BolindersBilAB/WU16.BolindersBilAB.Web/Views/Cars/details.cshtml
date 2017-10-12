@@ -23,16 +23,25 @@
     <div class="row image-container">
         @if (anyImages)
         {
-            <div class="current-image col-xl-8 col-lg-8 col-md-8 col-sm-12">
-                <img src="@imageUrls.First()" />
-            </div>
+            @if (imageUrls.Length > 1)
+            {
+                <div class="current-image col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                    <img src="@imageUrls.First()" />
+                </div>
 
-            <div class="image-preview col-xl-4 col-lg-4 col-md-4 col-sm-12 align-self-end">
-                @foreach (var url in imageUrls)
-                {
-                    <img src="@url" />
-                }
-            </div>
+                <div class="image-preview col-xl-4 col-lg-4 col-md-4 col-sm-12 align-self-end">
+                    @foreach (var url in imageUrls)
+                    {
+                        <img src="@url" />
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="current-image mx-auto">
+                    <img src="@imageUrls.First()" class="" />
+                </div>
+            }
         }
         else
         {
