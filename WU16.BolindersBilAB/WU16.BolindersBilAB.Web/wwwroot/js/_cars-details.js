@@ -57,7 +57,9 @@ $(document).ready(function () {
 
         function findHeight() {
             if (!(window.innerWidth < 762)) {
-                const height = $(currentImg).height();
+                let height = $(currentImg).height();
+                if (height > 450) height = 450;
+
                 $("#cars-details-container .image-container").css("height", height + "px");
             }
             else {

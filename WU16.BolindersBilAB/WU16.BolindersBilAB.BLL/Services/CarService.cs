@@ -12,11 +12,13 @@ namespace WU16.BolindersBilAB.BLL.Services
 {
     public class CarService
     {
+        private IRepository<CarImage> _imageRepo;
         private IRepository<Car> _repo;
         private ImageService _imageService;
 
-        public CarService(IRepository<Car> Repo, ImageService imageService)
+        public CarService(IRepository<Car> Repo, IRepository<CarImage> imageRepo, ImageService imageService)
         {
+            _imageRepo = imageRepo;
             _repo = Repo;
             _imageService = imageService;
         }
@@ -184,6 +186,7 @@ namespace WU16.BolindersBilAB.BLL.Services
                     {
                         _imageService.RemoveImage(img.FileName);
                         car.CarImages.Remove(img);
+                        _imageRepo.Delete(img);
                     }
 
                     if (car.CarImages.Count > 0 && newOrder.Length > 0)
@@ -208,6 +211,7 @@ namespace WU16.BolindersBilAB.BLL.Services
             }
 
             _repo.Edit(car);
+            _imageRepo.Save();
             _repo.Save();
         }
 
